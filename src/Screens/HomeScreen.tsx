@@ -4,7 +4,7 @@ import Avatar from '../components/basic/Avatar'
 import { MapPinIcon, ChevronDownIcon } from 'react-native-heroicons/solid'
 import Search from '../components/home/Search'
 
-const Home = () => {
+const HomeScreen = () => {
   return (
     <SafeAreaView>
       <ScrollView className='mt-8' >
@@ -41,4 +41,4 @@ const Home = () => {
   )
 }
 
-export default Home
+export default HomeScreen
