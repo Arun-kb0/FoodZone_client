@@ -3,6 +3,12 @@ import React from 'react'
 import Avatar from '../components/basic/Avatar'
 import { MapPinIcon, ChevronDownIcon } from 'react-native-heroicons/solid'
 import Search from '../components/home/Search'
+import Recomented from '../components/home/Recomented'
+import ListHeading from '../components/basic/ListHeading'
+import AllRestaruants from '../components/home/AllRestaruants'
+import DishMenu from '../components/home/DishMenu'
+
+
 
 const HomeScreen = () => {
   return (
@@ -16,21 +22,21 @@ const HomeScreen = () => {
             <View className='flex-row' >
               <MapPinIcon size={22} color='red' />
               <Text className='text-lg font-semibold px-2'>Home</Text>
+              <ChevronDownIcon size={22} color='black' />
             </View>
             <Text className='text-sm '>address (h) puliyanmp o adad</Text>
-            <ChevronDownIcon size={22} color='black' />
           </View>
           <Avatar />
         </View>
 
-       
-        
-        <View >
-          <Text>Recomented</Text>
-        </View>
-        <View >
-          <Text>Whats on your mind</Text>
-        </View>
+        <Recomented />
+        <DishMenu />
+        <AllRestaruants/>
+
+
+
+
+
         <View >
           <Text>all resturants</Text>
         </View>
