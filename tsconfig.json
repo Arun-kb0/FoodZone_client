@@ -2,5 +2,9 @@
   "extends": "expo/tsconfig.base",
   "compilerOptions": {
     "strict": true
-  }
+  },
+  "types": [
+    "@types/react-native-vector-icons",
+    // Other type declarations...
+  ]
 }

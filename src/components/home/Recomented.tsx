@@ -1,9 +1,10 @@
-import { View, Text, Image, ScrollView } from 'react-native'
-import React from 'react'
+import { View, Text, Image, ScrollView, TouchableOpacity } from 'react-native'
+import React, { useState, useCallback, useEffect } from 'react'
 import { ClockIcon } from 'react-native-heroicons/solid'
-import RecommendedItem from './RecommendedItem'
 
 import ListHeading from '../basic/ListHeading'
+import {  useNavigation } from '@react-navigation/native'
+import { RestaruantType, customeNavigateProp } from '../../constants/constantTypes'
 
 
 
@@ -39,9 +40,28 @@ const recomentedData = [
 ]
 
 
+type RecommentedItemType = {
+  id: number,
+  restaurantName: string,
+  restaurantType: string,
+  deliveryDelay: string,
+  imageUrl: string,
+  setRestaurant: React.Dispatch<React.SetStateAction<RestaruantType | undefined>>
+}
+
+
+
 const Recommended = () => {
+  const navigate = useNavigation<customeNavigateProp>()
+  const [restaurant, setRestaurant] = useState<RestaruantType>()
+
+  useEffect(() => {
+    restaurant && navigate.navigate('RestaurantScreen', { restaurant })
+  }, [restaurant])
+
+
   return (
-    <View className='px-1 py-2 w-auto'>
+    <View  className='px-1 py-2 w-auto'>
 
       <ListHeading title='Recomented for you' />
 
@@ -56,10 +76,13 @@ const Recommended = () => {
           recomentedData.map((restaurant) => (
             <RecommendedItem
               key={restaurant.id}
+              id={restaurant.id}
               restaurantName={restaurant.restaurantName}
               restaurantType={restaurant.restaurantType}
               deliveryDelay={restaurant.deliveryDelay}
               imageUrl={restaurant.imageUrl}
+              // handleNavigate={handleNavigate}
+              setRestaurant={setRestaurant}
             />
           ))
         }
@@ -70,4 +93,33 @@ const Recommended = () => {
   )
 }
 
-export default Recommended 
+export default Recommended
+
+
+
+
+
+const RecommendedItem = ({ id, restaurantName, restaurantType, deliveryDelay, imageUrl, setRestaurant }: RecommentedItemType) => {
+  const nav = useCallback(() => {
+    setRestaurant({ id, restaurantName, restaurantType, deliveryDelay, imageUrl })
+  }, [id])
+
+  return (
+    <TouchableOpacity className='w-52 h-28 mx-2 mb-2 bg-white rounded-2xl  shadow-xl flex-row ' onPress={nav}>
+      <Image
+        source={{ uri: imageUrl }}
+        className='w-3/6 h-auto rounded-l-2xl'
+      />
+      <View className='flex justify-center w-3/6 overflow-hidden whitespace-no-wrap truncate px-2 py-1 space-y-2 '>
+        <Text className='text-sm first-letter:{uppercase} text-gray-700 font-semibold '>{restaurantName}</Text>
+        <Text className='text-xs text-gray-500  first-letter:{uppercase}'>{restaurantType}</Text>
+
+        <View className='flex-row space-x-1'>
+          <ClockIcon size={20} color="gray" />
+          <Text className='text-gray-500 text-xs'>{`${deliveryDelay} min`}</Text>
+        </View>
+
+      </View>
+    </TouchableOpacity>
+  )
+}

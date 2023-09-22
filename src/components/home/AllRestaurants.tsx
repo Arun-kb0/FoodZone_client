@@ -1,9 +1,14 @@
 import { View, Text, ScrollView, TouchableOpacity, Image } from 'react-native'
-import React from 'react'
+import React, { useState } from 'react'
 import ListHeading from '../basic/ListHeading'
-import { ClockIcon, MinusCircleIcon } from 'react-native-heroicons/solid'
+import { AdjustmentsHorizontalIcon, ClockIcon, MinusCircleIcon } from 'react-native-heroicons/solid'
+import { CompositeNavigationProp, RouteProp, useNavigation } from '@react-navigation/native'
+import { NativeStackNavigationProp } from '@react-navigation/native-stack'
+import { RootStackParamList } from '../../navigation/RootNavigator'
+import { BottomTabNavigationProp } from '@react-navigation/bottom-tabs'
+import { TabStackParamsList } from '../../navigation/TabNavigator'
 
-
+import SortModel from './SortModel'
 
 const recomentedData = [
   {
@@ -36,11 +41,62 @@ const recomentedData = [
   },
 ]
 
+type customeNavigationProp = CompositeNavigationProp<
+  BottomTabNavigationProp<TabStackParamsList, "Home">,
+  NativeStackNavigationProp<RootStackParamList>
+>
 
-const AllRestaruants = () => {
+
+const AllRestaurants = () => {
+  const navigation = useNavigation<customeNavigationProp>()
+  const [modelOpen, setModelOpen] = useState(false)
+
+  const handleNavigateToSort = () => {
+    setModelOpen(!modelOpen)
+  }
+
   return (
     <ScrollView className='mt-3'>
+
+      <SortModel
+        isVisible={modelOpen}
+        closeModel={setModelOpen}
+      />
+
       <ListHeading title='All restaruants' />
+
+      <ScrollView
+        horizontal
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={{
+          paddingHorizontal: 15,
+        }}
+      >
+
+
+        <View className='flex-row justify-center items-center w-full mx-4 mt-2 mb-3 space-x-3 '>
+
+          <TouchableOpacity className='flex-row items-center py-2 px-5 bg-white rounded-xl shadow-lg space-x-1' onPress={handleNavigateToSort}
+          >
+            <AdjustmentsHorizontalIcon size={22} color="gray" />
+            <Text className=' font-semibold '>Sort</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity className='py-2 px-5 bg-white rounded-xl '>
+            <Text className=' font-semibold '>Nearest</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity className='flex-row py-2 px-5 bg-white rounded-xl space-x-1'>
+            <Text className=' font-semibold '>Rating</Text>
+            <Text className='text-gray-800'>4.0+</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity className='py-2 px-5 bg-white rounded-xl '>
+            <Text className=' font-semibold '>PureVeg</Text>
+          </TouchableOpacity>
+
+        </View>
+      </ScrollView>
 
 
       <View className='flex justify-center items-center'>
@@ -61,7 +117,7 @@ const AllRestaruants = () => {
   )
 }
 
-export default AllRestaruants
+export default AllRestaurants
 
 
 

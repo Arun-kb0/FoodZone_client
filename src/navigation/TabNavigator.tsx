@@ -7,14 +7,14 @@ import { useNavigation } from '@react-navigation/native'
 import { BuildingOffice2Icon, BuildingStorefrontIcon, HomeIcon } from 'react-native-heroicons/solid'
 
 
-export type TabNavigatorType = {
+export type TabStackParamsList = {
   Home: undefined,
   DineIn: undefined
 }
 
 
 const TabNavigator = () => {
-  const Tab = createBottomTabNavigator()
+  const Tab = createBottomTabNavigator<TabStackParamsList>()
   const navigation = useNavigation()
 
 

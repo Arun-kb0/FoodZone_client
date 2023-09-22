@@ -5,7 +5,7 @@ import { MapPinIcon, ChevronDownIcon } from 'react-native-heroicons/solid'
 import Search from '../components/home/Search'
 import Recomented from '../components/home/Recomented'
 import ListHeading from '../components/basic/ListHeading'
-import AllRestaruants from '../components/home/AllRestaruants'
+import AllRestaruants from '../components/home/AllRestaurants'
 import DishMenu from '../components/home/DishMenu'
 
 
@@ -32,15 +32,6 @@ const HomeScreen = () => {
         <Recomented />
         <DishMenu />
         <AllRestaruants/>
-
-
-
-
-
-        <View >
-          <Text>all resturants</Text>
-        </View>
-
 
       </ScrollView>
     </SafeAreaView>
