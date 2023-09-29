@@ -1,5 +1,5 @@
 import { View, Text, ScrollView, TouchableOpacity, Image } from 'react-native'
-import React, { useState } from 'react'
+import React, { useState, useMemo } from 'react'
 import ListHeading from '../basic/ListHeading'
 import { AdjustmentsHorizontalIcon, ClockIcon, MinusCircleIcon } from 'react-native-heroicons/solid'
 import { CompositeNavigationProp, RouteProp, useNavigation } from '@react-navigation/native'
@@ -9,6 +9,7 @@ import { BottomTabNavigationProp } from '@react-navigation/bottom-tabs'
 import { TabStackParamsList } from '../../navigation/TabNavigator'
 
 import SortModel from './SortModel'
+import { useGetAllResturantsQuery } from '../../features/auth/posts/postApiSlice'
 
 const recomentedData = [
   {
@@ -50,6 +51,22 @@ type customeNavigationProp = CompositeNavigationProp<
 const AllRestaurants = () => {
   const navigation = useNavigation<customeNavigationProp>()
   const [modelOpen, setModelOpen] = useState(false)
+const [restaurants, setRestaurants] = useState<any>()
+  const { 
+    data:allRestaruants,
+    isLoading,
+    isError,
+    isSuccess
+  } = useGetAllResturantsQuery('')
+
+  // type allResturantItemType = typeof allRestaruants[0] | null
+  type allResturantItemType = any
+  
+  useMemo(() => {
+    if (isSuccess) {
+      setRestaurants(allRestaruants?.restaurants)
+    }
+  }, [isSuccess])
 
   const handleNavigateToSort = () => {
     setModelOpen(!modelOpen)
@@ -100,12 +117,12 @@ const AllRestaurants = () => {
 
 
       <View className='flex justify-center items-center'>
-        {
-          recomentedData.map((restaurant) => (
+        {isSuccess &&
+          restaurants?.map((restaurant:allResturantItemType) => (
             <RestaruantCard
-              key={restaurant.id}
-              restaurantName={restaurant.restaurantName}
-              restaurantType={restaurant.restaurantType}
+              key={restaurant._id}
+              restaurantName={restaurant.name}
+              restaurantType={restaurant.cuisine}
               deliveryDelay={restaurant.deliveryDelay}
               imageUrl={restaurant.imageUrl}
             />
@@ -137,7 +154,7 @@ const RestaruantCard = ({ restaurantName, restaurantType, deliveryDelay, imageUr
     <TouchableOpacity className='h-52 w-11/12 pb-2 bg-white rounded-2xl shadow-xl mb-4 space-x-4'>
       <Image
         source={{ uri: imageUrl }}
-        className='w-full h-4/6 rounded-t-2xl '
+        className='w-full h-4/6 rounded-t-2xl object-fill'
       />
       <Text className='text-lg font-semibold text-gray-700'>{restaurantName}</Text>
 

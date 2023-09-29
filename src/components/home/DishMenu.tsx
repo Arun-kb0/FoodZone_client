@@ -1,6 +1,8 @@
 import { View, Text, ScrollView, Image, Touchable, TouchableOpacity } from 'react-native'
-import React from 'react'
+import React, { useMemo, useState } from 'react'
 import ListHeading from '../basic/ListHeading'
+import { useGetMenuQuery } from '../../features/auth/posts/postApiSlice'
+import { menuType } from '../../constants/constantTypes'
 
 
 const dishMenuList = [
@@ -33,6 +35,21 @@ const dishMenuList = [
 ]
 
 const DishMenu = () => {
+  const [menu, setMenu] = useState<menuType[]>()
+
+  const {
+    data: menuList,
+    isLoading,
+    isSuccess,
+    isFetching,
+  } = useGetMenuQuery('')
+
+  useMemo(() => {
+    if (menuList) {
+      setMenu(menuList.menu)
+    }
+  }, [isSuccess])
+
   return (
     <View className='px-1 py-2 w-auto'>
       <ListHeading title='whats on yor mind ?' />
@@ -42,15 +59,15 @@ const DishMenu = () => {
         showsHorizontalScrollIndicator={false}
         contentContainerStyle={{ paddingHorizontal: 15 }}
       >
-        {
-          dishMenuList?.map((item) => (
+        {isSuccess &&
+          menu?.map((item) => (
             <DisItem
-              key={item.id}
+              key={item._id}
               dishName={item.dishName}
               imageUrl={item.imageUrl}
             />
           ))
-       }
+        }
       </ScrollView>
 
 
@@ -59,10 +76,10 @@ const DishMenu = () => {
         showsHorizontalScrollIndicator={false}
         contentContainerStyle={{ paddingHorizontal: 15 }}
       >
-        {
-          dishMenuList?.map((item) => (
+        {isSuccess &&
+          menu?.map((item) => (
             <DisItem
-              key={item.id}
+              key={item._id}
               dishName={item.dishName}
               imageUrl={item.imageUrl}
             />
@@ -81,20 +98,20 @@ export default DishMenu
 
 type dishItemType = {
   dishName: string,
-  imageUrl:string
+  imageUrl: string
 }
 
-const DisItem = ({dishName,imageUrl}:dishItemType) => {
+const DisItem = ({ dishName, imageUrl }: dishItemType) => {
 
   return (
     <TouchableOpacity className='mx-3'>
-    <View className='flex justify-center items-center '>
-      <Image
-        source={{ uri: imageUrl }}
-        className='w-20 h-20 rounded-full overflow-hidden'
-      />
-      <Text className='text-slate-600'>{dishName}</Text>
-    </View>
+      <View className='flex justify-center items-center '>
+        <Image
+          source={{ uri: imageUrl }}
+          className='w-20 h-20 rounded-full overflow-hidden'
+        />
+        <Text className='text-slate-600'>{dishName}</Text>
+      </View>
     </TouchableOpacity>
   )
 }

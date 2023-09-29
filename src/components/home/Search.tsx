@@ -1,6 +1,6 @@
 import { StyleSheet, Text, View,TextInput } from 'react-native'
 import React from 'react'
-import { MagnifyingGlassCircleIcon, MagnifyingGlassIcon } from 'react-native-heroicons/solid'
+import {  MagnifyingGlassIcon } from 'react-native-heroicons/solid'
 
 export default function Search() {
   return (

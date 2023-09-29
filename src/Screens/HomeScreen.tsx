@@ -4,7 +4,6 @@ import Avatar from '../components/basic/Avatar'
 import { MapPinIcon, ChevronDownIcon } from 'react-native-heroicons/solid'
 import Search from '../components/home/Search'
 import Recomented from '../components/home/Recomented'
-import ListHeading from '../components/basic/ListHeading'
 import AllRestaruants from '../components/home/AllRestaurants'
 import DishMenu from '../components/home/DishMenu'
 

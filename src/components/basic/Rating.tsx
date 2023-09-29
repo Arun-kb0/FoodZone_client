@@ -3,7 +3,8 @@ import React, { useMemo, useState } from 'react'
 import { StarIcon } from 'react-native-heroicons/solid'
 
 type RatingType = {
-  stars: 0 | 1 | 2 | 3 | 4 | 5,
+  // stars: 0 | 1 | 2 | 3 | 4 | 5,
+  stars:number,
   count: number
 }
 

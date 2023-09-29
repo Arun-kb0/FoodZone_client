@@ -1,11 +1,11 @@
 import { View, Text, Image, ScrollView, TouchableOpacity } from 'react-native'
-import React, { useState, useCallback, useEffect } from 'react'
+import React, { useState, useCallback, useEffect, useMemo } from 'react'
 import { ClockIcon } from 'react-native-heroicons/solid'
 
 import ListHeading from '../basic/ListHeading'
 import {  useNavigation } from '@react-navigation/native'
 import { RestaruantType, customeNavigateProp } from '../../constants/constantTypes'
-
+import { useGetRecomentedResuturantQuery } from '../../features/auth/posts/postApiSlice'
 
 
 const recomentedData = [
@@ -51,13 +51,42 @@ type RecommentedItemType = {
 
 
 
+
+
+
 const Recommended = () => {
   const navigate = useNavigation<customeNavigateProp>()
   const [restaurant, setRestaurant] = useState<RestaruantType>()
+  const [restaurants, setRestaurants] = useState<any>()
+
+  const {
+    data: recomentedResturants,
+    isLoading, isError, isSuccess, error
+  } = useGetRecomentedResuturantQuery('')
+
+  useMemo(() => {
+    if (isSuccess) {
+      setRestaurants(recomentedResturants?.restaurants)
+    }
+  },[isSuccess])
+
+  // type recomentedResturantType = typeof recomentedResturants[0]
+  type recomentedResturantType = any
 
   useEffect(() => {
     restaurant && navigate.navigate('RestaurantScreen', { restaurant })
   }, [restaurant])
+
+
+  if (isLoading) {
+    console.log("loading..")
+  } else if (isError) {
+    console.log("error")
+    console.log(error)
+  } else if (isSuccess) {
+    console.log("success")
+    console.log(restaurants?.length)
+  }
 
 
   return (
@@ -72,13 +101,13 @@ const Recommended = () => {
           paddingHorizontal: 15,
         }}
       >
-        {
-          recomentedData.map((restaurant) => (
+        {isSuccess &&
+          restaurants?.map((restaurant: recomentedResturantType) => (
             <RecommendedItem
-              key={restaurant.id}
-              id={restaurant.id}
-              restaurantName={restaurant.restaurantName}
-              restaurantType={restaurant.restaurantType}
+              key={restaurant._id}
+              id={restaurant._id}
+              restaurantName={restaurant.name}
+              restaurantType={restaurant.cuisine}
               deliveryDelay={restaurant.deliveryDelay}
               imageUrl={restaurant.imageUrl}
               // handleNavigate={handleNavigate}

@@ -19,3 +19,12 @@ export type RestaruantType = {
   deliveryDelay: string,
   imageUrl: string
 }
+
+
+// * menuType
+export type menuType = {
+  _id:string,
+  dishName: string,
+  imageUrl: string,
+  timeStamp: Date
+}

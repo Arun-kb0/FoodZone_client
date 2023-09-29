@@ -4,7 +4,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import DineInScreen from '../Screens/DineInScreen'
 import HomeScreen from '../Screens/HomeScreen'
 import { useNavigation } from '@react-navigation/native'
-import { BuildingOffice2Icon, BuildingStorefrontIcon, HomeIcon } from 'react-native-heroicons/solid'
+import { BuildingStorefrontIcon, HomeIcon } from 'react-native-heroicons/solid'
 
 
 export type TabStackParamsList = {
