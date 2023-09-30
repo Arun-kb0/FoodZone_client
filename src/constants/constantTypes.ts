@@ -28,3 +28,45 @@ export type menuType = {
   imageUrl: string,
   timeStamp: Date
 }
+
+// * restaurant type
+type OpeningHoursType = {
+  monday: string;
+  tuesday: string;
+  wednesday: string;
+  thursday: string;
+  friday: string;
+  saturday: string;
+  sunday: string;
+};
+
+export type restaurantType = {
+  _id:string
+  name: string,
+  cuisine: string,
+  deliveryDelay: string,
+  imageUrl: string,
+  distance: string,
+  rating: number,
+  openingHours: OpeningHoursType
+  location: { lat: string, long: string }
+  timeStamp: Date
+}
+
+
+// * dishType
+
+export type dishType = {
+  _id:string,
+  dishName: string,
+  description: string,
+  imageUrl: string,
+  price: number,
+  rating: number,
+  timeStamp: Date
+}
+
+export type dishesType = {
+  _id: string,
+  dishes: dishType[]
+}

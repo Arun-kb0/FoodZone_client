@@ -1,7 +1,7 @@
 import { View, Text, ScrollView, Image, Touchable, TouchableOpacity } from 'react-native'
 import React, { useMemo, useState } from 'react'
 import ListHeading from '../basic/ListHeading'
-import { useGetMenuQuery } from '../../features/auth/posts/postApiSlice'
+import { useGetMenuQuery } from '../../features/posts/postApiSlice'
 import { menuType } from '../../constants/constantTypes'
 
 

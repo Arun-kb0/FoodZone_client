@@ -4,8 +4,10 @@ import { ClockIcon } from 'react-native-heroicons/solid'
 
 import ListHeading from '../basic/ListHeading'
 import {  useNavigation } from '@react-navigation/native'
-import { RestaruantType, customeNavigateProp } from '../../constants/constantTypes'
-import { useGetRecomentedResuturantQuery } from '../../features/auth/posts/postApiSlice'
+import { RestaruantType, customeNavigateProp, restaurantType } from '../../constants/constantTypes'
+import { useGetRecomentedResuturantQuery } from '../../features/posts/postApiSlice'
+import { useDispatch } from 'react-redux'
+import { setSelectedRestaurant } from '../../features/posts/postSlice'
 
 
 const recomentedData = [
@@ -38,15 +40,16 @@ const recomentedData = [
     imageUrl: "https://images.pexels.com/photos/842571/pexels-photo-842571.jpeg?auto=compress&cs=tinysrgb&w=600",
   },
 ]
-
+// ! fix needed
 
 type RecommentedItemType = {
-  id: number,
-  restaurantName: string,
-  restaurantType: string,
-  deliveryDelay: string,
-  imageUrl: string,
-  setRestaurant: React.Dispatch<React.SetStateAction<RestaruantType | undefined>>
+  // id: string,
+  // restaurantName: string,
+  // restaurantType: string,
+  // deliveryDelay: string,
+  // imageUrl: string,
+  restaurant:restaurantType,
+  setRestaurant: React.Dispatch<React.SetStateAction<restaurantType | undefined>>
 }
 
 
@@ -55,9 +58,11 @@ type RecommentedItemType = {
 
 
 const Recommended = () => {
+  const dispatch = useDispatch()
+
   const navigate = useNavigation<customeNavigateProp>()
-  const [restaurant, setRestaurant] = useState<RestaruantType>()
-  const [restaurants, setRestaurants] = useState<any>()
+  const [restaurant, setRestaurant] = useState<restaurantType>()
+  const [restaurants, setRestaurants] = useState<restaurantType[]>()
 
   const {
     data: recomentedResturants,
@@ -68,13 +73,19 @@ const Recommended = () => {
     if (isSuccess) {
       setRestaurants(recomentedResturants?.restaurants)
     }
-  },[isSuccess])
+  }, [isSuccess])
+  
+  useEffect(() => {
+    if (restaurant) {
+    }
+  },[restaurant])
 
-  // type recomentedResturantType = typeof recomentedResturants[0]
-  type recomentedResturantType = any
 
   useEffect(() => {
-    restaurant && navigate.navigate('RestaurantScreen', { restaurant })
+    if (restaurant) { 
+      dispatch(setSelectedRestaurant(restaurant))
+      navigate.navigate('RestaurantScreen', { restaurant })
+    }
   }, [restaurant])
 
 
@@ -102,15 +113,16 @@ const Recommended = () => {
         }}
       >
         {isSuccess &&
-          restaurants?.map((restaurant: recomentedResturantType) => (
+          restaurants?.map((restaurantObj: restaurantType) => (
             <RecommendedItem
-              key={restaurant._id}
-              id={restaurant._id}
-              restaurantName={restaurant.name}
-              restaurantType={restaurant.cuisine}
-              deliveryDelay={restaurant.deliveryDelay}
-              imageUrl={restaurant.imageUrl}
+              key={restaurantObj._id}
+              // id={restaurant._id}
+              // restaurantName={restaurant.name}
+              // restaurantType={restaurant.cuisine}
+              // deliveryDelay={restaurant.deliveryDelay}
+              // imageUrl={restaurant.imageUrl}
               // handleNavigate={handleNavigate}
+              restaurant={restaurantObj}
               setRestaurant={setRestaurant}
             />
           ))
@@ -128,10 +140,13 @@ export default Recommended
 
 
 
-const RecommendedItem = ({ id, restaurantName, restaurantType, deliveryDelay, imageUrl, setRestaurant }: RecommentedItemType) => {
+const RecommendedItem = ({ restaurant,setRestaurant }: RecommentedItemType) => {
+  const { _id, name, cuisine, imageUrl, deliveryDelay, } = restaurant
   const nav = useCallback(() => {
-    setRestaurant({ id, restaurantName, restaurantType, deliveryDelay, imageUrl })
-  }, [id])
+    setRestaurant(restaurant)
+  }, [_id])
+
+
 
   return (
     <TouchableOpacity className='w-52 h-28 mx-2 mb-2 bg-white rounded-2xl  shadow-xl flex-row ' onPress={nav}>
@@ -140,8 +155,8 @@ const RecommendedItem = ({ id, restaurantName, restaurantType, deliveryDelay, im
         className='w-3/6 h-auto rounded-l-2xl'
       />
       <View className='flex justify-center w-3/6 overflow-hidden whitespace-no-wrap truncate px-2 py-1 space-y-2 '>
-        <Text className='text-sm first-letter:{uppercase} text-gray-700 font-semibold '>{restaurantName}</Text>
-        <Text className='text-xs text-gray-500  first-letter:{uppercase}'>{restaurantType}</Text>
+        <Text className='text-sm first-letter:{uppercase} text-gray-700 font-semibold '>{name}</Text>
+        <Text className='text-xs text-gray-500  first-letter:{uppercase}'>{cuisine}</Text>
 
         <View className='flex-row space-x-1'>
           <ClockIcon size={20} color="gray" />

@@ -1,40 +1,63 @@
 import { View, Text, Image, TouchableOpacity, ScrollView } from 'react-native'
-import React, { useState } from 'react'
+import React, { useEffect, useState, useMemo } from 'react'
 import { PlusIcon } from 'react-native-heroicons/solid'
 import Rating from '../basic/Rating'
 import RestaurantMenu from './RestaurantMenu'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
-import { useGetDisheInResturantQuery } from '../../features/auth/posts/postApiSlice'
-
+import { useGetRestaurantDishesQuery } from '../../features/posts/postApiSlice'
+import { useDispatch, useSelector } from 'react-redux'
+import { RootState } from '../../app/store'
+import { dishType } from '../../constants/constantTypes'
+import { setSelectedDish } from '../../features/posts/postSlice'
 
 
 const RestaurantDishes = () => {
+  const dispatch = useDispatch()
+
+  const [dishes, setDishes] = useState<dishType[]>()
+
+  const { selectedRestaurant, } = useSelector((state: RootState) => state.postSlice)
 
   const {
-    data: dishes,
+    data: dishData,
     isLoading,
     isError,
     isSuccess,
     error
-  } = useGetDisheInResturantQuery('')
+  } = useGetRestaurantDishesQuery(selectedRestaurant?._id || '')
 
-  type dishType = typeof dishes[0]
+  useMemo(() => {
+    if (dishData) {
+      console.log("dishData")
+      console.log(dishData.dishes.dishes)
+      setDishes(dishData.dishes.dishes)
+    }
+  }, [isSuccess])
+
+  useEffect(() => {
+    if (dishData) {
+      dispatch(setSelectedDish({ payload: dishData.dishes }))
+    }
+  }, [isSuccess])
+
+
+
 
   return (
     <View className='relative mt-2 mb-4' >
 
-      {dishes?.map((dish: dishType) => (
-        <RestaruantDishItem
-          key={dish.id}
-          id={dish.id}
-          name={dish.dishName}
-          imageUrl={dish.imageUrl}
-          description={dish.description}
-          price={dish.price}
-          rating={dish.rating}
-
-        />
-      ))}
+      {isSuccess && 
+        dishes?.map((dish: dishType) => (
+          <RestaruantDishItem
+            key={dish._id}
+            id={dish._id}
+            name={dish.dishName}
+            imageUrl={dish.imageUrl}
+            description={dish.description}
+            price={dish.price}
+            rating={dish.rating}
+          />
+        ))}
 
     </View>
   )
@@ -45,13 +68,12 @@ export default RestaurantDishes
 
 
 type RestaruantDishItemType = {
-  id: number,
+  id: string,
   name: string,
   imageUrl: string,
   description: string,
   price: number,
   rating: number
-
 }
 
 

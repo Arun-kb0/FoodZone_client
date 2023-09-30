@@ -1,4 +1,4 @@
-import { apiSlice } from "../../../app/api/apiSlice";
+import { apiSlice } from "../../app/api/apiSlice";
 
 
 export const postApiSlice = apiSlice.injectEndpoints({
@@ -17,7 +17,12 @@ export const postApiSlice = apiSlice.injectEndpoints({
 
     getMenu: builder.query({
       query: () => ({ url: '/dish/menu' }),
-      providesTags:['RestaurantDishes']
+      providesTags:['RestaurantMenu']
+    }),
+
+    getRestaurantDishes: builder.query({
+      query: (restaurantId: string) => ({ url: `/restaurant/dishes?restaurantId=${restaurantId}` }),
+      // providesTags['RestaurantDishes']
     })
 
 
@@ -29,5 +34,6 @@ export const {
   useGetRecomentedResuturantQuery,
   useGetAllResturantsQuery,
   useGetMenuQuery,
+  useGetRestaurantDishesQuery
 
 } = postApiSlice

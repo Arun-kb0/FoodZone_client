@@ -3,11 +3,11 @@ import React from 'react'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import TabNavigator from './TabNavigator'
 import RestaurantScreen from '../Screens/RestaurantScreen'
-import { RestaruantType } from '../constants/constantTypes'
+import { RestaruantType, restaurantType } from '../constants/constantTypes'
 
 export type RootStackParamList = {
   Main: undefined,
-  RestaurantScreen: {restaurant:RestaruantType}
+  RestaurantScreen: {restaurant:restaurantType}
 }
 
 

@@ -1,18 +1,19 @@
 import { View, Text, SafeAreaView, ScrollView, TouchableOpacity, Dimensions, Touchable } from 'react-native'
 import React, { useState } from 'react'
-import { RestaruantType } from '../constants/constantTypes'
+import { RestaruantType, restaurantType } from '../constants/constantTypes'
 import RestaruantDetails from '../components/restaurant/RestaurantDetails'
 import RestaurantDishes from '../components/restaurant/RestaurantDishes'
 import ListHeading from '../components/basic/ListHeading'
 import RestaurantMenu from '../components/restaurant/RestaurantMenu'
 import RestaurantTopBar from '../components/restaurant/RestaurantTopBar'
 import { IconMatCom } from '../constants/icons'
+import Rating from '../components/basic/Rating'
 
 
 type RestaurantScreen = {
   route: {
     params: {
-      restaurant: RestaruantType
+      restaurant: restaurantType
     }
   }
 }
@@ -22,7 +23,7 @@ const MenuList = ["alfam", "mandi", "noodiles", "chicken", "friedRice"]
 
 const RestaurantScreen = ({ route }: RestaurantScreen) => {
   const { restaurant: {
-    restaurantName, restaurantType, deliveryDelay, imageUrl, id }
+    name, cuisine, deliveryDelay, imageUrl, _id,rating,distance }
   } = route.params
 
   const [isVisible, setisVisible] = useState(false)
@@ -49,12 +50,13 @@ const RestaurantScreen = ({ route }: RestaurantScreen) => {
         </View>
 
         <RestaruantDetails
-          id={id}
-          restaurantName={restaurantName}
-          restaurantType={restaurantType}
+          _id={_id}
+          name={name}
+          cuisine={cuisine}
           deliveryDelay={deliveryDelay}
           imageUrl={imageUrl}
-          
+          rating={rating}
+          distance={distance}
         />
 
         <View>
