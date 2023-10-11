@@ -1,13 +1,18 @@
-import { View, Text, SafeAreaView, ScrollView, TouchableOpacity, Dimensions, Touchable } from 'react-native'
-import React, { useState } from 'react'
-import { RestaruantType, restaurantType } from '../constants/constantTypes'
+import { View, Text, SafeAreaView, ScrollView, TouchableOpacity, Dimensions, NativeSyntheticEvent, NativeScrollEvent, GestureResponderEvent } from 'react-native'
+import React, { useState, useEffect, useLayoutEffect } from 'react'
+import { restaurantType } from '../constants/constantTypes'
 import RestaruantDetails from '../components/restaurant/RestaurantDetails'
 import RestaurantDishes from '../components/restaurant/RestaurantDishes'
 import ListHeading from '../components/basic/ListHeading'
 import RestaurantMenu from '../components/restaurant/RestaurantMenu'
 import RestaurantTopBar from '../components/restaurant/RestaurantTopBar'
 import { IconMatCom } from '../constants/icons'
-import Rating from '../components/basic/Rating'
+import { useSelector } from 'react-redux'
+import { RootState } from '../app/store'
+import CartBottomButton from '../components/restaurant/CartBottomButton'
+import { useNavigation } from '@react-navigation/native'
+import Search from '../components/home/Search'
+import DishSearch from '../components/restaurant/DishSearch'
 
 
 type RestaurantScreen = {
@@ -23,32 +28,85 @@ const MenuList = ["alfam", "mandi", "noodiles", "chicken", "friedRice"]
 
 const RestaurantScreen = ({ route }: RestaurantScreen) => {
   const { restaurant: {
-    name, cuisine, deliveryDelay, imageUrl, _id,rating,distance }
+    name, cuisine, deliveryDelay, imageUrl, _id, rating, distance }
   } = route.params
 
   const [isVisible, setisVisible] = useState(false)
+  const [isSearchOpen, setIsSearchOpen] = useState(false)
+  const [totalCount, setTotalCount] = useState(0)
+
+
+  const { selectedRestaurant } = useSelector((state: RootState) => state.postSlice)
+  const {  restaurantCart } = useSelector((state: RootState) => state.cartSlice)
+
+  const navigation = useNavigation()
+
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      header: () => isSearchOpen
+        ? <DishSearch placeholder={`Search Dishes in ${name}`} />
+        : <RestaurantTopBar setIsSearchOpen={setIsSearchOpen} />,
+    })
+  }, [isSearchOpen])
+
+
+  const handleScroll = (e: NativeSyntheticEvent<NativeScrollEvent>) => {
+    const { contentOffset, contentSize, layoutMeasurement } = e.nativeEvent;
+    const scrollY = contentOffset.y;
+    const height = contentSize.height;
+    const screenHeight = layoutMeasurement.height;
+
+    scrollY > 100
+      ? setIsSearchOpen(true)
+      : setIsSearchOpen(false)
+    
+    if (scrollY + screenHeight >= height) {
+      console.log("restaurant screen end of list ")
+    }
+  }
+
+  useEffect(() => {
+    if (restaurantCart && selectedRestaurant
+      && restaurantCart[selectedRestaurant?._id] !== undefined) {
+        setTotalCount(restaurantCart[selectedRestaurant?._id].count)
+      }
+  }, [restaurantCart && selectedRestaurant && restaurantCart[selectedRestaurant._id]])
+
+  if (!selectedRestaurant) {
+    navigation.goBack()
+  }
+
+
+  // ! add get restaurants call with page num
+  const handleGetRestaurants = () => {
+    console.log("call get resturants from restaurants screen")
+  }
 
 
   return (
-    <SafeAreaView className='mt-10 relative'>
-      <TouchableOpacity className={`absolute bottom-5 left-[45%] z-50 shadow-xl flex  justify-center items-center bg-gray-900 rounded-xl p-2 opacity-90`} onPress={() => setisVisible(!isVisible)} >
+    <SafeAreaView className={`mt-14 relative h-[96%] `} >
+
+      <TouchableOpacity className={`absolute left-[45%] z-50 shadow-xl flex  justify-center items-center bg-gray-900 rounded-xl p-2 opacity-90 ${totalCount > 0 ? "bottom-[13%]" : "bottom-8"}`} onPress={() => setisVisible(!isVisible)} >
         <Text className='text-lg font-bold text-white'>Menu</Text>
         <IconMatCom name="silverware-fork-knife" size={30} color="white" />
       </TouchableOpacity>
-      <RestaurantMenu
-        items={MenuList}
+      {selectedRestaurant &&
+        <RestaurantMenu
+        items={selectedRestaurant?.menu}
         isVisible={isVisible}
         closeModel={setisVisible}
       />
+}
+      {selectedRestaurant && restaurantCart && totalCount > 0 &&
+        <CartBottomButton
+          totalItems={totalCount}
+          totalPrice={restaurantCart[selectedRestaurant._id].total}
+        />
+      }
 
-      <RestaurantTopBar/>
 
-
-      <ScrollView className='mt-10'>
-        <View>
-
-        </View>
-
+      <ScrollView className='mt-10' onScroll={handleScroll} >
+        
         <RestaruantDetails
           _id={_id}
           name={name}

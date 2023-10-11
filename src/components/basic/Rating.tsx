@@ -1,20 +1,20 @@
 import { View, Text } from 'react-native'
 import React, { useMemo, useState } from 'react'
-import { StarIcon } from 'react-native-heroicons/solid'
+import { IconAntD } from '../../constants/icons'
 
 type RatingType = {
-  // stars: 0 | 1 | 2 | 3 | 4 | 5,
-  stars:number,
+  stars: number,
   count: number
 }
 
 
 const Rating = ({ stars, count }: RatingType) => {
-  
+
   const starArray = useMemo(() => {
     return Array.from({ length: 5 }, (_, index) => (
-      <StarIcon
-        key={index + 1}
+      <IconAntD
+        key={index}
+        name="star"
         size={17}
         color={index < stars ? "gold" : "#94a3b8"}
       />

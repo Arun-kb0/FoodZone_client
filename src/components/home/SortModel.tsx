@@ -1,9 +1,9 @@
 import { View, Text, TouchableOpacity } from 'react-native'
 import React, { useCallback, useState } from 'react'
 import Modal from 'react-native-modal'
-import { CheckCircleIcon, RadioIcon, XCircleIcon } from 'react-native-heroicons/solid'
 import { useNavigation } from '@react-navigation/native'
 import { customeNavigateProp } from '../../constants/constantTypes'
+import { IconFontawsm, IconIon } from '../../constants/icons'
 
 type sortModelType = {
   isVisible: boolean,
@@ -53,40 +53,36 @@ return (
   >
     <View className='flex items-center justify-start space-y-3'>
       <TouchableOpacity onPress={() => closeModel(!isVisible)} >
-        <XCircleIcon size={52} color="#3f3f46" />
+        <IconIon name="close-circle" size={52} color="#3f3f46" />
       </TouchableOpacity>
 
       <View className=' w-full h-80 bg-white rounded-t-3xl overflow-hidden '>
         <View className='p-4 px-8 space-y-4'>
           <TouchableOpacity className='flex-row items-center justify-between' onPress={()=>handleSort('rating')}>
             <Text className='text-lg '>Rating : High to Low</Text>
-            <CheckCircleIcon
-              size={25}
-              color={selectedFilters?.rating ? "#16a34a" : "#9ca3af"}
+            <IconFontawsm name="check-square" size={25}
+              color={selectedFilters?.rating ? "#65a30d" : "#9ca3af"}
             />
           </TouchableOpacity>
 
           <TouchableOpacity className='flex-row items-center justify-between' onPress={() => handleSort('priceHighToLow')}>
             <Text className='text-lg '>Price : High to Low</Text>
-            <CheckCircleIcon
-              size={25}
-              color={selectedFilters?.priceHighToLow ? "#16a34a" : "#9ca3af"}
+              <IconFontawsm name="check-square" size={25}
+              color={selectedFilters?.priceHighToLow ? "#65a30d" : "#9ca3af"}
             />
           </TouchableOpacity>
 
           <TouchableOpacity className='flex-row items-center justify-between' onPress={() => handleSort('priceLowToHigh')}>
             <Text className='text-lg '>Price : Low to High </Text>
-            <CheckCircleIcon
-              size={25}
-              color={selectedFilters?.priceLowToHigh ? "#16a34a" : "#9ca3af"}
+              <IconFontawsm name="check-square" size={25}
+              color={selectedFilters?.priceLowToHigh ? "#65a30d" : "#9ca3af"}
             />
           </TouchableOpacity>
 
           <TouchableOpacity className='flex-row items-center justify-between' onPress={() => handleSort('deliveryTime')}>
             <Text className='text-lg '>Delivery Time : Low to High </Text>
-            <CheckCircleIcon
-              size={25}
-              color={selectedFilters?.deliveryTime ? "#16a34a" : "#9ca3af"}
+              <IconFontawsm name="check-square" size={25}
+              color={selectedFilters?.deliveryTime ? "#65a30d" : "#9ca3af"}
             />
           </TouchableOpacity>
 

@@ -9,16 +9,18 @@ import { NativeStackNavigationProp } from "@react-navigation/native-stack"
 export type customeNavigateProp = CompositeNavigationProp<
   BottomTabNavigationProp<TabStackParamsList, "Home">,
   NativeStackNavigationProp<RootStackParamList>
->
+  >
 
-// * Restaruant object Type
-export type RestaruantType = {
-  id: number,
-  restaurantName: string,
-  restaurantType: string,
-  deliveryDelay: string,
-  imageUrl: string
-}
+
+
+// // * Restaruant object Type
+// export type RestaruantType = {
+//   id: number,
+//   restaurantName: string,
+//   restaurantType: string,
+//   deliveryDelay: string,
+//   imageUrl: string
+// }
 
 
 // * menuType
@@ -48,6 +50,7 @@ export type restaurantType = {
   imageUrl: string,
   distance: string,
   rating: number,
+  menu:string[],
   openingHours: OpeningHoursType
   location: { lat: string, long: string }
   timeStamp: Date
