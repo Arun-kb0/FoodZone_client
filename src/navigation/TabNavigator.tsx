@@ -4,17 +4,17 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import DineInScreen from '../Screens/DineInScreen'
 import HomeScreen from '../Screens/HomeScreen'
 import { useNavigation } from '@react-navigation/native'
-import { BuildingOffice2Icon, BuildingStorefrontIcon, HomeIcon } from 'react-native-heroicons/solid'
+import { IconEntypo, IconMat } from '../constants/icons'
 
 
-export type TabNavigatorType = {
+export type TabStackParamsList = {
   Home: undefined,
   DineIn: undefined
 }
 
 
 const TabNavigator = () => {
-  const Tab = createBottomTabNavigator()
+  const Tab = createBottomTabNavigator<TabStackParamsList>()
   const navigation = useNavigation()
 
 
@@ -33,17 +33,18 @@ const TabNavigator = () => {
 
         tabBarIcon: ({ focused, color, size }) => {
           if (route.name === 'Home') {
-            return <HomeIcon size={32} color={focused ? "#dc2626" : "gray"} />
+            return <IconEntypo name="home" size={32} color={focused ? "#dc2626" : "gray"}/>
           } else if (route.name === 'DineIn') {
-            return <BuildingStorefrontIcon size={32} color={focused ? "#dc2626" : "gray"} />
+            return <IconMat name="dinner-dining" size={32} color={focused ? "#dc2626" : "gray"} />
           }
         }
       })}
     >
-      <Tab.Screen name="Home" component={HomeScreen} options={{ headerShown: false }} />
-      <Tab.Screen name="DineIn" component={DineInScreen} options={{ headerShown: false }} />
+      <Tab.Screen name="Home" component={HomeScreen} />
+      <Tab.Screen name="DineIn" component={DineInScreen}/>
     </Tab.Navigator>
   )
 }
 
 export default TabNavigator
+
