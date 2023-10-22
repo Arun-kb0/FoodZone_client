@@ -5,15 +5,16 @@ import TabNavigator from './TabNavigator'
 import RestaurantScreen from '../Screens/RestaurantScreen'
 import {  restaurantType } from '../constants/constantTypes'
 import CheckoutScreen from '../Screens/CheckoutScreen'
-import RestaurantTopBar from '../components/restaurant/RestaurantTopBar'
 import LoginScreen from '../Screens/LoginScreen'
+import SignUpScreen from '../Screens/SignUpScreen'
 
 
 export type RootStackParamList = {
   Main: undefined,
   RestaurantScreen: { restaurant: restaurantType }
   CheckoutScreen: { restaurantName: string }
-  LoginScreen:undefined
+  LoginScreen: undefined,
+  SignUpScreen:undefined
 }
 
 
@@ -26,6 +27,7 @@ const RootNavigator = () => {
 
       <RootStack.Group>
         <RootStack.Screen name='LoginScreen' component={LoginScreen} options={{ headerShown: false }} />
+        <RootStack.Screen name='SignUpScreen' component={SignUpScreen} options={{ headerShown: true }} />
         <RootStack.Screen name="Main" component={TabNavigator} />
       </RootStack.Group>
 

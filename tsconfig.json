@@ -6,5 +6,8 @@
   "types": [
     "@types/react-native-vector-icons",
     // Other type declarations...
+  ],
+  "typeRoots": [
+    "./types"
   ]
 }

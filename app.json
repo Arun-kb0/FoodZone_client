@@ -3,6 +3,7 @@
     "name": "client",
     "slug": "client",
     "version": "1.0.0",
+    "scheme": "com.arun11.foodzone_client",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
@@ -15,16 +16,39 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.arun11.foodzone_client"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.arun11.foodzone_client"
     },
     "web": {
-      "favicon": "./assets/favicon.png"
-    }
+      "favicon": "./assets/favicon.png",
+      "entryPoint": "src/app.tsx"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "0ae4dbce-acff-481e-869f-eb9b4f081a4b"
+      }
+    },
+    "plugins": [
+      "@react-native-google-signin/google-signin",
+      [
+        "react-native-fbsdk-next",
+        {
+          "appID": "2629074913911796",
+          "clientToken": "01c78910e48963a649fc355c0ecc6a6c",
+          "displayName": "Food zone",
+          "advertiserIDCollectionEnabled": false,
+          "autoLogAppEventsEnabled": false,
+          "isAutoInitEnabled": true,
+          "iosUserTrackingPermission": "This identifier will be used to deliver personalized ads to you."
+        }
+      ]
+    ]
   }
 }
