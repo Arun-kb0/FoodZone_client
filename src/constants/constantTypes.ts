@@ -12,17 +12,6 @@ export type customeNavigateProp = CompositeNavigationProp<
   >
 
 
-
-// // * Restaruant object Type
-// export type RestaruantType = {
-//   id: number,
-//   restaurantName: string,
-//   restaurantType: string,
-//   deliveryDelay: string,
-//   imageUrl: string
-// }
-
-
 // * menuType
 export type menuType = {
   _id:string,
@@ -73,3 +62,12 @@ export type dishesType = {
   _id: string,
   dishes: dishType[]
 }
+
+
+// * custom signUp type
+export type customAuthResType = {
+  accessToken: string,
+  user: string,
+  message: string,
+}
+

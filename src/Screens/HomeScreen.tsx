@@ -10,11 +10,14 @@ import AllRestaruants from '../components/home/AllRestaurants'
 import DishMenu from '../components/home/DishMenu'
 import { useNavigation } from '@react-navigation/native'
 import { IconEntypo, IconFontisto } from '../constants/icons'
+import { customeNavigateProp } from '../constants/constantTypes'
+import { useSelector } from 'react-redux'
+import { RootState } from '../app/store'
 
 
 
 const HomeScreen = () => {
-  const navigation = useNavigation()
+  const navigation = useNavigation<customeNavigateProp>()
   const [isTrasparent, setisTrasparent] = useState(false)
 
   useLayoutEffect(() => {
@@ -27,7 +30,6 @@ const HomeScreen = () => {
   }, [isTrasparent])
 
   const handleScroll = (e: NativeSyntheticEvent<NativeScrollEvent>) => {
-    // const scrollY = e.nativeEvent.contentOffset.y
     const { contentOffset, contentSize, layoutMeasurement } = e.nativeEvent
     const scrollY = contentOffset.y
     const height = contentSize.height
@@ -36,11 +38,11 @@ const HomeScreen = () => {
     scrollY > 100
       ? setisTrasparent(true)
       : setisTrasparent(false)
-    
+
     if (scrollY + screenHeight >= height) {
       console.log("home screen end ")
     }
-    
+
   }
 
   return (
@@ -58,7 +60,9 @@ const HomeScreen = () => {
             </View>
             <Text className='text-sm '>address (h) puliyanmp o karakkattuparambil ,anga,aly</Text>
           </View>
-          <Avatar />
+          <TouchableOpacity onPress={()=>navigation.navigate('UserScreen')}>
+            <Avatar/>
+          </TouchableOpacity>
         </View>
 
         <Recomented />

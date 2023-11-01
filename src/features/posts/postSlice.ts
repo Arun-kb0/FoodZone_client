@@ -1,4 +1,4 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { dishType, restaurantType } from "../../constants/constantTypes";
 
 
@@ -6,6 +6,14 @@ type postState = {
   restaurants: restaurantType[] | null,
   selectedRestaurant: restaurantType | null,
   selectedDish: Record<string, dishType[]> | null
+}
+
+type setRestaurantsPayloadType = {
+  restaurants: restaurantType[]
+}
+type selectedDishPayloadType = {
+  _id: string,
+  dishes: dishType[]
 }
 
 
@@ -19,7 +27,7 @@ const postSlice = createSlice({
   name: 'postSlice',
   initialState,
   reducers: {
-    setRestaurants(state, action) {
+    setRestaurants(state, action: PayloadAction<setRestaurantsPayloadType>) {
       console.log("postSlice setRestaurants")
       const { restaurants } = action.payload
       state.restaurants = restaurants
@@ -28,10 +36,10 @@ const postSlice = createSlice({
       state.selectedRestaurant = action.payload
     },
 
-    setSelectedDish(state, action) {
+    setSelectedDish(state, action: PayloadAction<selectedDishPayloadType>) {
       const { _id, dishes } = action.payload
       if (state.selectedDish === null)
-        state.selectedDish={}
+        state.selectedDish = {}
       state.selectedDish[_id] = dishes
     }
 

@@ -1,0 +1,11 @@
+<resources>
+  <string name="app_name">client</string>
+  <string name="expo_splash_screen_resize_mode" translatable="false">contain</string>
+  <string name="expo_splash_screen_status_bar_translucent" translatable="false">false</string>
+  <string name="expo_system_ui_user_interface_style" translatable="false">light</string>
+
+<!-- ! -->  
+  <string name="facebook_app_id">2629074913911796</string>
+  <string name="facebook_client_token">01c78910e48963a649fc355c0ecc6a6c</string>
+<!-- ! -->
+</resources>

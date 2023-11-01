@@ -6,8 +6,8 @@ import { useNavigation } from '@react-navigation/native'
 import { customeNavigateProp } from '../constants/constantTypes'
 import SocialLogin from '../components/login/SocialLogin'
 import Login from '../components/login/Login'
+import { storage } from '../constants/mmkvStorage'
 
-// ! google auth setup
 const LoginScreen = () => {
 
   const navigation = useNavigation<customeNavigateProp>()
@@ -18,6 +18,12 @@ const LoginScreen = () => {
   const navigateToSignUp = () => {
     navigation.navigate("SignUpScreen")
   }
+
+
+  // useEffect(() => {
+  //   navigation.navigate('Main')
+  // }, [storage.contains('accessToken')])
+
 
   return (
     <SafeAreaView className='bg-white h-[100%] flex justify-end'>
@@ -33,7 +39,7 @@ const LoginScreen = () => {
       
       <View className='flex items-center px-2 py-3 mt-5 space-y-2 rounded-t-3xl bg-white '>
         <Text className='text-2xl font-extrabold text-gray-700'>Food Delivery and Dining App</Text>
-        <LoginTitle title='login or sign up' />
+        <LoginTitle title='login' />
 
         <Login />
 

@@ -1,23 +1,34 @@
 import {
   View, Text, TextInput, TouchableOpacity,
-  SafeAreaView, ScrollView, Image
+  SafeAreaView, ScrollView, Image, Alert
 } from 'react-native'
 import React, { useEffect, useLayoutEffect, useState } from 'react'
 import { useNavigation } from '@react-navigation/native'
-import { customeNavigateProp } from '../constants/constantTypes'
-import CheckoutHeader from '../components/checkout/CheckoutHeader'
+import {  customeNavigateProp } from '../constants/constantTypes'
 import SignUpHeader from '../components/login/SignUpHeader'
+import { useSignUpMutation } from '../features/auth/authApiSlice'
+import { useDispatch } from 'react-redux'
+import { setAuthData } from '../features/auth/authSlice'
 
 
 const SignUpScreen = () => {
 
   const naviagtion = useNavigation<customeNavigateProp>()
+  const dispatch = useDispatch()
+  const [
+    signUp,
+    { data: signUpResponse,
+      isLoading: signUpisLoading,
+      isSuccess: signUpisSuccess,
+      isError: signUpisError,
+      error: signUpError
+    }] = useSignUpMutation()
 
   useLayoutEffect(() => {
     naviagtion.setOptions({
-      header:()=>  <SignUpHeader/>
+      header: () => <SignUpHeader />
     })
-  },[])
+  }, [])
 
   type isErrorType = {
     error: boolean;
@@ -81,9 +92,9 @@ const SignUpScreen = () => {
     }))
 
     // ! fix needed 
-    if (name === 'phone') {
-      console.log((name === 'phone' && value !== '') ? regex.phone.test(value) : !isError.phone)
-    }
+    // if (name === 'phone') {
+    // console.log((name === 'phone' && value !== '') ? regex.phone.test(value) : !isError.phone)
+    // }
 
     const isEmailValid = name === 'email' ? regex.email.test(value) : !isError.email;
     const isPasswordValid = name === 'password' ? regex.password.test(value) : !isError.password;
@@ -101,7 +112,7 @@ const SignUpScreen = () => {
   }
 
 
-  const handleLogin = () => {
+  const handleLogin = async () => {
     const isEmailEmpty = signUpState.email.length === 0
     const isNameEmpty = signUpState.name.length === 0
     const isPasswordEmpty = signUpState.password.length === 0
@@ -116,21 +127,47 @@ const SignUpScreen = () => {
         confirmPassword: isConfirmPasswordOk,
         error: isAnyError
       }))
-      console.log("login failed")
+      console.log("login input error")
     } else {
-      console.log(signUpState.email.length)
-      console.log(signUpState)
-      console.log(signUpState.confirmPassword.length === 0 || signUpState.confirmPassword !== signUpState.password)
-      console.log("login success")
+      // console.log(signUpState.email.length)
+      // console.log(signUpState)
+      try {
+        await signUp(signUpState).unwrap()
+      } catch (error) {
+        console.log(error)
+      }
     }
   }
 
 
-  useEffect(() => {
-    console.log(isError)
-    console.log(signUpState)
-  }, [signUpState, handleLogin])
+  // useEffect(() => {
+  // console.log(isError)
+  // console.log(signUpState)
+  // }, [signUpState, handleLogin])
 
+
+  useEffect(() => {
+    if (signUpisSuccess) {
+      console.log(signUpResponse)
+      dispatch(setAuthData({
+        provider: 'custom',
+        user: signUpResponse.user,
+        accessToken: signUpResponse.accessToken
+      }))
+      setSignUpState(initSignUpState)
+      naviagtion.navigate('Main')
+    }
+    if (signUpError && 'data' in signUpError) {
+      Alert.alert(
+        'SignUp',
+        JSON.stringify(signUpError.data?.message),
+        [{
+          text: 'OK',
+          onPress: () => console.log("ok")
+        }]
+      )
+    }
+  }, [signUpisSuccess, signUpisError])
 
 
 

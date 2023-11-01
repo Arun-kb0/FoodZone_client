@@ -1,12 +1,28 @@
 import {
-  View, Text, TouchableOpacity, TextInput,
+  View, Text, TouchableOpacity, TextInput,Alert
 } from 'react-native'
 import React, { useState, useEffect } from 'react'
+import { customeNavigateProp } from '../../constants/constantTypes'
+import { useNavigation } from '@react-navigation/native'
+import { useLoginMutation } from '../../features/auth/authApiSlice'
+import { useDispatch } from 'react-redux'
+import { setAuthData } from '../../features/auth/authSlice'
 
 
 
 const Login = () => {
 
+  const navigation = useNavigation<customeNavigateProp>()
+  const dispatch = useDispatch()
+  const [
+    login, {
+      data: loginData,
+      isError: loginIsError,
+      isSuccess: loginIsSuccess,
+      isLoading: loginIsLoading,
+      error: loginError,
+    }
+  ] = useLoginMutation()
 
   type isErrorType = {
     error: boolean;
@@ -60,9 +76,9 @@ const Login = () => {
     })
   }
 
-  const handleLogin = () => {
+  const handleLogin = async () => {
     const isEmailEmpty = loginState.email.length === 0
-    const isPasswordEmpty = loginState.password.length === 0 
+    const isPasswordEmpty = loginState.password.length === 0
     const isAnyError = isEmailEmpty || isPasswordEmpty || isError.error
 
     if (isAnyError) {
@@ -71,19 +87,48 @@ const Login = () => {
         password: isPasswordEmpty,
         error: isAnyError,
       })
-      console.log("login failed")
+      console.log("login input error")
     } else {
-      console.log(loginState.email.length)
-      setLoginState(initLoginState)
-      console.log("login success")
+      // console.log(loginState.email.length)
+      // setLoginState(initLoginState)
+      try {
+        await login(loginState).unwrap()
+        console.log("login success")
+      } catch (error) {
+        console.log(error)
+      }
     }
   }
 
 
   useEffect(() => {
-    console.log(isError)
+    if (loginIsSuccess) {
+      dispatch(setAuthData({
+        provider: 'custom',
+        user: loginData?.user,
+        accessToken: loginData?.accessToken,
+        refreshToken: loginData?.refreshToken
+      }))
+      // setLoginState(initLoginState)
+      // navigation.navigate('Main')
+    }
+    if (loginError && 'data' in loginError) {
+      Alert.alert(
+        'Login',
+        JSON.stringify(loginError.data?.message),
+        [{text: 'OK',}]
+      )
+    }
+  },[loginIsError,loginIsSuccess])
+
+  // useEffect(() => {
+    // console.log(isError)
     // console.log(loginState)
-  }, [loginState, handleLogin])
+    // console.log(storage.getString(mmkvkeys.refreshToken))
+  // }, [loginState, handleLogin,dispatch])
+
+
+
 
 
   return (

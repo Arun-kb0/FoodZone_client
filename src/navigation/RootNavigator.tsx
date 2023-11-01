@@ -7,6 +7,7 @@ import {  restaurantType } from '../constants/constantTypes'
 import CheckoutScreen from '../Screens/CheckoutScreen'
 import LoginScreen from '../Screens/LoginScreen'
 import SignUpScreen from '../Screens/SignUpScreen'
+import UserScreen from '../Screens/UserScreen'
 
 
 export type RootStackParamList = {
@@ -14,7 +15,8 @@ export type RootStackParamList = {
   RestaurantScreen: { restaurant: restaurantType }
   CheckoutScreen: { restaurantName: string }
   LoginScreen: undefined,
-  SignUpScreen:undefined
+  SignUpScreen: undefined,
+  UserScreen:undefined,
 }
 
 
@@ -39,7 +41,8 @@ const RootNavigator = () => {
         }}
       >
         <RootStack.Screen name="RestaurantScreen" component={RestaurantScreen} />
-        <RootStack.Screen name="CheckoutScreen" component={CheckoutScreen}/>
+        <RootStack.Screen name="CheckoutScreen" component={CheckoutScreen} />
+        <RootStack.Screen name="UserScreen" component={UserScreen} options={{animation: "default"  }}/> 
       </RootStack.Group>
 
 
