@@ -3,12 +3,13 @@ import React, { useState, useMemo, useEffect, useCallback } from 'react'
 import ListHeading from '../basic/ListHeading'
 import { useNavigation } from '@react-navigation/native'
 import SortModel from './SortModel'
-import { useGetAllResturantsQuery } from '../../features/posts/postApiSlice'
+import { useAddFavoriteResturantMutation, useGetAllResturantsQuery, useGetFavoriteRestaurantsQuery } from '../../features/posts/postApiSlice'
 import { customeNavigateProp, restaurantType } from '../../constants/constantTypes'
 import { useDispatch, useSelector } from 'react-redux'
-import { setRestaurants, setSelectedRestaurant } from '../../features/posts/postSlice'
+import { setFavoriteRestaurant, setFavoriteRestaurants, setRestaurants, setSelectedRestaurant } from '../../features/posts/postSlice'
 import { AnyAction, Dispatch } from 'redux'
-import { IconFontawsm, IconMatCom } from '../../constants/icons'
+import { IconFontawsm, IconIon, IconMatCom } from '../../constants/icons'
+import { RootState } from '../../app/store'
 
 
 
@@ -21,12 +22,22 @@ const AllRestaurants = () => {
   const [restaurants, setRestaurantsState] = useState<restaurantType[]>()
   const [width, setWidth] = useState(Dimensions.get("window").width)
 
+  const { favoriteResturantIds } = useSelector((state: RootState) => state.postSlice)
+
+  const {
+    data: favResturant,
+    isLoading: favIsLoading,
+    isError: favIsError,
+    isSuccess: favIsSuccess
+  } = useGetFavoriteRestaurantsQuery('')
+
   const {
     data: allRestaruants,
     isLoading,
     isError,
     isSuccess
   } = useGetAllResturantsQuery('')
+
 
 
   useMemo(() => {
@@ -39,7 +50,10 @@ const AllRestaurants = () => {
     if (allRestaruants) {
       dispatch(setRestaurants(allRestaruants))
     }
-  }, [isSuccess])
+    if (favResturant) {
+      dispatch(setFavoriteRestaurants({ restaurantIds: favResturant.restaurantId }))
+    }
+  }, [isSuccess,favIsSuccess])
 
 
   const handleNavigateToSort = () => {
@@ -88,7 +102,7 @@ const AllRestaurants = () => {
         </View>
       </ScrollView>
 
-      {isSuccess &&
+      {isSuccess && 
         <FlatList
           scrollEnabled={false}
           contentContainerStyle={{
@@ -106,6 +120,7 @@ const AllRestaurants = () => {
               restaurant={item}
               dispatch={dispatch}
               navigation={navigation}
+              isFav={Boolean(favoriteResturantIds?.includes(item._id))}
             />
           )}
         />
@@ -123,25 +138,56 @@ export default AllRestaurants
 type restaruantCardType = {
   restaurant: restaurantType
   navigation: customeNavigateProp,
-  dispatch: Dispatch<AnyAction>
+  dispatch: Dispatch<AnyAction>,
+  isFav: boolean
 }
 
-const RestaruantCard = ({ navigation, dispatch, restaurant }: restaruantCardType) => {
+const RestaruantCard = ({ navigation, dispatch, restaurant, isFav }: restaruantCardType) => {
+  const [isFavorite, setisFavorite] = useState(isFav)
   const { name, cuisine, deliveryDelay, imageUrl, distance, _id } = restaurant
 
 
+  const [addFavoriteResturant, {
+    data: favRestaurants,
+    isError,
+    error,
+    isSuccess,
+  }] = useAddFavoriteResturantMutation()
 
   const handleNavigate = useCallback(() => {
     dispatch(setSelectedRestaurant(restaurant))
     navigation.navigate('RestaurantScreen', { restaurant })
   }, [_id])
 
+  const handleFavorite = useCallback(() => {
+    setisFavorite((prev)=> !prev)
+    addFavoriteResturant(restaurant._id)
+  }, [restaurant._id])
+
+  useEffect(() => {
+    if (isSuccess) {
+      dispatch(setFavoriteRestaurant({ restaurantId: favRestaurants.restaurantId }))
+    } else if (isError) {
+      console.log(error)
+    }
+  }, [isSuccess, isError])
+
   return (
-    <TouchableOpacity className={`h-64 mx-3 pb-2 bg-white rounded-2xl shadow-xl mb-4 space-x-4 space-y-1`} onPress={handleNavigate}>
-      <Image
-        source={{ uri: imageUrl }}
-        className='w-full h-4/6 rounded-t-2xl object-fill'
-      />
+    <TouchableOpacity className={` h-64 mx-3 pb-2 bg-white rounded-2xl shadow-xl mb-4 space-x-4 space-y-1`} onPress={handleNavigate}>
+      <View className='h-4/6 w-full relative'>
+        <TouchableOpacity className='absolute z-20 right-2 top-1' onPress={handleFavorite}>
+          {isFavorite
+            ? <IconIon name='heart' size={32} className={`text-red-500 `} />
+            : <IconIon name='heart-outline' size={32} className={`text-gray-300`} />
+          }
+        </TouchableOpacity>
+
+        <Image
+          source={{ uri: imageUrl }}
+          className='w-full h-full rounded-t-2xl object-fill'
+        />
+      </View>
+
       <Text className='text-lg font-semibold text-gray-700'>{name}</Text>
 
       <View className='flex-row items-center space-x-2'>

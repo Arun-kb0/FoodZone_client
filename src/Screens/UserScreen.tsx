@@ -6,80 +6,93 @@ import React, { useLayoutEffect } from 'react'
 import { useNavigation } from '@react-navigation/native'
 import { customeNavigateProp } from '../constants/constantTypes'
 import UserHeader from '../components/user/UserHeader'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { RootState } from '../app/store'
 import Avatar from '../components/basic/Avatar'
 import { IconAntD, IconEntypo, IconFeather, IconFontawsm, IconIon, IconMat, IconMatCom } from '../constants/icons'
 import UserCard from '../components/user/UserCard'
 import UserBtn from '../components/user/UserBtn'
+import { clearAuthData } from '../features/auth/authSlice'
 
 
-const foodOrders = {
-  title: 'Food Orders',
-  btns: [
-    {
-      name: 'Your orders',
-      icon: <IconFeather name='shopping-bag' size={22} className='text-slate-400' />
-    },
-    {
-      name: 'Favorite orders',
-      icon: <IconIon name='heart-outline' size={22} className='text-slate-400' />
-    },
-    {
-      name: 'Address book',
-      icon: <IconFontawsm name='address-book-o' size={22} className='text-slate-400' />
-    },
-    {
-      name: 'Free delivery',
-      icon: <IconMat name='delivery-dining' size={22} className='text-slate-400' />
-    },
-  ]
+type contentType = {
+  title: string,
+  btns: string,
+  fn?:()=> void
 }
-
-const coupons = {
-  title: 'Coupons',
-  btns: [
-    {
-      name: 'Collect coupons',
-      icon: < IconMatCom name='brightness-percent' size={22} className='text-slate-400' />
-    }
-  ]
-}
-
-const resturantAwards = {
-  title: 'ResturantAwards',
-  btns: [
-    {
-      name: 'Winning restaurants',
-      icon: < IconMatCom name='trophy-outline' size={22} className='text-slate-400' />
-    }
-  ]
-}
-
-const more = {
-  title: 'More',
-  btns: [
-    {
-      name: 'About',
-      icon: < IconAntD name='exclamationcircleo' size={22} className='text-slate-400' />
-    },
-    {
-      name: 'Settings',
-      icon: <IconIon name='settings-outline' size={22} className='text-slate-400' />
-    },
-    {
-      name: 'Logout',
-      icon: <IconAntD name='logout' size={22} className='text-slate-400' />
-    },
-
-  ]
-}
-
 
 
 const UserScreen = () => {
   const navigation = useNavigation<customeNavigateProp>()
+  const dispatch = useDispatch()
   const { name } = useSelector((state: RootState) => state.authSlice)
+
+
+  const foodOrders = {
+    title: 'Food Orders',
+    btns: [
+      {
+        name: 'Your orders',
+        icon: <IconFeather name='shopping-bag' size={22} className='text-slate-400' />
+      },
+      {
+        name: 'Favorite orders',
+        icon: <IconIon name='heart-outline' size={22} className='text-slate-400' />
+      },
+      {
+        name: 'Address book',
+        icon: <IconFontawsm name='address-book-o' size={22} className='text-slate-400' />
+      },
+      {
+        name: 'Free delivery',
+        icon: <IconMat name='delivery-dining' size={22} className='text-slate-400' />
+      },
+    ]
+  }
+
+  const coupons = {
+    title: 'Coupons',
+    btns: [
+      {
+        name: 'Collect coupons',
+        icon: < IconMatCom name='brightness-percent' size={22} className='text-slate-400' />
+      }
+    ]
+  }
+
+  const resturantAwards = {
+    title: 'ResturantAwards',
+    btns: [
+      {
+        name: 'Winning restaurants',
+        icon: < IconMatCom name='trophy-outline' size={22} className='text-slate-400' />
+      }
+    ]
+  }
+
+  const more = {
+    title: 'More',
+    btns: [
+      {
+        name: 'About',
+        icon: < IconAntD name='exclamationcircleo' size={22} className='text-slate-400' />,
+        fn: undefined
+      },
+      {
+        name: 'Settings',
+        icon: <IconIon name='settings-outline' size={22} className='text-slate-400' />,
+        fn:undefined
+      },
+      {
+        name: 'Logout',
+        icon: <IconAntD name='logout' size={22} className='text-slate-400' />,
+        fn: () => {
+          dispatch(clearAuthData())
+          navigation.navigate('Home')
+        }
+      },
+    ]
+  }
 
   useLayoutEffect(() => {
     navigation.setOptions({

@@ -100,7 +100,11 @@ export const apiSlice = createApi({
   reducerPath: 'api',
   // baseQuery: baseQuery as BaseQueryFn<string | FetchArgs, unknown, customeResErrorType, {}>,
   baseQuery: baseQueryWithReauth as BaseQueryFn<string | FetchArgs, unknown, customeResErrorType, {}>,
-  tagTypes: ['RecomentedRestaruantPost', 'AllRestaurants', 'RestaurantDishes', 'RestaurantMenu'],
+  tagTypes: [
+    'RecomentedRestaruantPost', 'AllRestaurants', 'RestaurantDishes',
+    'RestaurantMenu', 'FavoriteRestaurants', 'RestaurantDishes',
+    'addFavoriteRestaurant',
+  ],
   endpoints: builder => ({})
 })
 

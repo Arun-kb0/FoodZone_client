@@ -1,11 +1,12 @@
 import { View, Text, TouchableOpacity, FlatList, StyleSheet } from 'react-native'
-import React from 'react'
+import React, { useMemo } from 'react'
 import { IconEntypo, IconMatCom } from '../../constants/icons'
 
 
 type btnType = {
   name: string
-  icon: React.JSX.Element
+  icon: React.JSX.Element,
+  fn?: () => void
 }
 
 type UserCardType = {
@@ -15,7 +16,8 @@ type UserCardType = {
 
 
 
-const UserCard = ({ title, data }: UserCardType) => {
+const UserCard = ({ title, data, }: UserCardType) => {
+  // console.log(`${title} usercard component`)
 
   return (
     <View className='space-x-4 space-y-3 bg-white px-4 py-6 w-full rounded-xl shadow-xl my-2'>
@@ -30,6 +32,7 @@ const UserCard = ({ title, data }: UserCardType) => {
         data={data}
         renderItem={({ item }) => (
           <ItemBtn
+            fn={item.fn}
             name={item.name}
             icon={item.icon}
           />
@@ -41,9 +44,11 @@ const UserCard = ({ title, data }: UserCardType) => {
 }
 
 
-const ItemBtn = ({ name, icon }: btnType) => {
+const ItemBtn = ({ name, icon, fn }: btnType) => {
+  // console.log(`${name} press`)
+  
   return (
-    <TouchableOpacity className='flex-row items-center justify-between my-4'>
+    <TouchableOpacity className='flex-row items-center justify-between my-4' onPress={fn}>
       <View className='flex-row items-center space-x-4'>
         {icon}
         <Text className='text-lg text-gray-600 font-semibold'>{name}</Text>

@@ -75,9 +75,8 @@ const authSlice = createSlice({
     },
 
     clearAuthData(state) {
-      state= initialState
-      storage.delete('accessToken')
-      storage.delete('refreshToken')
+      state = initialState
+      storage.clearAll()
     },
 
 

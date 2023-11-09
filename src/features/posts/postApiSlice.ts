@@ -22,8 +22,23 @@ export const postApiSlice = apiSlice.injectEndpoints({
 
     getRestaurantDishes: builder.query({
       query: (restaurantId: string) => ({ url: `/restaurant/dishes?restaurantId=${restaurantId}` }),
-      // providesTags['RestaurantDishes']
-    })
+      providesTags: ['RestaurantDishes']
+    }),
+
+    getFavoriteRestaurants: builder.query({
+      query: () => ({ url: '/restaurant/favorites' }),
+      providesTags: ['FavoriteRestaurants']
+    }),
+
+    addFavoriteResturant: builder.mutation({
+      query: (restaurantId:string) => ({
+        url: '/restaurant/favorites',
+        method: 'POST',
+        body: {
+          restaurantId
+        }
+      }),
+    }),
 
   })
 })
@@ -33,6 +48,7 @@ export const {
   useGetRecomentedResuturantQuery,
   useGetAllResturantsQuery,
   useGetMenuQuery,
-  useGetRestaurantDishesQuery
-
+  useGetRestaurantDishesQuery,
+  useAddFavoriteResturantMutation,
+  useGetFavoriteRestaurantsQuery
 } = postApiSlice
