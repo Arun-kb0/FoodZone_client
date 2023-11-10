@@ -1,9 +1,9 @@
 import { View, Text, TouchableOpacity } from 'react-native'
 import React from 'react'
 import { useNavigation } from '@react-navigation/native'
-import { customeNavigateProp } from '../../constants/constantTypes'
 import { useSelector } from 'react-redux'
 import { RootState } from '../../app/store'
+import { DeliveryScreenNavigationProps } from '../../navigation/TabNavigator'
 
 type cartBottomButtonType = {
   totalItems: number,
@@ -11,7 +11,7 @@ type cartBottomButtonType = {
 }
 
 const CartBottomButton = ({ totalItems, totalPrice }: cartBottomButtonType) => {
-  const navigation = useNavigation<customeNavigateProp>()
+  const navigation = useNavigation<DeliveryScreenNavigationProps>()
   const { selectedRestaurant } = useSelector((state: RootState) => state.postSlice)
 
 

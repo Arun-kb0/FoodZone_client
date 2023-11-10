@@ -2,8 +2,8 @@ import { View, Text, TouchableOpacity } from 'react-native'
 import React, { useCallback, useState } from 'react'
 import Modal from 'react-native-modal'
 import { useNavigation } from '@react-navigation/native'
-import { customeNavigateProp } from '../../constants/constantTypes'
 import { IconFontawsm, IconIon } from '../../constants/icons'
+import { DeliveryScreenNavigationProps } from '../../navigation/TabNavigator'
 
 type sortModelType = {
   isVisible: boolean,
@@ -24,7 +24,7 @@ const SortModel = ({ isVisible, closeModel }: sortModelType) => {
   }
   const [selectedFilters, setSelectedFilters] = useState(initSelectedFilters)
 
-  const navigate = useNavigation<customeNavigateProp>()
+  const navigate = useNavigation<DeliveryScreenNavigationProps>()
 
   const handleSort = useCallback((sortFilter: sortFilterType) => {
   setSelectedFilters((prev) => ({
@@ -48,8 +48,8 @@ return (
     backdropOpacity={0.2}
     animationIn={"slideInUp"}
     swipeThreshold={50}
+    onBackdropPress={() => closeModel(!isVisible)}
     style={{ margin: 0, marginTop: 10, justifyContent: 'flex-end' }}
-
   >
     <View className='flex items-center justify-start space-y-3'>
       <TouchableOpacity onPress={() => closeModel(!isVisible)} >

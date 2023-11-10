@@ -10,24 +10,28 @@ import AllRestaruants from '../components/home/AllRestaurants'
 import DishMenu from '../components/home/DishMenu'
 import { useNavigation } from '@react-navigation/native'
 import { IconEntypo, IconFontisto } from '../constants/icons'
+import { DeliveryScreenNavigationProps } from '../navigation/TabNavigator'
 
 
 
 const HomeScreen = () => {
-  const navigation = useNavigation()
+  const navigation = useNavigation<DeliveryScreenNavigationProps>()
   const [isTrasparent, setisTrasparent] = useState(false)
 
   useLayoutEffect(() => {
     navigation.setOptions({
-      headerTitle: () => <Search placeholder='Search Resturant and Dishes' />,
-      headerStyle: {
-        backgroundColor: isTrasparent ? 'transparent' : "#fef08a",
-      }
+      header: () => <Search
+        placeholder='Search Resturant and Dishes'
+        isTrasparent={isTrasparent}
+      />
+      // headerTitle: () => <Search placeholder='Search Resturant and Dishes' />,
+      // headerStyle: {
+      //   backgroundColor: isTrasparent ? 'transparent' : "#fef08a",
+      // }
     })
   }, [isTrasparent])
 
   const handleScroll = (e: NativeSyntheticEvent<NativeScrollEvent>) => {
-    // const scrollY = e.nativeEvent.contentOffset.y
     const { contentOffset, contentSize, layoutMeasurement } = e.nativeEvent
     const scrollY = contentOffset.y
     const height = contentSize.height
@@ -36,18 +40,18 @@ const HomeScreen = () => {
     scrollY > 100
       ? setisTrasparent(true)
       : setisTrasparent(false)
-    
+
     if (scrollY + screenHeight >= height) {
       console.log("home screen end ")
     }
-    
+
   }
 
   return (
     <SafeAreaView>
-      <ScrollView className='' onScroll={handleScroll}>
+      <ScrollView className='mt-24' onScroll={handleScroll}>
 
-        <View className='flex-row justify-between items-center bg-yellow-200 w-full space-x-3 px-4 pb-3 h-32'>
+        <View className='flex-row justify-between items-center bg-yellow-200 w-full space-x-3 px-4 pb-3 h-32 '>
           <View className='w-10/12'>
             <View className='flex-row' >
               <IconFontisto name="map-marker-alt" size={22} color="red" />
@@ -58,7 +62,9 @@ const HomeScreen = () => {
             </View>
             <Text className='text-sm '>address (h) puliyanmp o karakkattuparambil ,anga,aly</Text>
           </View>
-          <Avatar />
+          <TouchableOpacity onPress={()=>navigation.navigate('UserScreen')}>
+            <Avatar/>
+          </TouchableOpacity>
         </View>
 
         <Recomented />

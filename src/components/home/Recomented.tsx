@@ -2,18 +2,19 @@ import { View, Text, Image, ScrollView, TouchableOpacity, FlatList } from 'react
 import React, { useState, useCallback, useEffect, useMemo, Dispatch } from 'react'
 import ListHeading from '../basic/ListHeading'
 import { useNavigation } from '@react-navigation/native'
-import { customeNavigateProp, restaurantType } from '../../constants/constantTypes'
+import { restaurantType } from '../../constants/constantTypes'
 import { useGetRecomentedResuturantQuery } from '../../features/posts/postApiSlice'
 import { useDispatch } from 'react-redux'
 import { setSelectedRestaurant } from '../../features/posts/postSlice'
 import { AnyAction } from 'redux'
 import { IconMatCom } from '../../constants/icons'
+import { DeliveryScreenNavigationProps } from '../../navigation/TabNavigator'
 
 
 
 const Recommended = () => {
   const dispatch = useDispatch()
-  const navigation = useNavigation<customeNavigateProp>()
+  const navigation = useNavigation<DeliveryScreenNavigationProps>()
 
   const [restaurant, setRestaurant] = useState<restaurantType>()
   const [restaurants, setRestaurants] = useState<restaurantType[]>()
@@ -76,7 +77,7 @@ export default Recommended
 type RecommentedItemType = {
   restaurant: restaurantType,
   dispatch: Dispatch<AnyAction>,
-  navigation: customeNavigateProp
+  navigation: DeliveryScreenNavigationProps
 }
 
 
