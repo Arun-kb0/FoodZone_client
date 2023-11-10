@@ -1,15 +1,3 @@
-import { CompositeNavigationProp } from "@react-navigation/native"
-import { TabStackParamsList } from "../navigation/TabNavigator"
-import { RootStackParamList } from "../navigation/RootNavigator"
-import { BottomTabNavigationProp } from "@react-navigation/bottom-tabs"
-import { NativeStackNavigationProp } from "@react-navigation/native-stack"
-
-
-// * navigation type for home
-export type customeNavigateProp = CompositeNavigationProp<
-  BottomTabNavigationProp<TabStackParamsList, "Home">,
-  NativeStackNavigationProp<RootStackParamList>
-  >
 
 
 // * menuType

@@ -3,14 +3,15 @@ import {
 } from 'react-native'
 import React, { useState, useEffect } from 'react'
 import { useNavigation } from '@react-navigation/native'
-import { customeNavigateProp } from '../constants/constantTypes'
 import SocialLogin from '../components/login/SocialLogin'
 import Login from '../components/login/Login'
 import { storage } from '../constants/mmkvStorage'
+import { DeliveryScreenNavigationProps } from '../navigation/TabNavigator'
+import { RootStackNavigationProp } from '../navigation/RootNavigator'
 
 const LoginScreen = () => {
 
-  const navigation = useNavigation<customeNavigateProp>()
+  const navigation = useNavigation<RootStackNavigationProp>()
 
   const handleSkip = () => {
     navigation.navigate('Main')

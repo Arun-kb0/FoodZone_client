@@ -4,16 +4,16 @@ import {
 } from 'react-native'
 import React, { useEffect, useLayoutEffect, useState } from 'react'
 import { useNavigation } from '@react-navigation/native'
-import {  customeNavigateProp } from '../constants/constantTypes'
 import SignUpHeader from '../components/login/SignUpHeader'
 import { useSignUpMutation } from '../features/auth/authApiSlice'
 import { useDispatch } from 'react-redux'
 import { setAuthData } from '../features/auth/authSlice'
+import { RootStackNavigationProp } from '../navigation/RootNavigator'
 
 
 const SignUpScreen = () => {
 
-  const naviagtion = useNavigation<customeNavigateProp>()
+  const naviagtion = useNavigation<RootStackNavigationProp>()
   const dispatch = useDispatch()
   const [
     signUp,

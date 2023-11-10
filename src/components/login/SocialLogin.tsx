@@ -8,14 +8,14 @@ import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../app/store';
 import { setAuthData } from '../../features/auth/authSlice';
 import { useNavigation } from '@react-navigation/native';
-import { customeNavigateProp } from '../../constants/constantTypes';
 import { mmkvkeys, storage } from '../../constants/mmkvStorage';
 import { useSocialProviderLoginMutation } from '../../features/auth/authApiSlice';
 import {GOOGLE_ACCOUNT_NAME} from '@env'
+import { DeliveryScreenNavigationProps } from '../../navigation/TabNavigator';
 
 
 const SocialLogin = () => {
-  const navigation = useNavigation<customeNavigateProp>()
+  const navigation = useNavigation<DeliveryScreenNavigationProps>()
   const dispatch = useDispatch()
   const { name, email, id, photo } = useSelector((state: RootState) => state.authSlice)
 

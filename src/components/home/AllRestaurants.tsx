@@ -4,19 +4,20 @@ import ListHeading from '../basic/ListHeading'
 import { useNavigation } from '@react-navigation/native'
 import SortModel from './SortModel'
 import { useAddFavoriteResturantMutation, useGetAllResturantsQuery, useGetFavoriteRestaurantsQuery } from '../../features/posts/postApiSlice'
-import { customeNavigateProp, restaurantType } from '../../constants/constantTypes'
+import { restaurantType } from '../../constants/constantTypes'
 import { useDispatch, useSelector } from 'react-redux'
 import { setFavoriteRestaurant, setFavoriteRestaurants, setRestaurants, setSelectedRestaurant } from '../../features/posts/postSlice'
 import { AnyAction, Dispatch } from 'redux'
 import { IconFontawsm, IconIon, IconMatCom } from '../../constants/icons'
 import { RootState } from '../../app/store'
+import { DeliveryScreenNavigationProps } from '../../navigation/TabNavigator'
 
 
 
 const AllRestaurants = () => {
 
   const dispatch = useDispatch()
-  const navigation = useNavigation<customeNavigateProp>()
+  const navigation = useNavigation<DeliveryScreenNavigationProps>()
 
   const [modelOpen, setModelOpen] = useState(false)
   const [restaurants, setRestaurantsState] = useState<restaurantType[]>()
@@ -137,7 +138,7 @@ export default AllRestaurants
 
 type restaruantCardType = {
   restaurant: restaurantType
-  navigation: customeNavigateProp,
+  navigation: DeliveryScreenNavigationProps,
   dispatch: Dispatch<AnyAction>,
   isFav: boolean
 }

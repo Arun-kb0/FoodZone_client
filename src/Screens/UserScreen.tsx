@@ -4,7 +4,6 @@ import {
 } from 'react-native'
 import React, { useLayoutEffect } from 'react'
 import { useNavigation } from '@react-navigation/native'
-import { customeNavigateProp } from '../constants/constantTypes'
 import UserHeader from '../components/user/UserHeader'
 import { useDispatch, useSelector } from 'react-redux'
 import { RootState } from '../app/store'
@@ -13,17 +12,12 @@ import { IconAntD, IconEntypo, IconFeather, IconFontawsm, IconIon, IconMat, Icon
 import UserCard from '../components/user/UserCard'
 import UserBtn from '../components/user/UserBtn'
 import { clearAuthData } from '../features/auth/authSlice'
+import { DeliveryScreenNavigationProps } from '../navigation/TabNavigator'
 
-
-type contentType = {
-  title: string,
-  btns: string,
-  fn?:()=> void
-}
 
 
 const UserScreen = () => {
-  const navigation = useNavigation<customeNavigateProp>()
+  const navigation = useNavigation<DeliveryScreenNavigationProps>()
   const dispatch = useDispatch()
   const { name } = useSelector((state: RootState) => state.authSlice)
 

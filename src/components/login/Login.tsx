@@ -2,17 +2,17 @@ import {
   View, Text, TouchableOpacity, TextInput,Alert
 } from 'react-native'
 import React, { useState, useEffect } from 'react'
-import { customeNavigateProp } from '../../constants/constantTypes'
 import { useNavigation } from '@react-navigation/native'
 import { useLoginMutation } from '../../features/auth/authApiSlice'
 import { useDispatch } from 'react-redux'
 import { setAuthData } from '../../features/auth/authSlice'
+import { DeliveryScreenNavigationProps } from '../../navigation/TabNavigator'
 
 
 
 const Login = () => {
 
-  const navigation = useNavigation<customeNavigateProp>()
+  const navigation = useNavigation<DeliveryScreenNavigationProps>()
   const dispatch = useDispatch()
   const [
     login, {
