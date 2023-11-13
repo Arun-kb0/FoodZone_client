@@ -11,7 +11,7 @@ import { useSelector } from 'react-redux'
 import { RootState } from '../app/store'
 import CartBottomButton from '../components/restaurant/CartBottomButton'
 import { useNavigation } from '@react-navigation/native'
-import Search from '../components/home/Search'
+import Search from '../components/home/SearchHeader'
 import DishSearch from '../components/restaurant/DishSearch'
 
 

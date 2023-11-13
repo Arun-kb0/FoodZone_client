@@ -4,7 +4,7 @@ import {
 } from 'react-native'
 import React, { useLayoutEffect, useState } from 'react'
 import Avatar from '../components/basic/Avatar'
-import Search from '../components/home/Search'
+import Search, { SearchHeader } from '../components/home/SearchHeader'
 import Recomented from '../components/home/Recomented'
 import AllRestaruants from '../components/home/AllRestaurants'
 import DishMenu from '../components/home/DishMenu'
@@ -20,7 +20,7 @@ const HomeScreen = () => {
 
   useLayoutEffect(() => {
     navigation.setOptions({
-      header: () => <Search
+      header: () => <SearchHeader
         placeholder='Search Resturant and Dishes'
         isTrasparent={isTrasparent}
       />

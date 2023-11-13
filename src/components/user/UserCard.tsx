@@ -1,6 +1,7 @@
 import { View, Text, TouchableOpacity, FlatList, StyleSheet } from 'react-native'
 import React, { useMemo } from 'react'
 import { IconEntypo, IconMatCom } from '../../constants/icons'
+import ItemSeparator from '../basic/ItemSeparator'
 
 
 type btnType = {
@@ -57,10 +58,6 @@ const ItemBtn = ({ name, icon, fn }: btnType) => {
     </TouchableOpacity>
   )
 }
-
-const ItemSeparator = () => (
-  <View className='w-full h-[1px] bg-gray-200 rounded-2xl'></View>
-)
 
 
 export default UserCard
