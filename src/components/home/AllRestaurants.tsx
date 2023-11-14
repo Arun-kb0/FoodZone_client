@@ -115,13 +115,13 @@ const AllRestaurants = () => {
           initialNumToRender={2}
 
           data={restaurants}
-          keyExtractor={item => item._id}
+          keyExtractor={item => item.id}
           renderItem={({ item }) => (
             <RestaruantCard
               restaurant={item}
               dispatch={dispatch}
               navigation={navigation}
-              isFav={Boolean(favoriteResturantIds?.includes(item._id))}
+              isFav={Boolean(favoriteResturantIds?.includes(item.id))}
             />
           )}
         />
