@@ -11,6 +11,7 @@ import MoreSettings from '../components/checkout/MoreSettings'
 import BillSummary from '../components/checkout/BillSummary'
 import Tip from '../components/checkout/Tip'
 import DeliveryInstructions from '../components/checkout/DeliveryInstructions'
+import { DeliveryScreenNavigationProps } from '../navigation/TabNavigator'
 
 
 type checkoutScreenType = {
@@ -22,18 +23,24 @@ type checkoutScreenType = {
 }
 
 const CheckoutScreen = ({ route }: checkoutScreenType) => {
-  const navigation = useNavigation()
+  const navigation = useNavigation<DeliveryScreenNavigationProps>()
   const { selectedRestaurant } = useSelector((state: RootState) => state.postSlice)
   const { restaurantCart } = useSelector((state: RootState) => state.cartSlice)
 
+  
 
   useLayoutEffect(() => {
     navigation.setOptions({
       header: () => <CheckoutHeader />,
     })
-  }, [selectedRestaurant && selectedRestaurant._id])
+  }, [selectedRestaurant && selectedRestaurant.id])
 
 
+  useEffect(() => {
+    if (!selectedRestaurant) {
+      navigation.goBack()
+    }
+  },[])
 
 
   return (
@@ -45,7 +52,7 @@ const CheckoutScreen = ({ route }: checkoutScreenType) => {
 
             <View className='bg-white rounded-xl flex-row space-x-2 px-4 py-3 shadow-xl '>
               <IconMatCom name="timer" size={22} color={"green"} />
-              <Text className='text-sm font-semibold '>Delivery in {selectedRestaurant.deliveryDelay}</Text>
+              <Text className='text-sm font-semibold '>Delivery in {'30 min'}</Text>
             </View>
 
             {/* items added */}
@@ -59,7 +66,7 @@ const CheckoutScreen = ({ route }: checkoutScreenType) => {
             <ListHeading title='bill summary' />
             <BillSummary
               selectedRestaurant={selectedRestaurant}
-              total={restaurantCart ? restaurantCart[selectedRestaurant._id].total : 0}
+              total={restaurantCart ? restaurantCart[selectedRestaurant.id].total : 0}
             />
 
             {/* tip */}

@@ -24,7 +24,7 @@ const RestaurantDishes = () => {
     isError,
     isSuccess,
     error
-  } = useGetRestaurantDishesQuery(selectedRestaurant?._id || '')
+  } = useGetRestaurantDishesQuery(selectedRestaurant?.id || '')
 
   useMemo(() => {
     if (dishData?.dishes?.dishes) {
@@ -44,30 +44,27 @@ const RestaurantDishes = () => {
   return (
     <View className='relative mt-2 mb-24 w-full h-auto' >
 
-      {isSuccess && selectedRestaurant && 
+      {isSuccess && selectedRestaurant &&
         <FlatList
-        scrollEnabled={false}
+          scrollEnabled={false}
 
-        data={dishes}
-        keyExtractor={item => item._id}
-        renderItem={({ item }) => (
-          <RestaruantDishItem
-            _id={item._id}
-            name={item.dishName}
-            imageUrl={item.imageUrl}
-            description={item.description}
-            price={item.price}
-            rating={item.rating}
-            itemCount={cartItems && cartItems[item._id]}
-            dispatch={dispatch}
-            restaurantId={selectedRestaurant._id}
-          />
-        )}
-      />
-
+          data={dishes}
+          keyExtractor={item => item.id}
+          renderItem={({ item }) => (
+            <RestaruantDishItem
+              id={item.id}
+              name={item.dishName}
+              imageUrl={item.imageUrl}
+              description={item.description}
+              price={item.price}
+              rating={item.rating}
+              itemCount={cartItems && cartItems[item.id]}
+              dispatch={dispatch}
+              restaurantId={selectedRestaurant.id}
+            />
+          )}
+        />
       }
-
-
     </View>
   )
 }
@@ -77,29 +74,27 @@ export default RestaurantDishes
 
 
 type RestaruantDishItemType = {
-  _id: string,
+  id: string,
   name: string,
   imageUrl: string,
   description: string,
   price: number,
   rating: number,
   itemCount: number | null,
-  restaurantId:string
+  restaurantId: string
   dispatch: Dispatch<AnyAction>
 }
 
 const RestaruantDishItem = ({
-  _id, name, imageUrl, description, price,
+  id, name, imageUrl, description, price,
   rating, dispatch, itemCount = 0, restaurantId }: RestaruantDishItemType) => {
 
   const handleAddToCart = useCallback(() => {
-    dispatch(addToCart({ _id, price, restaurantId }))
-  }, [_id])
+    dispatch(addToCart({ id, price, restaurantId }))
+  }, [id])
   const handleRemoveFromCart = useCallback(() => {
-    dispatch(removeFromCart({ _id, price, restaurantId }))
-  }, [_id])
-
-
+    dispatch(removeFromCart({ id, price, restaurantId }))
+  }, [id])
 
 
   return (
@@ -120,7 +115,7 @@ const RestaruantDishItem = ({
           source={{ uri: imageUrl }}
         />
 
-        {itemCount===null || itemCount === 0  
+        {itemCount === null || itemCount === 0
           ? <TouchableOpacity className='absolute bottom-2  left-7 bg-red-300  opacity-80 w-20 h-10 rounded-lg flex justify-center items-center  ' onPress={handleAddToCart}>
             <View className='flex-row  justify-center items-center space-x-1'>
               <Text className='text-lg font-semibold text-gray-800' > Add</Text>

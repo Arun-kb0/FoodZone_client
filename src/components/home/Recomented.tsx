@@ -83,7 +83,7 @@ type RecommentedItemType = {
 
 
 const RecommendedItem = ({ restaurant, dispatch, navigation }: RecommentedItemType) => {
-  const { _id, name, cuisine, imageUrl, deliveryDelay, } = restaurant
+  const { _id, Restaurant_Name, Category, imageUrl } = restaurant
   const handleNavigate = useCallback(() => {
     dispatch(setSelectedRestaurant(restaurant))
     navigation.navigate('RestaurantScreen', { restaurant })
@@ -96,12 +96,12 @@ const RecommendedItem = ({ restaurant, dispatch, navigation }: RecommentedItemTy
         className='w-3/6 h-auto rounded-l-2xl'
       />
       <View className='flex justify-center w-3/6 overflow-hidden whitespace-no-wrap truncate px-2 py-1 space-y-2 '>
-        <Text className='text-sm first-letter:{uppercase} text-gray-700 font-semibold '>{name}</Text>
-        <Text className='text-xs text-gray-500  first-letter:{uppercase}'>{cuisine}</Text>
+        <Text className='text-sm first-letter:{uppercase} text-gray-700 font-semibold '>{Restaurant_Name}</Text>
+        <Text className='text-xs text-gray-500  first-letter:{uppercase}'>{Category[0]}</Text>
 
         <View className='flex-row space-x-1 justify-start items-center'>
           <IconMatCom name="timer" size={20} color={"gray"} />
-          <Text className='text-gray-500 text-xs'>{`${deliveryDelay} min`}</Text>
+          <Text className='text-gray-500 text-xs'>{`${30} min`}</Text>
         </View>
 
       </View>

@@ -11,7 +11,7 @@ type cartStateType = {
 }
 
 type cartPayloadType = {
-  _id: string,
+  id: string,
   price: number,
   restaurantId:string
 }
@@ -31,9 +31,9 @@ const cartSlice = createSlice({
   reducers: {
     addToCart(state, action: PayloadAction<cartPayloadType>) {
 
-      const { _id, price, restaurantId } = action.payload
+      const { id, price, restaurantId } = action.payload
       state.cartItems ??= {}
-      state.cartItems[_id] = (state.cartItems[_id] ?? 0) + 1
+      state.cartItems[id] = (state.cartItems[id] ?? 0) + 1
       state.totalItems++
       state.totalPrice += price
       state.totalPrice = parseFloat(state.totalPrice.toFixed(2))
@@ -58,10 +58,10 @@ const cartSlice = createSlice({
     },
 
     removeFromCart(state, action: PayloadAction<cartPayloadType>) {
-      const { _id, price, restaurantId } = action.payload
+      const { id, price, restaurantId } = action.payload
       if (state.totalItems > 0) {
         state.cartItems ??= {}
-        state.cartItems[_id]--
+        state.cartItems[id]--
         state.totalItems--
         state.totalPrice -= price
         state.totalPrice = parseFloat(state.totalPrice.toFixed(2))

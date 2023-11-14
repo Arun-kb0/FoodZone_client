@@ -18,7 +18,7 @@ const CartBottomButton = ({ totalItems, totalPrice }: cartBottomButtonType) => {
   return (
     <TouchableOpacity className='absolute bottom-4 w-full bg-red-500 opacity-95 z-40 flex-row justify-center items-center py-3 rounded-t-xl '
       onPress={() => navigation.navigate('CheckoutScreen',
-        { restaurantName: selectedRestaurant ? selectedRestaurant?.name : '' })}
+        { restaurantName: selectedRestaurant ? selectedRestaurant?.Restaurant_Name : '' })}
     >
       
       <View>

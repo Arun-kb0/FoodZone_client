@@ -3,7 +3,6 @@ import React, { useLayoutEffect } from 'react'
 import ItemSeparator from '../components/basic/ItemSeparator'
 import { useNavigation } from '@react-navigation/native'
 import { RootStackNavigationProp } from '../navigation/RootNavigator'
-import Search from '../components/home/SearchHeader'
 import SearchBar from '../components/search/SearchBar'
 
 
@@ -42,7 +41,7 @@ const SearchScreen = ({ route }: searchScreenPropsType) => {
         )}
         ItemSeparatorComponent={ItemSeparator}
       />
-    </SafeAreaView>
+    </SafeAreaView> 
   )
 }
 

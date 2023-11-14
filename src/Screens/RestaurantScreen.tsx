@@ -28,7 +28,7 @@ const MenuList = ["alfam", "mandi", "noodiles", "chicken", "friedRice"]
 
 const RestaurantScreen = ({ route }: RestaurantScreen) => {
   const { restaurant: {
-    name, cuisine, deliveryDelay, imageUrl, _id, rating, distance }
+    Restaurant_Name, Category, imageUrl, id, Delivery_Rating }
   } = route.params
 
   const [isVisible, setisVisible] = useState(false)
@@ -37,14 +37,14 @@ const RestaurantScreen = ({ route }: RestaurantScreen) => {
 
 
   const { selectedRestaurant } = useSelector((state: RootState) => state.postSlice)
-  const {  restaurantCart } = useSelector((state: RootState) => state.cartSlice)
+  const { restaurantCart } = useSelector((state: RootState) => state.cartSlice)
 
   const navigation = useNavigation()
 
   useLayoutEffect(() => {
     navigation.setOptions({
       header: () => isSearchOpen
-        ? <DishSearch placeholder={`Search Dishes in ${name}`} />
+        ? <DishSearch placeholder={`Search Dishes in ${Restaurant_Name}`} />
         : <RestaurantTopBar setIsSearchOpen={setIsSearchOpen} />,
     })
   }, [isSearchOpen])
@@ -59,7 +59,7 @@ const RestaurantScreen = ({ route }: RestaurantScreen) => {
     scrollY > 100
       ? setIsSearchOpen(true)
       : setIsSearchOpen(false)
-    
+
     if (scrollY + screenHeight >= height) {
       console.log("restaurant screen end of list ")
     }
@@ -67,10 +67,10 @@ const RestaurantScreen = ({ route }: RestaurantScreen) => {
 
   useEffect(() => {
     if (restaurantCart && selectedRestaurant
-      && restaurantCart[selectedRestaurant?._id] !== undefined) {
-        setTotalCount(restaurantCart[selectedRestaurant?._id].count)
-      }
-  }, [restaurantCart && selectedRestaurant && restaurantCart[selectedRestaurant._id]])
+      && restaurantCart[selectedRestaurant?.id] !== undefined) {
+      setTotalCount(restaurantCart[selectedRestaurant?.id].count)
+    }
+  }, [restaurantCart && selectedRestaurant && restaurantCart[selectedRestaurant.id]])
 
   if (!selectedRestaurant) {
     navigation.goBack()
@@ -92,29 +92,29 @@ const RestaurantScreen = ({ route }: RestaurantScreen) => {
       </TouchableOpacity>
       {selectedRestaurant &&
         <RestaurantMenu
-        items={selectedRestaurant?.menu}
-        isVisible={isVisible}
-        closeModel={setisVisible}
-      />
-}
+          items={selectedRestaurant?.Category}
+          isVisible={isVisible}
+          closeModel={setisVisible}
+        />
+      }
       {selectedRestaurant && restaurantCart && totalCount > 0 &&
         <CartBottomButton
           totalItems={totalCount}
-          totalPrice={restaurantCart[selectedRestaurant._id].total}
+          totalPrice={restaurantCart[selectedRestaurant.id]?.total}
         />
       }
 
 
       <ScrollView className='mt-10' onScroll={handleScroll} >
-        
+
         <RestaruantDetails
-          _id={_id}
-          name={name}
-          cuisine={cuisine}
-          deliveryDelay={deliveryDelay}
+          id={id}
+          name={Restaurant_Name}
+          cuisine={Category[0]}
+          deliveryDelay={'30'}
           imageUrl={imageUrl}
-          rating={rating}
-          distance={distance}
+          rating={Delivery_Rating}
+          distance={'12'}
         />
 
         <View>

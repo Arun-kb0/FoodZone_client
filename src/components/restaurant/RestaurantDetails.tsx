@@ -3,19 +3,19 @@ import React from 'react'
 import { IconAntD, IconMatCom } from '../../constants/icons';
 
 
-type restaurantDetailsType = {
-  _id: string;
+type restaurantDetailsPropsType = {
+  id: string;
   name: string;
   cuisine: string;
   deliveryDelay: string;
   imageUrl: string;
   distance: string;
-  rating: number;
+  rating: string;
 }
 
 
 
-const RestaurantDetails = ({ name, cuisine, deliveryDelay, imageUrl, rating, distance }: restaurantDetailsType) => {
+const RestaurantDetails = ({ name, cuisine, deliveryDelay, imageUrl, rating, distance }: restaurantDetailsPropsType) => {
 
   return (
     <View className='flex items-center justify-center  bg-white space-y-2'>

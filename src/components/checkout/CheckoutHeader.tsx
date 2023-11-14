@@ -13,7 +13,7 @@ const CheckoutHeader = () => {
         <BackButton />
       </View>
       <View className='flex-row justify-center items-center w-full'>
-        <Text className='text-xl font-semibold '>{selectedRestaurant ? selectedRestaurant?.name : ''}</Text>
+        <Text className='text-xl font-semibold '>{selectedRestaurant ? selectedRestaurant?.Restaurant_Name : ''}</Text>
       </View>
     </View>
   )

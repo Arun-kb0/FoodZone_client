@@ -24,10 +24,6 @@ const HomeScreen = () => {
         placeholder='Search Resturant and Dishes'
         isTrasparent={isTrasparent}
       />
-      // headerTitle: () => <Search placeholder='Search Resturant and Dishes' />,
-      // headerStyle: {
-      //   backgroundColor: isTrasparent ? 'transparent' : "#fef08a",
-      // }
     })
   }, [isTrasparent])
 
