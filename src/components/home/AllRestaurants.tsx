@@ -115,13 +115,13 @@ const AllRestaurants = () => {
           initialNumToRender={2}
 
           data={restaurants}
-          keyExtractor={item => item._id}
+          keyExtractor={item => item.id}
           renderItem={({ item }) => (
             <RestaruantCard
               restaurant={item}
               dispatch={dispatch}
               navigation={navigation}
-              isFav={Boolean(favoriteResturantIds?.includes(item._id))}
+              isFav={Boolean(favoriteResturantIds?.includes(item.id))}
             />
           )}
         />
@@ -145,7 +145,7 @@ type restaruantCardType = {
 
 const RestaruantCard = ({ navigation, dispatch, restaurant, isFav }: restaruantCardType) => {
   const [isFavorite, setisFavorite] = useState(isFav)
-  const { name, cuisine, deliveryDelay, imageUrl, distance, _id } = restaurant
+  const { Restaurant_Name, Category, imageUrl, id} = restaurant
 
 
   const [addFavoriteResturant, {
@@ -158,12 +158,12 @@ const RestaruantCard = ({ navigation, dispatch, restaurant, isFav }: restaruantC
   const handleNavigate = useCallback(() => {
     dispatch(setSelectedRestaurant(restaurant))
     navigation.navigate('RestaurantScreen', { restaurant })
-  }, [_id])
+  }, [id])
 
   const handleFavorite = useCallback(() => {
     setisFavorite((prev)=> !prev)
-    addFavoriteResturant(restaurant._id)
-  }, [restaurant._id])
+    addFavoriteResturant(restaurant.id)
+  }, [restaurant.id])
 
   useEffect(() => {
     if (isSuccess) {
@@ -189,20 +189,20 @@ const RestaruantCard = ({ navigation, dispatch, restaurant, isFav }: restaruantC
         />
       </View>
 
-      <Text className='text-lg font-semibold text-gray-700'>{name}</Text>
+      <Text className='text-lg font-semibold text-gray-700'>{Restaurant_Name}</Text>
 
       <View className='flex-row items-center space-x-2'>
-        <Text className='text-slate-500'>{cuisine}</Text>
+        <Text className='text-slate-500'>{Category[0]}</Text>
         <View className=' bg-slate-600 w-1.5 h-1.5 rounded-full '></View>
       </View>
 
       <View className='flex-row space-x-2 items-center'>
         <View className='flex-row space-x-1 justify-center items-center'>
           <IconMatCom name="timer" size={22} color={"gray"} />
-          <Text className='text-slate-500'>{`${deliveryDelay} min`}</Text>
+          <Text className='text-slate-500'>{`${30} min`}</Text>
         </View>
         <View className=' bg-slate-600 w-1.5 h-1.5 rounded-full '></View>
-        <Text className='text-slate-500'>{distance}</Text>
+        <Text className='text-slate-500'>{'12 km'}</Text>
       </View>
     </TouchableOpacity>
   )

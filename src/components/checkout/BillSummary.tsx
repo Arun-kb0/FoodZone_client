@@ -23,16 +23,16 @@ const BillSummary = ({ selectedRestaurant, total }: BillSummaryType) => {
     total: 0,
   })
   useEffect(() => {
-    const distance = selectedRestaurant.distance.match(/[\d\.]+/)
+    const distance = 2
     const feePerkm = 9
     const platformFee = 2
     const gstRate = 18
     if (distance) {
       const gstOnitem = parseFloat(((total * gstRate) / 100).toFixed(2))
       setBill(({
-        total: (parseFloat(distance[0]) * feePerkm) + platformFee + gstOnitem + total,
+        total: (distance * feePerkm) + platformFee + gstOnitem + total,
         gstTotalOnItem: gstOnitem,
-        deliveryPartnerFee: parseFloat(distance[0]) * feePerkm
+        deliveryPartnerFee: distance * feePerkm
       }))
     }
   }, [total])
@@ -57,7 +57,7 @@ const BillSummary = ({ selectedRestaurant, total }: BillSummaryType) => {
         <View className='flex-row justify-between items-center p-2 px-3'>
           <View className='flex-row justify-center items-center space-x-1'>
             <IconMat name="delivery-dining" size={20} color="#1f2937" />
-            <Text className='text-sm'>Delivery parnter fee for {selectedRestaurant.distance} km</Text>
+            <Text className='text-sm'>Delivery parnter fee for {4} km</Text>
           </View>
           <Text>{bill.deliveryPartnerFee} $ </Text>
         </View>

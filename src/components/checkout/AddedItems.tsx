@@ -18,9 +18,9 @@ const AddedItems = () => {
 
   useEffect(() => {
     if (selectedDish && cartItems && selectedRestaurant) {
-      const restaurantDishes = selectedDish[selectedRestaurant?._id]
-      const filterdDishes = restaurantDishes.filter((item) => (
-        cartItems[item._id]
+      const restaurantDishes = selectedDish[selectedRestaurant?.id]
+      const filterdDishes = restaurantDishes?.filter((item) => (
+        cartItems[item.id]
       ))
       setDishes(filterdDishes)
     }
@@ -35,12 +35,11 @@ const AddedItems = () => {
       {dishes && cartItems && selectedRestaurant &&
         <FlatList
           scrollEnabled={false}
-
           data={dishes}
-          keyExtractor={item => item._id}
+          keyExtractor={item => item.id}
           renderItem={({ item }) => (
             <AddedItem
-              _id={item._id}
+              id={item.id}
               name={item.dishName}
               price={item.price}
               count={cartItems[item._id]}
@@ -58,7 +57,7 @@ export default AddedItems
 
 
 type addedItemType = {
-  _id: string
+  id: string
   name: string
   price: number,
   count: number,
@@ -66,14 +65,14 @@ type addedItemType = {
   restaurantId: string
 }
 
-const AddedItem = ({ _id, name, price, count, dispatch, restaurantId }: addedItemType) => {
+const AddedItem = ({ id, name, price, count, dispatch, restaurantId }: addedItemType) => {
 
   const handleAddToCart = useCallback(() => {
-    dispatch(addToCart({ _id, price, restaurantId }))
-  }, [_id])
+    dispatch(addToCart({ id, price, restaurantId }))
+  }, [id])
   const handleRemoveFromCart = useCallback(() => {
-    dispatch(removeFromCart({ _id, price, restaurantId }))
-  }, [_id])
+    dispatch(removeFromCart({ id, price, restaurantId }))
+  }, [id])
 
   return (
     <View className='flex-row justify-between items-center rounded-xl shadow-3xl px-3 py-2 bg-white space-x-2 my-1'>

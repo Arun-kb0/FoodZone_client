@@ -10,7 +10,7 @@ export type HomeStackParamList = {
   Home: undefined
   RestaurantScreen: { restaurant: restaurantType }
   CheckoutScreen: { restaurantName: string },
-  UserScreen: undefined
+  UserScreen: undefined,
 }
 
 
