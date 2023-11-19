@@ -10,9 +10,11 @@ export const postApiSlice = apiSlice.injectEndpoints({
     }),
 
     getAllResturants: builder.query({
-      query: () => ({ url: "/restaurant/all" }),
+      query: (page: number) => ({
+        url: `/restaurant/all`,
+        params:{page:page}
+      }),
       providesTags:['AllRestaurants']
-
     }),
 
     getMenu: builder.query({
@@ -47,6 +49,7 @@ export const postApiSlice = apiSlice.injectEndpoints({
 export const {
   useGetRecomentedResuturantQuery,
   useGetAllResturantsQuery,
+  useLazyGetAllResturantsQuery,
   useGetMenuQuery,
   useGetRestaurantDishesQuery,
   useAddFavoriteResturantMutation,

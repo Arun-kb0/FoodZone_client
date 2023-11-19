@@ -1,9 +1,12 @@
-import { View, Text, ScrollView, TouchableOpacity, Image, FlatList, Dimensions } from 'react-native'
-import React, { useState, useMemo, useEffect, useCallback } from 'react'
+import {
+  View, Text, ScrollView, TouchableOpacity, Image,
+  FlatList, Dimensions, ActivityIndicator
+} from 'react-native'
+import React, { useState, useMemo, useEffect, useCallback, useLayoutEffect } from 'react'
 import ListHeading from '../basic/ListHeading'
 import { useNavigation } from '@react-navigation/native'
 import SortModel from './SortModel'
-import { useAddFavoriteResturantMutation, useGetAllResturantsQuery, useGetFavoriteRestaurantsQuery } from '../../features/posts/postApiSlice'
+import { useAddFavoriteResturantMutation, useGetAllResturantsQuery, useGetFavoriteRestaurantsQuery, useLazyGetAllResturantsQuery } from '../../features/posts/postApiSlice'
 import { restaurantType } from '../../constants/constantTypes'
 import { useDispatch, useSelector } from 'react-redux'
 import { setFavoriteRestaurant, setFavoriteRestaurants, setRestaurants, setSelectedRestaurant } from '../../features/posts/postSlice'
@@ -13,15 +16,15 @@ import { RootState } from '../../app/store'
 import { DeliveryScreenNavigationProps } from '../../navigation/TabNavigator'
 
 
-
 const AllRestaurants = () => {
 
   const dispatch = useDispatch()
   const navigation = useNavigation<DeliveryScreenNavigationProps>()
 
   const [modelOpen, setModelOpen] = useState(false)
-  const [restaurants, setRestaurantsState] = useState<restaurantType[]>()
+  const [restaurants, setRestaurantsState] = useState<restaurantType[]|[]>([])
   const [width, setWidth] = useState(Dimensions.get("window").width)
+  const [page, setpage] = useState(1)
 
   const { favoriteResturantIds } = useSelector((state: RootState) => state.postSlice)
 
@@ -32,20 +35,39 @@ const AllRestaurants = () => {
     isSuccess: favIsSuccess
   } = useGetFavoriteRestaurantsQuery('')
 
-  const {
-    data: allRestaruants,
-    isLoading,
-    isError,
-    isSuccess
-  } = useGetAllResturantsQuery('')
-
-
+  const [getAllRestaurants,
+    { data: allRestaruants,
+      isLoading,
+      isError,
+      isSuccess,
+      error
+    }
+  ] = useLazyGetAllResturantsQuery()
 
   useMemo(() => {
+    getAllRestaurants(page)
+    console.log(page)
+  }, [page])
+
+  useEffect(() => {
     if (isSuccess) {
-      setRestaurantsState(allRestaruants?.restaurants)
+      console.log('get all resturants success')
+      console.log(typeof allRestaruants);
     }
-  }, [isSuccess])
+    if (isError) {
+      console.log('get all resturants failed')
+      console.log(error);
+    }
+  }, [isSuccess, isError])
+
+  useMemo(() => {
+    if (isSuccess && allRestaruants?.restaurants) {
+      setRestaurantsState(prev => [
+        ...prev,
+        ...allRestaruants.restaurants
+      ])
+    }
+  }, [isSuccess, allRestaruants])
 
   useEffect(() => {
     if (allRestaruants) {
@@ -54,15 +76,18 @@ const AllRestaurants = () => {
     if (favResturant) {
       dispatch(setFavoriteRestaurants({ restaurantIds: favResturant.restaurantId }))
     }
-  }, [isSuccess,favIsSuccess])
-
+  }, [isSuccess, favIsSuccess])
 
   const handleNavigateToSort = () => {
     setModelOpen(!modelOpen)
   }
 
+  const handleScrollEnd = () => {
+    setpage(prev=> prev+1)
+  }
+
   return (
-    <View className='mt-3 flex items-center'>
+    <View className='mt-30 flex items-center'>
 
       <SortModel
         isVisible={modelOpen}
@@ -70,6 +95,7 @@ const AllRestaurants = () => {
       />
 
       <ListHeading title='All restaruants' />
+
 
       <ScrollView
         horizontal
@@ -102,9 +128,9 @@ const AllRestaurants = () => {
 
         </View>
       </ScrollView>
-
-      {isSuccess && 
+      {isSuccess &&
         <FlatList
+          className='mb-10 h-auto'
           scrollEnabled={false}
           contentContainerStyle={{
             width: width
@@ -112,7 +138,10 @@ const AllRestaurants = () => {
           getItemLayout={(data, index) => ({
             length: width, offset: 256 * index, index
           })}
-          initialNumToRender={2}
+        initialNumToRender={2}
+        
+        onEndReached={handleScrollEnd}
+        onEndReachedThreshold={0.1}
 
           data={restaurants}
           keyExtractor={item => item.id}
@@ -125,6 +154,10 @@ const AllRestaurants = () => {
             />
           )}
         />
+      }
+
+      {isLoading &&
+        <ActivityIndicator size='large' />
       }
 
     </View>
@@ -140,12 +173,12 @@ type restaruantCardType = {
   restaurant: restaurantType
   navigation: DeliveryScreenNavigationProps,
   dispatch: Dispatch<AnyAction>,
-  isFav: boolean
+  isFav: boolean,
 }
 
 const RestaruantCard = ({ navigation, dispatch, restaurant, isFav }: restaruantCardType) => {
   const [isFavorite, setisFavorite] = useState(isFav)
-  const { Restaurant_Name, Category, imageUrl, id} = restaurant
+  const { Restaurant_Name, Category, imageUrl, id } = restaurant
 
 
   const [addFavoriteResturant, {
@@ -161,7 +194,7 @@ const RestaruantCard = ({ navigation, dispatch, restaurant, isFav }: restaruantC
   }, [id])
 
   const handleFavorite = useCallback(() => {
-    setisFavorite((prev)=> !prev)
+    setisFavorite((prev) => !prev)
     addFavoriteResturant(restaurant.id)
   }, [restaurant.id])
 
