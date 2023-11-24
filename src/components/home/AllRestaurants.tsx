@@ -6,7 +6,7 @@ import React, { useState, useMemo, useEffect, useCallback, useLayoutEffect } fro
 import ListHeading from '../basic/ListHeading'
 import { useNavigation } from '@react-navigation/native'
 import SortModel from './SortModel'
-import { useAddFavoriteResturantMutation, useGetAllResturantsQuery, useGetFavoriteRestaurantsQuery, useLazyGetAllResturantsQuery } from '../../features/posts/postApiSlice'
+import { useAddFavoriteResturantMutation, useGetFavoriteRestaurantsQuery, useLazyGetAllResturantsQuery } from '../../features/posts/postApiSlice'
 import { restaurantType } from '../../constants/constantTypes'
 import { useDispatch, useSelector } from 'react-redux'
 import { setFavoriteRestaurant, setFavoriteRestaurants, setRestaurants, setSelectedRestaurant } from '../../features/posts/postSlice'
@@ -15,16 +15,17 @@ import { IconFontawsm, IconIon, IconMatCom } from '../../constants/icons'
 import { RootState } from '../../app/store'
 import { DeliveryScreenNavigationProps } from '../../navigation/TabNavigator'
 
-
-const AllRestaurants = () => {
+type allRestaurantsPropsType = {
+  page: number
+}
+const AllRestaurants = ({ page }: allRestaurantsPropsType) => {
 
   const dispatch = useDispatch()
   const navigation = useNavigation<DeliveryScreenNavigationProps>()
 
   const [modelOpen, setModelOpen] = useState(false)
-  const [restaurants, setRestaurantsState] = useState<restaurantType[]|[]>([])
+  const [restaurants, setRestaurantsState] = useState<restaurantType[] | []>([])
   const [width, setWidth] = useState(Dimensions.get("window").width)
-  const [page, setpage] = useState(1)
 
   const { favoriteResturantIds } = useSelector((state: RootState) => state.postSlice)
 
@@ -44,21 +45,10 @@ const AllRestaurants = () => {
     }
   ] = useLazyGetAllResturantsQuery()
 
-  useMemo(() => {
-    getAllRestaurants(page)
-    console.log(page)
-  }, [page])
-
   useEffect(() => {
-    if (isSuccess) {
-      console.log('get all resturants success')
-      console.log(typeof allRestaruants);
-    }
-    if (isError) {
-      console.log('get all resturants failed')
-      console.log(error);
-    }
-  }, [isSuccess, isError])
+    getAllRestaurants(page)
+    console.log('all resturants page - ', page)
+  }, [page])
 
   useMemo(() => {
     if (isSuccess && allRestaruants?.restaurants) {
@@ -82,12 +72,25 @@ const AllRestaurants = () => {
     setModelOpen(!modelOpen)
   }
 
-  const handleScrollEnd = () => {
-    setpage(prev=> prev+1)
-  }
+  // * console logs
+  useEffect(() => {
+    if (isSuccess) {
+      console.log('get all resturants success')
+      console.log(typeof allRestaruants);
+    }
+    if (isError) {
+      console.log('get all resturants failed')
+      console.log(error);
+    }
+    if (isLoading) {
+      console.log('get all resturants loading ...')
+    }
+    console.log('get all resturants query res')
+    console.log(isSuccess, isError, isLoading)
+  }, [isSuccess, isError, isLoading, error])
 
   return (
-    <View className='mt-30 flex items-center'>
+    <View className='flex items-center'>
 
       <SortModel
         isVisible={modelOpen}
@@ -95,7 +98,6 @@ const AllRestaurants = () => {
       />
 
       <ListHeading title='All restaruants' />
-
 
       <ScrollView
         horizontal
@@ -105,9 +107,7 @@ const AllRestaurants = () => {
           paddingHorizontal: 15,
         }}
       >
-
         <View className='flex-row justify-center items-center w-full mx-4 mt-2 mb-3 space-x-3 '>
-
           <TouchableOpacity className='flex-row items-center py-2 px-5 bg-white rounded-xl shadow-lg space-x-2' onPress={handleNavigateToSort}>
             <IconFontawsm name="sort" size={22} color='gray' />
             <Text className=' font-semibold '>Sort</Text>
@@ -125,40 +125,39 @@ const AllRestaurants = () => {
           <TouchableOpacity className='py-2 px-5 bg-white rounded-xl '>
             <Text className=' font-semibold '>PureVeg</Text>
           </TouchableOpacity>
-
         </View>
       </ScrollView>
-      {isSuccess &&
-        <FlatList
-          className='mb-10 h-auto'
-          scrollEnabled={false}
-          contentContainerStyle={{
-            width: width
-          }}
-          getItemLayout={(data, index) => ({
-            length: width, offset: 256 * index, index
-          })}
-        initialNumToRender={2}
-        
-        onEndReached={handleScrollEnd}
-        onEndReachedThreshold={0.1}
 
-          data={restaurants}
-          keyExtractor={item => item.id}
-          renderItem={({ item }) => (
-            <RestaruantCard
-              restaurant={item}
-              dispatch={dispatch}
-              navigation={navigation}
-              isFav={Boolean(favoriteResturantIds?.includes(item.id))}
-            />
-          )}
-        />
-      }
+      <View className='pb-32 flex-1' >
+        {isSuccess &&
+          <FlatList
+            className=' h-auto'
+            scrollEnabled={false}
+            contentContainerStyle={{
+              width: width
+            }}
+            getItemLayout={(data, index) => ({
+              length: width, offset: 256 * index, index
+            })}
+            initialNumToRender={2}
 
-      {isLoading &&
-        <ActivityIndicator size='large' />
-      }
+            data={restaurants}
+            keyExtractor={item => item.id}
+            renderItem={({ item }) => (
+              <RestaruantCard
+                restaurant={item}
+                dispatch={dispatch}
+                navigation={navigation}
+                isFav={Boolean(favoriteResturantIds?.includes(item.id))}
+              />
+            )}
+          />
+        }
+
+        {isLoading &&
+          <ActivityIndicator size='large' className='bg-white shadow-2xl rounded-full p-1' color='#dc2626' />
+        }
+      </View>
 
     </View>
   )

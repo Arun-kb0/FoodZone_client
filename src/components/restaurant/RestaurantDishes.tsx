@@ -1,7 +1,7 @@
 import { View, Text, Image, TouchableOpacity, ScrollView, FlatList } from 'react-native'
 import React, { useEffect, useState, useMemo, Dispatch, useCallback } from 'react'
 import Rating from '../basic/Rating'
-import { useGetRestaurantDishesQuery } from '../../features/posts/postApiSlice'
+import { useGetRestaurantDishesQuery, useLazyGetRestaurantDishesQuery } from '../../features/posts/postApiSlice'
 import { useDispatch, useSelector } from 'react-redux'
 import { RootState } from '../../app/store'
 import { dishType } from '../../constants/constantTypes'
@@ -14,17 +14,27 @@ import { IconFeather } from '../../constants/icons'
 
 const RestaurantDishes = () => {
   const dispatch = useDispatch()
+  const [page, setPage] = useState(1)
   const [dishes, setDishes] = useState<dishType[] | null>()
   const { selectedRestaurant, } = useSelector((state: RootState) => state.postSlice)
   const { cartItems, totalItems, restaurantCart } = useSelector((state: RootState) => state.cartSlice)
+  // const {
+  //   data: dishData,
+  //   isLoading,
+  //   isError,
+  //   isSuccess,
+  //   error
+  // } = useGetRestaurantDishesQuery(selectedRestaurant?.id || '')
+// ! work needed
+  const [
+    getRestaurantDishes,
+    { data: dishData,
+      isLoading,
+      isError,
+      isSuccess,
+      error }
+  ] = useLazyGetRestaurantDishesQuery()
 
-  const {
-    data: dishData,
-    isLoading,
-    isError,
-    isSuccess,
-    error
-  } = useGetRestaurantDishesQuery(selectedRestaurant?.id || '')
 
   useMemo(() => {
     if (dishData?.dishes?.dishes) {
@@ -39,7 +49,17 @@ const RestaurantDishes = () => {
     }
   }, [isSuccess])
 
+  useMemo(() => {
+    getRestaurantDishes({
+      restaurantId: selectedRestaurant?.id || '',
+      page
+    })
+    console.log('restaurants dishes page ', page)
+  }, [page])
 
+  const handleEnd = () => {
+    setPage(prev => prev + 1)
+  }
 
   return (
     <View className='relative mt-2 mb-24 w-full h-auto' >
@@ -47,6 +67,8 @@ const RestaurantDishes = () => {
       {isSuccess && selectedRestaurant &&
         <FlatList
           scrollEnabled={false}
+          onEndReached={handleEnd}
+          onEndReachedThreshold={0.1}
 
           data={dishes}
           keyExtractor={item => item.id}
