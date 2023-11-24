@@ -1,7 +1,7 @@
-import { View, Text, Image, TouchableOpacity, ScrollView, FlatList } from 'react-native'
+import { View, Text, Image, TouchableOpacity, FlatList, ActivityIndicator } from 'react-native'
 import React, { useEffect, useState, useMemo, Dispatch, useCallback } from 'react'
 import Rating from '../basic/Rating'
-import { useGetRestaurantDishesQuery, useLazyGetRestaurantDishesQuery } from '../../features/posts/postApiSlice'
+import { useLazyGetRestaurantDishesQuery } from '../../features/posts/postApiSlice'
 import { useDispatch, useSelector } from 'react-redux'
 import { RootState } from '../../app/store'
 import { dishType } from '../../constants/constantTypes'
@@ -11,21 +11,16 @@ import { addToCart, removeFromCart } from '../../features/cart/cartSlice'
 import { IconFeather } from '../../constants/icons'
 
 
-
-const RestaurantDishes = () => {
+type RestaurantDishesPropsType = {
+  page: number
+}
+const RestaurantDishes = ({ page }: RestaurantDishesPropsType) => {
   const dispatch = useDispatch()
-  const [page, setPage] = useState(1)
-  const [dishes, setDishes] = useState<dishType[] | null>()
-  const { selectedRestaurant, } = useSelector((state: RootState) => state.postSlice)
-  const { cartItems, totalItems, restaurantCart } = useSelector((state: RootState) => state.cartSlice)
-  // const {
-  //   data: dishData,
-  //   isLoading,
-  //   isError,
-  //   isSuccess,
-  //   error
-  // } = useGetRestaurantDishesQuery(selectedRestaurant?.id || '')
-// ! work needed
+  const [numOfPages, setNumOfPages] = useState(1)
+  const [dishes, setDishes] = useState<dishType[] | []>([])
+  const { selectedRestaurant } = useSelector((state: RootState) => state.postSlice)
+  const { cartItems } = useSelector((state: RootState) => state.cartSlice)
+
   const [
     getRestaurantDishes,
     { data: dishData,
@@ -35,57 +30,52 @@ const RestaurantDishes = () => {
       error }
   ] = useLazyGetRestaurantDishesQuery()
 
-
   useMemo(() => {
-    if (dishData?.dishes?.dishes) {
-      // console.log(dishData.dishes.dishes)
-      setDishes(dishData.dishes.dishes)
+    if (isSuccess && dishData?.dishes?.dishes) {
+      setDishes(prev => [...prev, ...dishData?.dishes.dishes])
+      dispatch(setSelectedDish({ dishes: dishData?.dishes.dishes }))
+      setNumOfPages(dishData.numberOfPages)
     }
-  }, [isSuccess])
+  }, [isSuccess, dishData])
 
   useEffect(() => {
-    if (dishData?.dishes?.dishes) {
-      dispatch(setSelectedDish(dishData.dishes))
+    if (numOfPages <= page) {
+      getRestaurantDishes({
+        restaurantId: selectedRestaurant?.id || '',
+        page
+      },true)
+      console.log('restaurants dishes page - ', page)
     }
-  }, [isSuccess])
-
-  useMemo(() => {
-    getRestaurantDishes({
-      restaurantId: selectedRestaurant?.id || '',
-      page
-    })
-    console.log('restaurants dishes page ', page)
   }, [page])
 
-  const handleEnd = () => {
-    setPage(prev => prev + 1)
-  }
-
   return (
-    <View className='relative mt-2 mb-24 w-full h-auto' >
+    <View>
 
       {isSuccess && selectedRestaurant &&
-        <FlatList
-          scrollEnabled={false}
-          onEndReached={handleEnd}
-          onEndReachedThreshold={0.1}
+        <View className='relative mt-2 mb-24 w-full h-auto' >
+          <FlatList
+            scrollEnabled={false}
+            data={dishes}
+            keyExtractor={item => item.id}
+            renderItem={({ item }) => (
+              <RestaruantDishItem
+                id={item.id}
+                name={item.dishName}
+                imageUrl={item.imageUrl}
+                description={item.description}
+                price={item.price}
+                rating={item.rating}
+                itemCount={cartItems && cartItems[item.id]}
+                dispatch={dispatch}
+                restaurantId={selectedRestaurant.id}
+              />
+            )}
+          />
+        </View>
+      }
 
-          data={dishes}
-          keyExtractor={item => item.id}
-          renderItem={({ item }) => (
-            <RestaruantDishItem
-              id={item.id}
-              name={item.dishName}
-              imageUrl={item.imageUrl}
-              description={item.description}
-              price={item.price}
-              rating={item.rating}
-              itemCount={cartItems && cartItems[item.id]}
-              dispatch={dispatch}
-              restaurantId={selectedRestaurant.id}
-            />
-          )}
-        />
+      {isLoading &&
+        <ActivityIndicator className='bg-white shadow-2xl rounded-full p-1' size='large' color='#dc2626' />
       }
     </View>
   )

@@ -1,4 +1,5 @@
 import { apiSlice } from "../../app/api/apiSlice";
+import { getRestaurantDishesResType } from "../../constants/constantTypes";
 
 type getRestaurantDishesQueryParamsType = {
   restaurantId: string,
@@ -27,7 +28,7 @@ export const postApiSlice = apiSlice.injectEndpoints({
       providesTags: ['RestaurantMenu']
     }),
 
-    getRestaurantDishes: builder.query({
+    getRestaurantDishes: builder.query<getRestaurantDishesResType, getRestaurantDishesQueryParamsType>({
       query: ({ restaurantId, page }: getRestaurantDishesQueryParamsType) => ({
         url: `/restaurant/dishes`,
         params: { restaurantId, page }

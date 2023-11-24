@@ -31,15 +31,17 @@ const RestaurantScreen = ({ route }: RestaurantScreen) => {
     Restaurant_Name, Category, imageUrl, id, Delivery_Rating }
   } = route.params
 
+  const navigation = useNavigation()
+
   const [isVisible, setisVisible] = useState(false)
   const [isSearchOpen, setIsSearchOpen] = useState(false)
   const [totalCount, setTotalCount] = useState(0)
+  const [page, setPage] = useState(1)
 
 
   const { selectedRestaurant } = useSelector((state: RootState) => state.postSlice)
   const { restaurantCart } = useSelector((state: RootState) => state.cartSlice)
 
-  const navigation = useNavigation()
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -59,8 +61,8 @@ const RestaurantScreen = ({ route }: RestaurantScreen) => {
     scrollY > 100
       ? setIsSearchOpen(true)
       : setIsSearchOpen(false)
-
-    if (scrollY + screenHeight >= height) {
+    if (scrollY + screenHeight >= height-20) {
+      setPage(prev=> prev+1)
       console.log("restaurant screen end of list ")
     }
   }
@@ -105,7 +107,10 @@ const RestaurantScreen = ({ route }: RestaurantScreen) => {
       }
 
 
-      <ScrollView className='mt-10' onScroll={handleScroll} >
+      <ScrollView className='mt-10'
+        onScroll={handleScroll}
+        nestedScrollEnabled={true}
+      >
 
         <RestaruantDetails
           id={id}
@@ -117,9 +122,9 @@ const RestaurantScreen = ({ route }: RestaurantScreen) => {
           distance={'12'}
         />
 
-        <View>
+        <View className='flex-1 justify-center items-center'>
           <ListHeading title='Recomented' />
-          <RestaurantDishes />
+          <RestaurantDishes page={page} />
         </View>
 
       </ScrollView>

@@ -46,7 +46,7 @@ const AllRestaurants = ({ page }: allRestaurantsPropsType) => {
   ] = useLazyGetAllResturantsQuery()
 
   useEffect(() => {
-    getAllRestaurants(page)
+    getAllRestaurants(page,true)
     console.log('all resturants page - ', page)
   }, [page])
 

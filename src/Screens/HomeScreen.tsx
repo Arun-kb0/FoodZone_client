@@ -9,7 +9,6 @@ import Recomented from '../components/home/Recomented'
 import AllRestaruants from '../components/home/AllRestaurants'
 import DishMenu from '../components/home/DishMenu'
 import { useNavigation } from '@react-navigation/native'
-import { IconEntypo, IconFontisto } from '../constants/icons'
 import { DeliveryScreenNavigationProps } from '../navigation/TabNavigator'
 import Address from '../components/home/Address'
 
@@ -44,15 +43,10 @@ const HomeScreen = () => {
     }
   }
 
-  const handleScrollEnd = () => {
-    console.log('home screen on scrollend ')
-  }
-
   return (
     <SafeAreaView>
       <ScrollView className='mt-24 h-auto'
         nestedScrollEnabled={true}
-        // scrollEventThrottle={1}
         onScroll={handleScroll}
       >
 
