@@ -25,11 +25,11 @@ type setAuthDataPayloadType = {
   user: {
     id: string | null | undefined,
     name?: string | undefined | null,
-    givenName?:string | undefined | null
+    givenName?: string | undefined | null
     photo?: string | undefined | null,
     imageUrl?: string | undefined | null,
-    email: string |undefined | null,
-    phone?:string | undefined | null
+    email: string | undefined | null,
+    phone?: string | undefined | null
   }
 }
 
@@ -41,12 +41,14 @@ const authSlice = createSlice({
       const { provider, user, accessToken, refreshToken } = action.payload
 
       console.log('auth slice ')
+      console.log(user)
 
       if (provider === 'google') {
         state.id = user.id ? user.id : null
-        state.name = user.givenName ? user.givenName : null
-        state.photo = user.photo  ? user.photo : null
-        state.email = user.email ? user.email :null
+        state.name = user.name ? user.name : null
+        state.photo = user.photo ? user.photo : null
+        state.email = user.email ? user.email : null
+        state.name && storage.set(mmkvkeys.name, state.name)
         storage.set(mmkvkeys.tokenProvider, 'google')
       }
 
@@ -55,6 +57,7 @@ const authSlice = createSlice({
         state.name = user.name ? user.name : null
         state.photo = user.photo ? user.photo : null
         state.email = user.email ? user.email : null
+        state.name && storage.set(mmkvkeys.name, state.name)
         storage.set(mmkvkeys.tokenProvider, 'meta')
       }
 
@@ -65,6 +68,7 @@ const authSlice = createSlice({
         state.email = user.email ? user.email : null
         state.phone = user.phone ? user.phone : null
         storage.set(mmkvkeys.tokenProvider, 'custom')
+        state.name && storage.set(mmkvkeys.name, state.name)
         refreshToken && storage.set(mmkvkeys.refreshToken, refreshToken)
       }
 

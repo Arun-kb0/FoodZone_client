@@ -5,5 +5,6 @@ export const storage = new MMKV()
 export enum mmkvkeys {
   tokenProvider = "tokenProvider",
   accessToken = "accessToken",
-  refreshToken = "refreshToken"
+  refreshToken = "refreshToken",
+  name="name"
 }

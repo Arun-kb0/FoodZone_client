@@ -12,7 +12,7 @@ import { addToCart, removeFromCart } from '../../features/cart/cartSlice'
 
 const AddedItems = () => {
   const dispatch = useDispatch()
-  const { cartItems, totalItems, totalPrice } = useSelector((state: RootState) => state.cartSlice)
+  const { cartItems } = useSelector((state: RootState) => state.cartSlice)
   const { restaurants, selectedRestaurant, selectedDish } = useSelector((state: RootState) => state.postSlice)
   const [dishes, setDishes] = useState<dishType[]>()
 
@@ -24,10 +24,7 @@ const AddedItems = () => {
       ))
       setDishes(filterdDishes)
     }
-
   }, [restaurants, cartItems])
-
-
 
 
   return (
@@ -42,8 +39,8 @@ const AddedItems = () => {
               id={item.id}
               name={item.dishName}
               price={item.price}
-              count={cartItems[item._id]}
-              restaurantId={selectedRestaurant._id}
+              count={cartItems[item.id]}
+              restaurantId={selectedRestaurant.id}
               dispatch={dispatch}
             />
           )}

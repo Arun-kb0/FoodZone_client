@@ -43,7 +43,7 @@ const RestaurantDishes = ({ page }: RestaurantDishesPropsType) => {
       getRestaurantDishes({
         restaurantId: selectedRestaurant?.id || '',
         page
-      },true)
+      }, true)
       console.log('restaurants dishes page - ', page)
     }
   }, [page])
@@ -131,18 +131,18 @@ const RestaruantDishItem = ({
           ? <TouchableOpacity className='absolute bottom-2  left-7 bg-red-300  opacity-80 w-20 h-10 rounded-lg flex justify-center items-center  ' onPress={handleAddToCart}>
             <View className='flex-row  justify-center items-center space-x-1'>
               <Text className='text-lg font-semibold text-gray-800' > Add</Text>
-              <IconFeather name='plus' size={20} color="#1e293b" />
+              <IconFeather name='plus' size={15} color="#1e293b" />
             </View>
           </TouchableOpacity>
 
           : <View className='absolute bottom-2  left-7 bg-red-400 opacity-95 w-20 h-10 rounded-lg flex justify-center items-center  '>
-            <View className='flex-row justify-between items-center space-x-1'>
-              <TouchableOpacity onPress={handleAddToCart}>
-                <IconFeather name='plus' size={20} color="white" />
-              </TouchableOpacity>
-              <Text className='text-lg font-semibold text-white'>{itemCount}</Text>
+            <View className='flex-row justify-between items-center space-x-3'>
               <TouchableOpacity onPress={handleRemoveFromCart}>
                 <IconFeather name='minus' size={20} color="white" />
+              </TouchableOpacity>
+              <Text className='text-lg font-semibold text-white'>{itemCount}</Text>
+              <TouchableOpacity onPress={handleAddToCart}>
+                <IconFeather name='plus' size={20} color="white" />
               </TouchableOpacity>
             </View>
           </View>

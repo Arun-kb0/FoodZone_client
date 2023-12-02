@@ -6,7 +6,6 @@ type cartStateType = {
   totalItems: number,
   totalPrice: number,
   tip: number,
-
   restaurantCart: Record<string, { count: number, total: number }> | null,
 }
 
@@ -37,7 +36,6 @@ const cartSlice = createSlice({
       state.totalItems++
       state.totalPrice += price
       state.totalPrice = parseFloat(state.totalPrice.toFixed(2))
-
 
       state.restaurantCart ??= {}
       state.restaurantCart[restaurantId] = {
