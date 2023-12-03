@@ -79,12 +79,6 @@ const RestaurantScreen = ({ route }: RestaurantScreen) => {
   }
 
 
-  // ! add get restaurants call with page num
-  const handleGetRestaurants = () => {
-    console.log("call get resturants from restaurants screen")
-  }
-
-
   return (
     <SafeAreaView className={`mt-14 relative h-[96%] `} >
 

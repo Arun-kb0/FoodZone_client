@@ -15,6 +15,7 @@ interface customeResErrorType {
 
 const baseQuery = fetchBaseQuery({
   baseUrl: `http://${IP_ADDRESS}:${PORT}`,
+  // baseUrl: `http://192.168.233.157:3000`,
   credentials: 'include',
   prepareHeaders: (headers) => {
     const token = storage.getString(mmkvkeys.accessToken)
@@ -73,10 +74,11 @@ const baseQueryWithReauth = async (args: any, api: any, extraOptions: any): Prom
 
         const user = {
           id: userData.user?.id,
-          name: userData.user?.name,
+          name: userData.user?.givenName,
           photo: userData.user?.photo,
           email: userData.user?.email,
         }
+        user.name && storage.set(mmkvkeys.name, user.name)
         api.dispatch(setAuthData({
           provider,
           user: user,

@@ -1,22 +1,28 @@
 import { apiSlice } from "../../app/api/apiSlice";
-import { getRestaurantDishesResType } from "../../constants/constantTypes";
+import { addFavoriteResturantResType, getAllRestaurantsQueryResType, getFavoriteRestaurantsResType, getRestaurantDishesResType, restaurantType } from "../../constants/constantTypes";
 
 type getRestaurantDishesQueryParamsType = {
   restaurantId: string,
   page: number
 }
+type getAllResturantsQueryParamsType = {
+  page: number
+}
+type addFavoriteResturantPropType = Pick<restaurantType, 'id'>
+
+
 
 
 export const postApiSlice = apiSlice.injectEndpoints({
   endpoints: builder => ({
 
-    getRecomentedResuturant: builder.query({
+    getRecomentedResuturant: builder.query<getAllRestaurantsQueryResType, void>({
       query: () => ({ url: "/restaurant/all" }),
       providesTags: ['RecomentedRestaruantPost']
     }),
 
-    getAllResturants: builder.query({
-      query: (page: number) => ({
+    getAllResturants: builder.query<getAllRestaurantsQueryResType, getAllResturantsQueryParamsType>({
+      query: ({ page }: getAllResturantsQueryParamsType) => ({
         url: `/restaurant/all`,
         params: { page }
       }),
@@ -36,17 +42,17 @@ export const postApiSlice = apiSlice.injectEndpoints({
       providesTags: ['RestaurantDishes']
     }),
 
-    getFavoriteRestaurants: builder.query({
+    getFavoriteRestaurants: builder.query<getFavoriteRestaurantsResType, void>({
       query: () => ({ url: '/restaurant/favorites' }),
       providesTags: ['FavoriteRestaurants']
     }),
 
-    addFavoriteResturant: builder.mutation({
-      query: (restaurantId: string) => ({
+    addFavoriteResturant: builder.mutation<addFavoriteResturantResType, addFavoriteResturantPropType>({
+      query: ({id}) => ({
         url: '/restaurant/favorites',
         method: 'POST',
         body: {
-          restaurantId
+          id
         }
       }),
     }),

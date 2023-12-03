@@ -62,12 +62,34 @@ export type customAuthResType = {
   message: string,
 }
 
-// * getRestaurantDishesQuery
+// * getRestaurantDishesQueryResponse type
 export type getRestaurantDishesResType = {
   message: string,
   dishes: dishesType,
   currentPage: number,
   numberOfPages: number,
   isListEnd: boolean
+}
+
+// * getAllRestaurantsQuery response  type
+export type getAllRestaurantsQueryResType = {
+  message: string,
+  currentPage: number,
+  numberOfPages:number,
+  restaurants:restaurantType[],
+}
+
+// *get favorites response 
+export type getFavoriteRestaurantsResType = {
+  message: string,
+  currentPage: number,
+  numberOfPages: number,
+  restaurantIds: string[],
+}
+
+// * add Fav res type
+export type addFavoriteResturantResType = {
+  message: string,
+  restaurantId:string
 }
 
