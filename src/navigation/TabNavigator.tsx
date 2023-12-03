@@ -44,8 +44,7 @@ const TabNavigator = () => {
 
         tabBarStyle:((route)=> {
           const routeName = getFocusedRouteNameFromRoute(route) ?? ""
-          const routeNameList = ["RestaurantScreen", "UserScreen", "CheckoutScreen"]
-          // console.log("routeName -------- ", routeName)
+          const routeNameList = ["RestaurantScreen", "UserScreen", "CheckoutScreen","SearchView"]
           if (routeNameList.includes(routeName)) {
             return { display: 'none'}
           }

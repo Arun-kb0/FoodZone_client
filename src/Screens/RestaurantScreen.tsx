@@ -15,7 +15,7 @@ import Search from '../components/home/SearchHeader'
 import DishSearch from '../components/restaurant/DishSearch'
 
 
-type RestaurantScreen = {
+type RestaurantScreenPropsType = {
   route: {
     params: {
       restaurant: restaurantType
@@ -23,10 +23,9 @@ type RestaurantScreen = {
   }
 }
 
-const MenuList = ["alfam", "mandi", "noodiles", "chicken", "friedRice"]
 
 
-const RestaurantScreen = ({ route }: RestaurantScreen) => {
+const RestaurantScreen = ({ route }: RestaurantScreenPropsType) => {
   const { restaurant: {
     Restaurant_Name, Category, imageUrl, id, Delivery_Rating }
   } = route.params

@@ -89,3 +89,11 @@ export type addFavoriteResturantResType = {
   restaurantId:string
 }
 
+
+// * searchDishInResturants res type
+export type searchDishInResturantsResType = {
+  message: string,
+  currentPage: number,
+  numberOfPages:number,
+  restuarnts:restaurantType[]
+}

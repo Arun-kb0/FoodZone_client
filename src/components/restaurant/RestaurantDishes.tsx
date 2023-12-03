@@ -30,7 +30,7 @@ const RestaurantDishes = ({ page }: RestaurantDishesPropsType) => {
       error }
   ] = useLazyGetRestaurantDishesQuery()
 
-  useMemo(() => {
+  useEffect(() => {
     if (isSuccess && dishData?.dishes?.dishes) {
       setDishes(prev => [...prev, ...dishData?.dishes.dishes])
       dispatch(setSelectedDish({ dishes: dishData?.dishes.dishes }))
