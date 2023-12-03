@@ -22,7 +22,7 @@ const Recommended = () => {
   const {
     data: recomentedResturants,
     isLoading, isError, isSuccess, error
-  } = useGetRecomentedResuturantQuery('')
+  } = useGetRecomentedResuturantQuery()
 
   useMemo(() => {
     if (isSuccess) {

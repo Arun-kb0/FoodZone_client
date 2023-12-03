@@ -52,7 +52,7 @@ export const postApiSlice = apiSlice.injectEndpoints({
         url: '/restaurant/favorites',
         method: 'POST',
         body: {
-          id
+          restaurantId:id
         }
       }),
     }),

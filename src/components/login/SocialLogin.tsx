@@ -12,10 +12,11 @@ import { mmkvkeys, storage } from '../../constants/mmkvStorage';
 import { useSocialProviderLoginMutation } from '../../features/auth/authApiSlice';
 import {GOOGLE_ACCOUNT_NAME} from '@env'
 import { DeliveryScreenNavigationProps } from '../../navigation/TabNavigator';
+import { RootStackNavigationProp } from '../../navigation/RootNavigator';
 
 
 const SocialLogin = () => {
-  const navigation = useNavigation<DeliveryScreenNavigationProps>()
+  const navigation = useNavigation<RootStackNavigationProp>()
   const dispatch = useDispatch()
   const { name, email, id, photo } = useSelector((state: RootState) => state.authSlice)
 
@@ -30,8 +31,6 @@ const SocialLogin = () => {
 
   const LoginWithGoogle = async () => {
     try {
-      
-
       await GoogleSignin.hasPlayServices()
       const userData = await GoogleSignin.signIn()
       const token = await GoogleSignin.getTokens()
@@ -89,8 +88,13 @@ const SocialLogin = () => {
     }
   }
 
+  useEffect(() => {
+    navigation.navigate('Main')
+  },[isSuccess])
 
 
+
+  // * console log
   useEffect(() => {
     isSuccess && console.log('add social user details in API success')
     isError && console.log('add social user details in API failed')

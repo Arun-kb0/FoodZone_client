@@ -33,8 +33,6 @@ export type restaurantType = {
 
 
 // * dishType
-
-
 export type dishType = {
   _id: string,
   id: string;
@@ -82,8 +80,6 @@ export type getAllRestaurantsQueryResType = {
 // *get favorites response 
 export type getFavoriteRestaurantsResType = {
   message: string,
-  currentPage: number,
-  numberOfPages: number,
   restaurantIds: string[],
 }
 

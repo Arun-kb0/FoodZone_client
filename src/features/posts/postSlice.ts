@@ -34,7 +34,7 @@ const initialState: postState = {
   selectedRestaurant: null,
   selectedDish: null,
   favorite: null,
-  favoriteResturantIds: null
+  favoriteResturantIds: []
 }
 
 const postSlice = createSlice({
@@ -86,11 +86,7 @@ const postSlice = createSlice({
     setFavoriteRestaurants(state, action: PayloadAction<setFavoriteRestaurantsPayloadType>) {
       const { restaurantIds } = action.payload
       state.favoriteResturantIds = restaurantIds
-
       console.log('favoriteResturantIds length ', state.favoriteResturantIds?.length)
-      console.log('favoriteResturantIds ', state.favoriteResturantIds)
-
-
     }
 
   }

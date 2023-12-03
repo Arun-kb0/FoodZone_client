@@ -7,12 +7,27 @@ import { useLoginMutation } from '../../features/auth/authApiSlice'
 import { useDispatch } from 'react-redux'
 import { setAuthData } from '../../features/auth/authSlice'
 import { DeliveryScreenNavigationProps } from '../../navigation/TabNavigator'
+import { RootStackNavigationProp } from '../../navigation/RootNavigator'
 
+
+type isErrorType = {
+  error: boolean;
+  email: boolean;
+  password: boolean;
+}
+type loginStateType = {
+  email: string,
+  password: string
+}
+type loginStateRegEx = {
+  email: RegExp,
+  password: RegExp
+}
 
 
 const Login = () => {
 
-  const navigation = useNavigation<DeliveryScreenNavigationProps>()
+  const navigation = useNavigation<RootStackNavigationProp>()
   const dispatch = useDispatch()
   const [
     login, {
@@ -23,20 +38,6 @@ const Login = () => {
       error: loginError,
     }
   ] = useLoginMutation()
-
-  type isErrorType = {
-    error: boolean;
-    email: boolean;
-    password: boolean;
-  }
-  type loginStateType = {
-    email: string,
-    password: string
-  }
-  type loginStateRegEx = {
-    email: RegExp,
-    password: RegExp
-  }
 
   const initLoginState = {
     email: '',
@@ -89,8 +90,6 @@ const Login = () => {
       })
       console.log("login input error")
     } else {
-      // console.log(loginState.email.length)
-      // setLoginState(initLoginState)
       try {
         await login(loginState).unwrap()
         console.log("login success")
@@ -109,8 +108,8 @@ const Login = () => {
         accessToken: loginData?.accessToken,
         refreshToken: loginData?.refreshToken
       }))
-      // setLoginState(initLoginState)
-      // navigation.navigate('Main')
+      setLoginState(initLoginState)
+      navigation.navigate('Main')
     }
     if (loginError && 'data' in loginError) {
       Alert.alert(
@@ -126,10 +125,6 @@ const Login = () => {
     // console.log(loginState)
     // console.log(storage.getString(mmkvkeys.refreshToken))
   // }, [loginState, handleLogin,dispatch])
-
-
-
-
 
   return (
     <View className='w-full px-2 py-1 space-y-3'>
