@@ -67,6 +67,8 @@ const AllRestaurants = ({ page }: allRestaurantsPropsType) => {
     }
     if (favResturant) {
       dispatch(setFavoriteRestaurants({ restaurantIds: favResturant.restaurantIds }))
+      console.log('favResturant.restaurantIds ')
+      console.log(favResturant.restaurantIds)
     }
   }, [isSuccess, favIsSuccess])
 
@@ -84,7 +86,7 @@ const AllRestaurants = ({ page }: allRestaurantsPropsType) => {
       console.log('get all resturants failed')
       console.log(error);
     }
-    if (isLoading ) {
+    if (isLoading) {
       console.log('get all resturants loading ...')
     }
     console.log('get all resturants query res')
@@ -153,7 +155,7 @@ const AllRestaurants = ({ page }: allRestaurantsPropsType) => {
                 isFav={Boolean(favoriteResturantIds?.includes(item.id))}
               />
             )}
-          ListFooterComponent={<EndComponent isFetching={isFetching} />}
+            ListFooterComponent={<EndComponent isFetching={isFetching} />}
           />
         }
 
@@ -168,15 +170,6 @@ const AllRestaurants = ({ page }: allRestaurantsPropsType) => {
 
 export default AllRestaurants
 
-type EndComponentPropType = { isFetching: boolean }
-const EndComponent = ({ isFetching }: EndComponentPropType) => {
-  return <View className='w-full items-center mt-5'>
-    {isFetching && 
-      <ActivityIndicator size='large' className='bg-white shadow-2xl rounded-full p-1 w-18' color='#dc2626' />
-    }
-  </View>
-}
-
 
 
 
@@ -188,9 +181,12 @@ type restaruantCardType = {
 }
 
 const RestaruantCard = ({ navigation, dispatch, restaurant, isFav }: restaruantCardType) => {
-  const [isFavorite, setisFavorite] = useState(isFav)
+  const [isFavorite, setisFavorite] = useState(false)
   const { Restaurant_Name, Category, imageUrl, id } = restaurant
 
+  useEffect(() => {
+    setisFavorite(isFav)
+  }, [isFav])
 
   const [addFavoriteResturant, {
     data: favRestaurants,
@@ -206,7 +202,7 @@ const RestaruantCard = ({ navigation, dispatch, restaurant, isFav }: restaruantC
 
   const handleFavorite = useCallback(() => {
     setisFavorite((prev) => !prev)
-    addFavoriteResturant({id: restaurant.id})
+    addFavoriteResturant({ id: restaurant.id })
   }, [restaurant.id])
 
   useEffect(() => {
@@ -253,3 +249,14 @@ const RestaruantCard = ({ navigation, dispatch, restaurant, isFav }: restaruantC
 }
 
 
+
+
+
+type EndComponentPropType = { isFetching: boolean }
+const EndComponent = ({ isFetching }: EndComponentPropType) => {
+  return <View className='w-full items-center mt-5'>
+    {isFetching &&
+      <ActivityIndicator size='large' className='bg-white shadow-2xl rounded-full p-1 w-18' color='#dc2626' />
+    }
+  </View>
+}
