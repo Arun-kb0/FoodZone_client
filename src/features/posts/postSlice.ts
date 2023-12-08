@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { dishType, restaurantType } from "../../constants/constantTypes";
+import { dishType, menuType, restaurantType } from "../../constants/constantTypes";
 
 
 type postState = {
@@ -7,14 +7,15 @@ type postState = {
   selectedRestaurant: restaurantType | null,
   selectedDish: Record<string, dishType[]> | null,
   favorite: restaurantType[] | null,
-  favoriteResturantIds: string[] | null
+  favoriteResturantIds: string[] | null,
+  menu: menuType[]|null
 }
 
 type setRestaurantsPayloadType = {
   restaurants: restaurantType[]
 }
+
 type selectedDishPayloadType = {
-  _id: string,
   dishes: dishType[]
 }
 
@@ -34,7 +35,8 @@ const initialState: postState = {
   selectedRestaurant: null,
   selectedDish: null,
   favorite: null,
-  favoriteResturantIds:null
+  favoriteResturantIds: [],
+  menu:[]
 }
 
 const postSlice = createSlice({
@@ -44,7 +46,9 @@ const postSlice = createSlice({
     setRestaurants(state, action: PayloadAction<setRestaurantsPayloadType>) {
       console.log("postSlice setRestaurants")
       const { restaurants } = action.payload
-      state.restaurants = restaurants
+      state.restaurants = state.restaurants !== null
+        ? [...state.restaurants, ...restaurants]
+        : [...restaurants]
     },
 
     setSelectedRestaurant(state, action) {
@@ -52,10 +56,16 @@ const postSlice = createSlice({
     },
 
     setSelectedDish(state, action: PayloadAction<selectedDishPayloadType>) {
-      const { _id, dishes } = action.payload
+      const { dishes } = action.payload
+      const id = state.selectedRestaurant?.id
+
       if (state.selectedDish === null)
         state.selectedDish = {}
-      state.selectedDish[_id] = dishes
+      if (id) {
+        state.selectedDish[id] = state.selectedDish[id]
+          ? [...state.selectedDish[id], ...dishes]
+          : dishes
+      }
     },
 
     setFavoriteRestaurant(state, action: PayloadAction<setFavoriteRestaurantPayloadType>) {
@@ -65,7 +75,7 @@ const postSlice = createSlice({
         state.favoriteResturantIds = [restaurantId]
       } else {
         const index = state.favoriteResturantIds.findIndex((id) => id === restaurantId)
-        if (index!==-1) {
+        if (index !== -1) {
           state.favoriteResturantIds.splice(index, 1)
         } else {
           state.favoriteResturantIds.unshift(restaurantId)
@@ -78,11 +88,11 @@ const postSlice = createSlice({
     setFavoriteRestaurants(state, action: PayloadAction<setFavoriteRestaurantsPayloadType>) {
       const { restaurantIds } = action.payload
       state.favoriteResturantIds = restaurantIds
-      
       console.log('favoriteResturantIds length ', state.favoriteResturantIds?.length)
-      console.log('favoriteResturantIds ', state.favoriteResturantIds)
+    },
 
-
+    setAllMenuItems(state, action: PayloadAction<menuType[]>) {
+      state.menu = action.payload
     }
 
   }
@@ -91,7 +101,7 @@ const postSlice = createSlice({
 
 export const {
   setRestaurants, setSelectedRestaurant, setSelectedDish,
-  setFavoriteRestaurant, setFavoriteRestaurants
+  setFavoriteRestaurant, setFavoriteRestaurants, setAllMenuItems
 } = postSlice.actions
 
 export default postSlice.reducer

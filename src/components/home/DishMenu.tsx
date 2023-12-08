@@ -4,10 +4,17 @@ import ListHeading from '../basic/ListHeading'
 import { useGetMenuQuery } from '../../features/posts/postApiSlice'
 import { menuType } from '../../constants/constantTypes'
 import { NativeScrollEvent } from 'react-native'
+import { useNavigation } from '@react-navigation/native'
+import { DeliveryScreenNavigationProps } from '../../navigation/TabNavigator'
+import { useDispatch } from 'react-redux'
+import { setAllMenuItems } from '../../features/posts/postSlice'
 
 
 
 const DishMenu = () => {
+  const dispatch = useDispatch()
+  const navigation = useNavigation<DeliveryScreenNavigationProps>()
+
   const [menu, setMenu] = useState<menuType[]>()
 
   const {
@@ -15,12 +22,12 @@ const DishMenu = () => {
     isLoading,
     isSuccess,
     isFetching,
-  } = useGetMenuQuery('')
+  } = useGetMenuQuery()
 
-  useMemo(() => {
+  useEffect(() => {
     if (menuList) {
       setMenu(menuList.menu)
-      console.log(menuList.menu.length)
+      dispatch(setAllMenuItems(menuList.menu))
     }
   }, [isSuccess])
 
@@ -66,6 +73,7 @@ const DishMenu = () => {
               <DisItem
                 dishName={item.dishName}
                 imageUrl={item.imageUrl}
+                navigation={navigation}
               />
             )}
           />
@@ -83,13 +91,19 @@ export default DishMenu
 
 type dishItemType = {
   dishName: string,
-  imageUrl: string
+  imageUrl: string,
+  navigation: DeliveryScreenNavigationProps
 }
 
-const DisItem = ({ dishName, imageUrl }: dishItemType) => {
+const DisItem = ({ dishName, imageUrl, navigation }: dishItemType) => {
+
+  const handleSearch = () => {
+    navigation.navigate('SearchView', { searchKey: dishName })
+  }
+
 
   return (
-    <TouchableOpacity className='mx-3 my-2'>
+    <TouchableOpacity className='mx-3 my-2' onPress={handleSearch}>
       <View className='flex justify-center items-center '>
         <Image
           source={{ uri: imageUrl }}

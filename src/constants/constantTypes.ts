@@ -2,36 +2,11 @@
 
 // * menuType
 export type menuType = {
-  _id:string,
+  _id: string,
   dishName: string,
   imageUrl: string,
   timeStamp: Date
 }
-
-// * restaurant type
-// type OpeningHoursType = {
-//   monday: string;
-//   tuesday: string;
-//   wednesday: string;
-//   thursday: string;
-//   friday: string;
-//   saturday: string;
-//   sunday: string;
-// };
-
-// export type restaurantType = {
-//   _id:string
-//   name: string,
-//   cuisine: string,
-//   deliveryDelay: string,
-//   imageUrl: string,
-//   distance: string,
-//   rating: number,
-//   menu:string[],
-//   openingHours: OpeningHoursType
-//   location: { lat: string, long: string }
-//   timeStamp: Date
-// }
 
 
 export type restaurantType = {
@@ -58,25 +33,8 @@ export type restaurantType = {
 
 
 // * dishType
-
-// export type dishType = {
-//   _id:string,
-//   dishName: string,
-//   description: string,
-//   imageUrl: string,
-//   price: number,
-//   rating: number,
-//   timeStamp: Date
-// }
-
-// export type dishesType = {
-//   _id: string,
-//   dishes: dishType[]
-// }
-
-
 export type dishType = {
-  _id:string,
+  _id: string,
   id: string;
   dishName: string;
   description: string;
@@ -94,6 +52,16 @@ export type dishesType = {
   dishes: dishType[];
 };
 
+// * all restaurants menu type
+export type MenuType = {
+  _id: string;
+  dishName: string;
+  imageUrl: string;
+  timeStamp: Date;
+  __v: number;
+};
+
+
 
 // * custom signUp type
 export type customAuthResType = {
@@ -102,3 +70,59 @@ export type customAuthResType = {
   message: string,
 }
 
+// * getRestaurantDishesQueryResponse type
+export type getRestaurantDishesResType = {
+  message: string,
+  dishes: dishesType,
+  currentPage: number,
+  numberOfPages: number,
+  isListEnd: boolean
+}
+
+// * getAllRestaurantsQuery response  type
+export type getAllRestaurantsQueryResType = {
+  message: string,
+  currentPage: number,
+  numberOfPages: number,
+  restaurants: restaurantType[],
+}
+
+// *get favorites response 
+export type getFavoriteRestaurantsResType = {
+  message: string,
+  restaurantIds: string[],
+}
+
+// * add Fav res type
+export type addFavoriteRestaurantResType = {
+  message: string,
+  restaurantId: string
+}
+
+
+// * searchDishInResturants res type
+export type searchDishInRestaurantsResType = {
+  message: string,
+  currentPage: number,
+  numberOfPages: number,
+  restuarnts: restaurantType[]
+}
+
+
+// * search autocomplete res
+export type autocompleteType = Pick<
+  restaurantType,
+  'id' | 'Restaurant_Name' | 'Category'
+>
+
+// * all restaurants menu
+export type getMenuResType = {
+  message: string,
+  menu: menuType[]
+}
+
+// * get restaurant by id
+export type getRestaurantByIdResType = {
+  message: string,
+  restaurant: restaurantType
+}

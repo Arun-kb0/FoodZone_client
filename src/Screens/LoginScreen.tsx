@@ -5,9 +5,8 @@ import React, { useState, useEffect } from 'react'
 import { useNavigation } from '@react-navigation/native'
 import SocialLogin from '../components/login/SocialLogin'
 import Login from '../components/login/Login'
-import { storage } from '../constants/mmkvStorage'
-import { DeliveryScreenNavigationProps } from '../navigation/TabNavigator'
 import { RootStackNavigationProp } from '../navigation/RootNavigator'
+import { storage } from '../constants/mmkvStorage'
 
 const LoginScreen = () => {
 
@@ -20,11 +19,9 @@ const LoginScreen = () => {
     navigation.navigate("SignUpScreen")
   }
 
-
-  // useEffect(() => {
-  //   navigation.navigate('Main')
-  // }, [storage.contains('accessToken')])
-
+  useEffect(() => {
+    navigation.navigate('Main')
+  }, [storage.contains('accessToken')])
 
   return (
     <SafeAreaView className='bg-white h-[100%] flex justify-end'>

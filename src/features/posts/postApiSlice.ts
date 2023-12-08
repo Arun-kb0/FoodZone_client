@@ -1,54 +1,97 @@
 import { apiSlice } from "../../app/api/apiSlice";
+import {
+  addFavoriteRestaurantResType, getAllRestaurantsQueryResType,
+  getFavoriteRestaurantsResType,getMenuResType,
+  getRestaurantByIdResType, getRestaurantDishesResType,
+  restaurantType, searchDishInRestaurantsResType
+} from "../../constants/constantTypes";
+
+type getRestaurantDishesQueryParamsType = {
+  restaurantId: string,
+  page: number
+}
+type getAllRestaurantsQueryParamsType = {
+  page: number
+}
+type addFavoriteRestaurantQueryParamType = Pick<restaurantType, 'id'>
+type searchDishInRestaurantsQueryParamType = {
+  searchInput: string,
+  page: number
+}
+type getRestaurantByIdQueryParamType = {id:string}
+
 
 
 export const postApiSlice = apiSlice.injectEndpoints({
   endpoints: builder => ({
 
-    getRecomentedResuturant: builder.query({
+    getRecommendedRestaurant: builder.query<getAllRestaurantsQueryResType, void>({
       query: () => ({ url: "/restaurant/all" }),
-      providesTags:['RecomentedRestaruantPost']
+      providesTags: ['RecomentedRestaruantPost']
     }),
 
-    getAllResturants: builder.query({
-      query: () => ({ url: "/restaurant/all" }),
-      providesTags:['AllRestaurants']
-
+    getAllResturants: builder.query<getAllRestaurantsQueryResType, getAllRestaurantsQueryParamsType>({
+      query: ({ page }) => ({
+        url: `/restaurant/all`,
+        params: { page }
+      }),
+      providesTags: ['AllRestaurants']
     }),
 
-    getMenu: builder.query({
+    getMenu: builder.query<getMenuResType, void>({
       query: () => ({ url: '/dish/menu' }),
-      providesTags:['RestaurantMenu']
+      providesTags: ['RestaurantMenu']
     }),
 
-    getRestaurantDishes: builder.query({
-      query: (restaurantId: string) => ({ url: `/restaurant/dishes?restaurantId=${restaurantId}` }),
+    getRestaurantDishes: builder.query<getRestaurantDishesResType, getRestaurantDishesQueryParamsType>({
+      query: ({ restaurantId, page }: getRestaurantDishesQueryParamsType) => ({
+        url: `/restaurant/dishes`,
+        params: { restaurantId, page }
+      }),
       providesTags: ['RestaurantDishes']
     }),
 
-    getFavoriteRestaurants: builder.query({
+    getFavoriteRestaurants: builder.query<getFavoriteRestaurantsResType, void>({
       query: () => ({ url: '/restaurant/favorites' }),
       providesTags: ['FavoriteRestaurants']
     }),
 
-    addFavoriteResturant: builder.mutation({
-      query: (restaurantId:string) => ({
+    addFavoriteResturant: builder.mutation<addFavoriteRestaurantResType, addFavoriteRestaurantQueryParamType>({
+      query: ({ id }) => ({
         url: '/restaurant/favorites',
         method: 'POST',
         body: {
-          restaurantId
+          restaurantId: id
         }
       }),
     }),
+
+    searchDishInResturants: builder.query<searchDishInRestaurantsResType, searchDishInRestaurantsQueryParamType>({
+      query: ({ searchInput, page }) => ({
+        url: '/restaurant/searchdish',
+        params: { dishName: searchInput, page }
+      })
+    }),
+
+    getRestaurantById: builder.query<getRestaurantByIdResType, getRestaurantByIdQueryParamType>({
+      query: ({ id }) => ({
+        url: '/restaurant/find',
+        params: { restaurantId: id}
+      })
+    })
 
   })
 })
 
 
 export const {
-  useGetRecomentedResuturantQuery,
-  useGetAllResturantsQuery,
+  useGetRecommendedRestaurantQuery,
+  useLazyGetAllResturantsQuery,
   useGetMenuQuery,
+  useLazyGetRestaurantDishesQuery,
   useGetRestaurantDishesQuery,
   useAddFavoriteResturantMutation,
-  useGetFavoriteRestaurantsQuery
+  useGetFavoriteRestaurantsQuery,
+  useLazySearchDishInResturantsQuery,
+  useLazyGetRestaurantByIdQuery
 } = postApiSlice

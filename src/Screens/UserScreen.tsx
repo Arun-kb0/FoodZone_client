@@ -2,17 +2,18 @@ import {
   View, ScrollView, Text, SafeAreaView,
   TouchableOpacity
 } from 'react-native'
-import React, { useLayoutEffect } from 'react'
+import React, { useEffect, useLayoutEffect } from 'react'
 import { useNavigation } from '@react-navigation/native'
 import UserHeader from '../components/user/UserHeader'
 import { useDispatch, useSelector } from 'react-redux'
 import { RootState } from '../app/store'
 import Avatar from '../components/basic/Avatar'
-import { IconAntD, IconEntypo, IconFeather, IconFontawsm, IconIon, IconMat, IconMatCom } from '../constants/icons'
+import { IconAntD, IconFeather, IconFontawsm, IconIon, IconMat, IconMatCom } from '../constants/icons'
 import UserCard from '../components/user/UserCard'
 import UserBtn from '../components/user/UserBtn'
 import { clearAuthData } from '../features/auth/authSlice'
 import { DeliveryScreenNavigationProps } from '../navigation/TabNavigator'
+import { mmkvkeys, storage } from '../constants/mmkvStorage'
 
 
 
@@ -94,13 +95,19 @@ const UserScreen = () => {
     })
   }, [])
 
+  useEffect(() => {
+    console.log('name user screen' , name)
+    const token = storage.getString(mmkvkeys.accessToken)
+    !token && navigation.navigate('Home')
+  },[])
+
   return (
     <SafeAreaView className='mx-4 flex-1'>
       {/* account name */}
       <View className='flex-row items-center space-x-6 bg-white px-4 py-6 w-full rounded-xl shadow-xl mt-24' >
         <Avatar />
         <View className='flex-1'>
-          <Text className='text-2xl font-semibold '>{'name'}</Text>
+          <Text className='text-2xl font-semibold '>{storage.getString(mmkvkeys.name)}</Text>
           <TouchableOpacity className='flex-row items-center my-4'>
             <Text className='text-sm text-red-500 '>View activity </Text>
             <IconAntD name='caretright' size={15} className='text-red-500' />

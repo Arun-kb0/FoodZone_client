@@ -91,11 +91,6 @@ const SignUpScreen = () => {
       [name]: value
     }))
 
-    // ! fix needed 
-    // if (name === 'phone') {
-    // console.log((name === 'phone' && value !== '') ? regex.phone.test(value) : !isError.phone)
-    // }
-
     const isEmailValid = name === 'email' ? regex.email.test(value) : !isError.email;
     const isPasswordValid = name === 'password' ? regex.password.test(value) : !isError.password;
     const isConfirmPasswordValid = name === 'confirmPassword' ? initSignUpState.password === initSignUpState.confirmPassword : !isError.confirmPassword;

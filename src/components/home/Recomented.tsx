@@ -3,7 +3,7 @@ import React, { useState, useCallback, useEffect, useMemo, Dispatch } from 'reac
 import ListHeading from '../basic/ListHeading'
 import { useNavigation } from '@react-navigation/native'
 import { restaurantType } from '../../constants/constantTypes'
-import { useGetRecomentedResuturantQuery } from '../../features/posts/postApiSlice'
+import { useGetRecommendedRestaurantQuery } from '../../features/posts/postApiSlice'
 import { useDispatch } from 'react-redux'
 import { setSelectedRestaurant } from '../../features/posts/postSlice'
 import { AnyAction } from 'redux'
@@ -22,7 +22,7 @@ const Recommended = () => {
   const {
     data: recomentedResturants,
     isLoading, isError, isSuccess, error
-  } = useGetRecomentedResuturantQuery('')
+  } = useGetRecommendedRestaurantQuery()
 
   useMemo(() => {
     if (isSuccess) {
