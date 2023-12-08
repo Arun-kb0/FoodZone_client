@@ -15,7 +15,7 @@ interface customeResErrorType {
 
 const baseQuery = fetchBaseQuery({
   baseUrl: `http://${IP_ADDRESS}:${PORT}`,
-  // baseUrl: `http://192.168.233.157:3000`,
+  // baseUrl: `http://192.168.114.157:3000`,
   credentials: 'include',
   prepareHeaders: (headers) => {
     const token = storage.getString(mmkvkeys.accessToken)

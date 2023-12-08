@@ -9,6 +9,9 @@ import DishMenu from '../components/home/DishMenu'
 import { restaurantType } from '../constants/constantTypes'
 
 
+import { Realm } from '@realm/react'
+import { REALM_API_KEY, REALM_APP_ID } from '@env'
+
 
 type searchViewPropsType = {
   route: {
@@ -37,6 +40,11 @@ const SearchView = ({ route }: searchViewPropsType) => {
     })
   }, [navigation])
 
+
+  useEffect(() => {
+    console.log('\n\n relam res - ', resturantsState)
+  }, [resturantsState])
+
   const [searchDishInResturantsQuery,
     { data: restaurantData,
       isFetching,
@@ -46,6 +54,7 @@ const SearchView = ({ route }: searchViewPropsType) => {
     }
   ] = useLazySearchDishInResturantsQuery()
 
+  // ! dont remove 
   useEffect(() => {
     searchDishInResturantsQuery({ searchInput: searchKey, page }, true)
   }, [page])
@@ -68,7 +77,7 @@ const SearchView = ({ route }: searchViewPropsType) => {
   return (
     <SafeAreaView>
 
-      {isSuccess &&
+      {resturantsState &&
         < FlatList
           className=' h-auto pt-2 pb-10'
           contentContainerStyle={{
@@ -76,7 +85,6 @@ const SearchView = ({ route }: searchViewPropsType) => {
           }}
           initialNumToRender={4}
           onEndReached={handlePage}
-
           data={resturantsState}
           keyExtractor={item => item.id}
           renderItem={({ item }) => (
@@ -87,7 +95,7 @@ const SearchView = ({ route }: searchViewPropsType) => {
               isFav={false}
             />
           )}
-          ListFooterComponent={<EndComponent isFetching={isFetching} />}
+        ListFooterComponent={<EndComponent isFetching={isLoading ? false :isFetching} />}
         />
       }
 

@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { dishType, restaurantType } from "../../constants/constantTypes";
+import { dishType, menuType, restaurantType } from "../../constants/constantTypes";
 
 
 type postState = {
@@ -7,7 +7,8 @@ type postState = {
   selectedRestaurant: restaurantType | null,
   selectedDish: Record<string, dishType[]> | null,
   favorite: restaurantType[] | null,
-  favoriteResturantIds: string[] | null
+  favoriteResturantIds: string[] | null,
+  menu: menuType[]|null
 }
 
 type setRestaurantsPayloadType = {
@@ -34,7 +35,8 @@ const initialState: postState = {
   selectedRestaurant: null,
   selectedDish: null,
   favorite: null,
-  favoriteResturantIds: []
+  favoriteResturantIds: [],
+  menu:[]
 }
 
 const postSlice = createSlice({
@@ -87,6 +89,10 @@ const postSlice = createSlice({
       const { restaurantIds } = action.payload
       state.favoriteResturantIds = restaurantIds
       console.log('favoriteResturantIds length ', state.favoriteResturantIds?.length)
+    },
+
+    setAllMenuItems(state, action: PayloadAction<menuType[]>) {
+      state.menu = action.payload
     }
 
   }
@@ -95,7 +101,7 @@ const postSlice = createSlice({
 
 export const {
   setRestaurants, setSelectedRestaurant, setSelectedDish,
-  setFavoriteRestaurant, setFavoriteRestaurants
+  setFavoriteRestaurant, setFavoriteRestaurants, setAllMenuItems
 } = postSlice.actions
 
 export default postSlice.reducer

@@ -32,7 +32,7 @@ const RestaurantScreen = ({ route }: RestaurantScreenPropsType) => {
 
   const navigation = useNavigation()
 
-  const [isVisible, setisVisible] = useState(false)
+  const [isVisible, setIsVisible] = useState(false)
   const [isSearchOpen, setIsSearchOpen] = useState(false)
   const [totalCount, setTotalCount] = useState(0)
   const [page, setPage] = useState(1)
@@ -81,7 +81,7 @@ const RestaurantScreen = ({ route }: RestaurantScreenPropsType) => {
   return (
     <SafeAreaView className={`mt-14 relative h-[96%] `} >
 
-      <TouchableOpacity className={`absolute left-[45%] z-50 shadow-xl flex  justify-center items-center bg-gray-900 rounded-xl p-2 opacity-90 ${totalCount > 0 ? "bottom-[13%]" : "bottom-8"}`} onPress={() => setisVisible(!isVisible)} >
+      <TouchableOpacity className={`absolute left-[45%] z-50 shadow-xl flex  justify-center items-center bg-gray-900 rounded-xl p-2 opacity-90 ${totalCount > 0 ? "bottom-[13%]" : "bottom-8"}`} onPress={() => setIsVisible(!isVisible)} >
         <Text className='text-lg font-bold text-white'>Menu</Text>
         <IconMatCom name="silverware-fork-knife" size={30} color="white" />
       </TouchableOpacity>
@@ -89,7 +89,7 @@ const RestaurantScreen = ({ route }: RestaurantScreenPropsType) => {
         <RestaurantMenu
           items={selectedRestaurant?.Category}
           isVisible={isVisible}
-          closeModel={setisVisible}
+          closeModel={setIsVisible}
         />
       }
       {selectedRestaurant && restaurantCart && totalCount > 0 &&
@@ -116,7 +116,7 @@ const RestaurantScreen = ({ route }: RestaurantScreenPropsType) => {
         />
 
         <View className='flex-1 justify-center items-center'>
-          <ListHeading title='Recomented' />
+          <ListHeading title='Recommended' />
           <RestaurantDishes page={page} />
         </View>
 

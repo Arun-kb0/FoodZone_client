@@ -6,25 +6,28 @@ import { menuType } from '../../constants/constantTypes'
 import { NativeScrollEvent } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
 import { DeliveryScreenNavigationProps } from '../../navigation/TabNavigator'
+import { useDispatch } from 'react-redux'
+import { setAllMenuItems } from '../../features/posts/postSlice'
 
 
 
 const DishMenu = () => {
+  const dispatch = useDispatch()
   const navigation = useNavigation<DeliveryScreenNavigationProps>()
 
   const [menu, setMenu] = useState<menuType[]>()
-  
+
   const {
     data: menuList,
     isLoading,
     isSuccess,
     isFetching,
-  } = useGetMenuQuery('')
+  } = useGetMenuQuery()
 
-  useMemo(() => {
+  useEffect(() => {
     if (menuList) {
       setMenu(menuList.menu)
-      console.log(menuList.menu.length)
+      dispatch(setAllMenuItems(menuList.menu))
     }
   }, [isSuccess])
 
@@ -92,10 +95,10 @@ type dishItemType = {
   navigation: DeliveryScreenNavigationProps
 }
 
-const DisItem = ({ dishName, imageUrl,navigation }: dishItemType) => {
+const DisItem = ({ dishName, imageUrl, navigation }: dishItemType) => {
 
   const handleSearch = () => {
-    navigation.navigate('SearchView', { searchKey :dishName})
+    navigation.navigate('SearchView', { searchKey: dishName })
   }
 
 

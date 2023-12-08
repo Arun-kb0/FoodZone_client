@@ -52,6 +52,16 @@ export type dishesType = {
   dishes: dishType[];
 };
 
+// * all restaurants menu type
+export type MenuType = {
+  _id: string;
+  dishName: string;
+  imageUrl: string;
+  timeStamp: Date;
+  __v: number;
+};
+
+
 
 // * custom signUp type
 export type customAuthResType = {
@@ -73,8 +83,8 @@ export type getRestaurantDishesResType = {
 export type getAllRestaurantsQueryResType = {
   message: string,
   currentPage: number,
-  numberOfPages:number,
-  restaurants:restaurantType[],
+  numberOfPages: number,
+  restaurants: restaurantType[],
 }
 
 // *get favorites response 
@@ -84,16 +94,35 @@ export type getFavoriteRestaurantsResType = {
 }
 
 // * add Fav res type
-export type addFavoriteResturantResType = {
+export type addFavoriteRestaurantResType = {
   message: string,
-  restaurantId:string
+  restaurantId: string
 }
 
 
 // * searchDishInResturants res type
-export type searchDishInResturantsResType = {
+export type searchDishInRestaurantsResType = {
   message: string,
   currentPage: number,
-  numberOfPages:number,
-  restuarnts:restaurantType[]
+  numberOfPages: number,
+  restuarnts: restaurantType[]
+}
+
+
+// * search autocomplete res
+export type autocompleteType = Pick<
+  restaurantType,
+  'id' | 'Restaurant_Name' | 'Category'
+>
+
+// * all restaurants menu
+export type getMenuResType = {
+  message: string,
+  menu: menuType[]
+}
+
+// * get restaurant by id
+export type getRestaurantByIdResType = {
+  message: string,
+  restaurant: restaurantType
 }

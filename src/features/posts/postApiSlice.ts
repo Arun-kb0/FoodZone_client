@@ -1,38 +1,44 @@
 import { apiSlice } from "../../app/api/apiSlice";
-import { addFavoriteResturantResType, getAllRestaurantsQueryResType, getFavoriteRestaurantsResType, getRestaurantDishesResType, restaurantType, searchDishInResturantsResType } from "../../constants/constantTypes";
+import {
+  addFavoriteRestaurantResType, getAllRestaurantsQueryResType,
+  getFavoriteRestaurantsResType,getMenuResType,
+  getRestaurantByIdResType, getRestaurantDishesResType,
+  restaurantType, searchDishInRestaurantsResType
+} from "../../constants/constantTypes";
 
 type getRestaurantDishesQueryParamsType = {
   restaurantId: string,
   page: number
 }
-type getAllResturantsQueryParamsType = {
+type getAllRestaurantsQueryParamsType = {
   page: number
 }
-type addFavoriteResturanQueryParamType = Pick<restaurantType, 'id'>
-type searchDishInResturantsQueryParamType = {
+type addFavoriteRestaurantQueryParamType = Pick<restaurantType, 'id'>
+type searchDishInRestaurantsQueryParamType = {
   searchInput: string,
   page: number
 }
+type getRestaurantByIdQueryParamType = {id:string}
 
 
 
 export const postApiSlice = apiSlice.injectEndpoints({
   endpoints: builder => ({
 
-    getRecomentedResuturant: builder.query<getAllRestaurantsQueryResType, void>({
+    getRecommendedRestaurant: builder.query<getAllRestaurantsQueryResType, void>({
       query: () => ({ url: "/restaurant/all" }),
       providesTags: ['RecomentedRestaruantPost']
     }),
 
-    getAllResturants: builder.query<getAllRestaurantsQueryResType, getAllResturantsQueryParamsType>({
-      query: ({ page }: getAllResturantsQueryParamsType) => ({
+    getAllResturants: builder.query<getAllRestaurantsQueryResType, getAllRestaurantsQueryParamsType>({
+      query: ({ page }) => ({
         url: `/restaurant/all`,
         params: { page }
       }),
       providesTags: ['AllRestaurants']
     }),
 
-    getMenu: builder.query({
+    getMenu: builder.query<getMenuResType, void>({
       query: () => ({ url: '/dish/menu' }),
       providesTags: ['RestaurantMenu']
     }),
@@ -50,7 +56,7 @@ export const postApiSlice = apiSlice.injectEndpoints({
       providesTags: ['FavoriteRestaurants']
     }),
 
-    addFavoriteResturant: builder.mutation<addFavoriteResturantResType, addFavoriteResturanQueryParamType>({
+    addFavoriteResturant: builder.mutation<addFavoriteRestaurantResType, addFavoriteRestaurantQueryParamType>({
       query: ({ id }) => ({
         url: '/restaurant/favorites',
         method: 'POST',
@@ -60,10 +66,17 @@ export const postApiSlice = apiSlice.injectEndpoints({
       }),
     }),
 
-    searchDishInResturants: builder.query<searchDishInResturantsResType, searchDishInResturantsQueryParamType>({
+    searchDishInResturants: builder.query<searchDishInRestaurantsResType, searchDishInRestaurantsQueryParamType>({
       query: ({ searchInput, page }) => ({
         url: '/restaurant/searchdish',
         params: { dishName: searchInput, page }
+      })
+    }),
+
+    getRestaurantById: builder.query<getRestaurantByIdResType, getRestaurantByIdQueryParamType>({
+      query: ({ id }) => ({
+        url: '/restaurant/find',
+        params: { restaurantId: id}
       })
     })
 
@@ -72,12 +85,13 @@ export const postApiSlice = apiSlice.injectEndpoints({
 
 
 export const {
-  useGetRecomentedResuturantQuery,
+  useGetRecommendedRestaurantQuery,
   useLazyGetAllResturantsQuery,
   useGetMenuQuery,
   useLazyGetRestaurantDishesQuery,
   useGetRestaurantDishesQuery,
   useAddFavoriteResturantMutation,
   useGetFavoriteRestaurantsQuery,
-  useLazySearchDishInResturantsQuery
+  useLazySearchDishInResturantsQuery,
+  useLazyGetRestaurantByIdQuery
 } = postApiSlice
