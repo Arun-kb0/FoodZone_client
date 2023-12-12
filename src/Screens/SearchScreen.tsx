@@ -197,7 +197,7 @@ const MenuSearchItem = ({ dishName, navigation }: menuSearchItemProType) => {
       <Text className='text-gray-700 text-lg'>{dishName}</Text>
       <View className='flex-row space-x-1 justify-center'>
         <IconEntypo name='chevron-right' size={18} className='text-red-400' />
-        <Text className='text-red-400 '>in Dishs</Text>
+        <Text className='text-red-400 '>in Dishes</Text>
       </View>
     </TouchableOpacity>
   )

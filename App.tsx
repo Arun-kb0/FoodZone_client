@@ -4,14 +4,13 @@ import { Provider } from 'react-redux'
 import { store } from './src/app/store';
 import { RealmProvider } from '@realm/react'
 import 'expo-dev-client';
-import { Task } from './src/relam/Task';
 
 
 export default function App() {
 
   return (
     <NavigationContainer>
-      <RealmProvider schema={[Task]}>
+      <RealmProvider>
         <Provider store={store}>
           <RootNavigator />
         </Provider>

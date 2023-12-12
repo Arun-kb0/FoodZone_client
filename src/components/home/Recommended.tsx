@@ -20,26 +20,25 @@ const Recommended = () => {
   const [restaurants, setRestaurants] = useState<restaurantType[]>()
 
   const {
-    data: recomentedResturants,
+    data: recommendedRestaurants,
     isLoading, isError, isSuccess, error
   } = useGetRecommendedRestaurantQuery()
 
   useMemo(() => {
     if (isSuccess) {
-      setRestaurants(recomentedResturants?.restaurants)
+      setRestaurants(recommendedRestaurants?.restaurants)
     }
   }, [isSuccess])
 
   
-  // ! add get restaurants call with page num
-  const handleGetRecomented = (info : {distanceFromEnd: number}) => {
+  const handleGetRecommended = (info : {distanceFromEnd: number}) => {
     console.log("end", info)
   }
 
   return (
     <View className='px-1 py-2 w-auto'>
 
-      <ListHeading title='Recomented for you' />
+      <ListHeading title='Recommended for you' />
 
       {isSuccess &&
         <FlatList
@@ -50,7 +49,7 @@ const Recommended = () => {
             length: 208, offset: 448 * index, index
           })}
           initialNumToRender={2}
-          onEndReached={handleGetRecomented}
+          onEndReached={handleGetRecommended}
 
           data={restaurants}
           keyExtractor={item => item._id}
@@ -74,7 +73,7 @@ export default Recommended
 
 
 
-type RecommentedItemType = {
+type RecommendedItemType = {
   restaurant: restaurantType,
   dispatch: Dispatch<AnyAction>,
   navigation: DeliveryScreenNavigationProps
@@ -82,7 +81,7 @@ type RecommentedItemType = {
 
 
 
-const RecommendedItem = ({ restaurant, dispatch, navigation }: RecommentedItemType) => {
+const RecommendedItem = ({ restaurant, dispatch, navigation }: RecommendedItemType) => {
   const { _id, Restaurant_Name, Category, imageUrl } = restaurant
   const handleNavigate = useCallback(() => {
     dispatch(setSelectedRestaurant(restaurant))

@@ -5,7 +5,6 @@ import { RootState } from '../../app/store'
 import BackButton from '../basic/BackButton'
 
 const SignUpHeader = () => {
-  const { selectedRestaurant } = useSelector((state: RootState) => state.postSlice)
 
   return (
     <View className='absolute z-50 w-full pt-10 pb-2 px-1 flex-row items-center justify-around'>

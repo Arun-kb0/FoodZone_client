@@ -24,15 +24,15 @@ const BillSummary = ({ selectedRestaurant, total }: BillSummaryType) => {
   })
   useEffect(() => {
     const distance = 2
-    const feePerkm = 9
+    const feePerKm = 9
     const platformFee = 2
     const gstRate = 18
     if (distance) {
-      const gstOnitem = parseFloat(((total * gstRate) / 100).toFixed(2))
+      const gstOnItem = parseFloat(((total * gstRate) / 100).toFixed(2))
       setBill(({
-        total: (distance * feePerkm) + platformFee + gstOnitem + total,
-        gstTotalOnItem: gstOnitem,
-        deliveryPartnerFee: distance * feePerkm
+        total: (distance * feePerKm) + platformFee + gstOnItem + total,
+        gstTotalOnItem: gstOnItem,
+        deliveryPartnerFee: distance * feePerKm
       }))
     }
   }, [total])

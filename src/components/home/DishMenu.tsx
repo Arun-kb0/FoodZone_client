@@ -1,4 +1,7 @@
-import { View, Text, ScrollView, Image, Touchable, TouchableOpacity, FlatList, Dimensions, NativeSyntheticEvent } from 'react-native'
+import {
+  View, Text, ScrollView, Image, Touchable, TouchableOpacity,
+  FlatList, Dimensions, NativeSyntheticEvent
+} from 'react-native'
 import React, { useEffect, useMemo, useState } from 'react'
 import ListHeading from '../basic/ListHeading'
 import { useGetMenuQuery } from '../../features/posts/postApiSlice'
@@ -31,7 +34,6 @@ const DishMenu = () => {
     }
   }, [isSuccess])
 
-  // ! get req for 
   const handleScroll = (e: NativeSyntheticEvent<NativeScrollEvent>) => {
     const { contentOffset, contentSize, layoutMeasurement } = e.nativeEvent;
     const scrollX = contentOffset.x;

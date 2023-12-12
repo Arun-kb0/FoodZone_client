@@ -19,10 +19,10 @@ const AddedItems = () => {
   useEffect(() => {
     if (selectedDish && cartItems && selectedRestaurant) {
       const restaurantDishes = selectedDish[selectedRestaurant?.id]
-      const filterdDishes = restaurantDishes?.filter((item) => (
+      const filteredDishes = restaurantDishes?.filter((item) => (
         cartItems[item.id]
       ))
-      setDishes(filterdDishes)
+      setDishes(filteredDishes)
     }
   }, [restaurants, cartItems])
 

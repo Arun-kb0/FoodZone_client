@@ -5,7 +5,7 @@ import { clearAuthData, setAuthData } from '../../features/auth/authSlice'
 import { GoogleSignin } from '@react-native-google-signin/google-signin'
 
 
-interface customeResErrorType {
+interface customResErrorType {
   data: {
     error: string
     message: string,
@@ -15,7 +15,7 @@ interface customeResErrorType {
 
 const baseQuery = fetchBaseQuery({
   baseUrl: `http://${IP_ADDRESS}:${PORT}`,
-  // baseUrl: `http://192.168.114.157:3000`,
+  // baseUrl: `http://192.168.142.157:3000`,
   credentials: 'include',
   prepareHeaders: (headers) => {
     const token = storage.getString(mmkvkeys.accessToken)
@@ -63,12 +63,12 @@ const baseQueryWithReauth = async (args: any, api: any, extraOptions: any): Prom
       console.log('google auth refresh')
       const accessToken = storage.getString(mmkvkeys.accessToken)
       if (accessToken) {
-        const isExpiered = await GoogleSignin.isSignedIn()
+        const isExpired = await GoogleSignin.isSignedIn()
         await GoogleSignin.clearCachedAccessToken(accessToken)
         await GoogleSignin.hasPlayServices()
         const userData = await GoogleSignin.signIn()
         const token = await GoogleSignin.getTokens()
-        console.log("isExpiered", isExpiered)
+        console.log("isExpired", isExpired)
         console.log("userData")
         console.log(userData)
 
@@ -100,10 +100,9 @@ const baseQueryWithReauth = async (args: any, api: any, extraOptions: any): Prom
 
 export const apiSlice = createApi({
   reducerPath: 'api',
-  // baseQuery: baseQuery as BaseQueryFn<string | FetchArgs, unknown, customeResErrorType, {}>,
-  baseQuery: baseQueryWithReauth as BaseQueryFn<string | FetchArgs, unknown, customeResErrorType, {}>,
+  baseQuery: baseQueryWithReauth as BaseQueryFn<string | FetchArgs, unknown, customResErrorType, {}>,
   tagTypes: [
-    'RecomentedRestaruantPost', 'AllRestaurants', 'RestaurantDishes',
+    'RecommendedRestaurantPost', 'AllRestaurants', 'RestaurantDishes',
     'RestaurantMenu', 'FavoriteRestaurants', 'RestaurantDishes',
     'addFavoriteRestaurant',
   ],

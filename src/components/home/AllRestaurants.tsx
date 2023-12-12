@@ -6,7 +6,7 @@ import React, { useState, useMemo, useEffect, useCallback, useLayoutEffect } fro
 import ListHeading from '../basic/ListHeading'
 import { useNavigation } from '@react-navigation/native'
 import SortModel from './SortModel'
-import { useAddFavoriteResturantMutation, useGetFavoriteRestaurantsQuery, useLazyGetAllResturantsQuery } from '../../features/posts/postApiSlice'
+import { useAddFavoriteRestaurantMutation, useGetFavoriteRestaurantsQuery, useLazyGetAllRestaurantsQuery } from '../../features/posts/postApiSlice'
 import { restaurantType } from '../../constants/constantTypes'
 import { useDispatch, useSelector } from 'react-redux'
 import { setFavoriteRestaurant, setFavoriteRestaurants, setRestaurants, setSelectedRestaurant } from '../../features/posts/postSlice'
@@ -14,7 +14,7 @@ import { AnyAction, Dispatch } from 'redux'
 import { IconFontawsm, IconIon, IconMatCom } from '../../constants/icons'
 import { RootState } from '../../app/store'
 import { DeliveryScreenNavigationProps } from '../../navigation/TabNavigator'
-import { RestaruantCard } from '../basic/RestaurantCard'
+import { RestaurantCard } from '../basic/RestaurantCard'
 
 type allRestaurantsPropsType = {
   page: number
@@ -28,47 +28,47 @@ const AllRestaurants = ({ page }: allRestaurantsPropsType) => {
   const [restaurants, setRestaurantsState] = useState<restaurantType[] | []>([])
   const [width, setWidth] = useState(Dimensions.get("window").width)
 
-  const { favoriteResturantIds } = useSelector((state: RootState) => state.postSlice)
-
+  const { favoriteRestaurantIds } = useSelector((state: RootState) => state.postSlice)
+  
   const {
-    data: favResturant,
+    data: favRestaurant,
     isLoading: favIsLoading,
     isError: favIsError,
     isSuccess: favIsSuccess
   } = useGetFavoriteRestaurantsQuery()
 
   const [getAllRestaurants,
-    { data: allRestaruants,
+    { data: allRestaurants,
       isLoading,
       isError,
       isSuccess,
       error,
       isFetching
     }
-  ] = useLazyGetAllResturantsQuery()
+  ] = useLazyGetAllRestaurantsQuery()
 
   useEffect(() => {
     getAllRestaurants({ page }, true)
-    console.log('all resturants page - ', page)
+    console.log('all restaurants page - ', page)
   }, [page])
 
   useEffect(() => {
-    if (isSuccess && allRestaruants?.restaurants) {
+    if (isSuccess && allRestaurants?.restaurants) {
       setRestaurantsState(prev => [
         ...prev,
-        ...allRestaruants.restaurants
+        ...allRestaurants.restaurants
       ])
     }
-  }, [isSuccess, allRestaruants])
+  }, [isSuccess, allRestaurants])
 
   useEffect(() => {
-    if (allRestaruants) {
-      dispatch(setRestaurants(allRestaruants))
+    if (allRestaurants) {
+      dispatch(setRestaurants(allRestaurants))
     }
-    if (favResturant) {
-      dispatch(setFavoriteRestaurants({ restaurantIds: favResturant.restaurantIds }))
-      console.log('favResturant.restaurantIds ')
-      console.log(favResturant.restaurantIds)
+    if (favRestaurant) {
+      dispatch(setFavoriteRestaurants({ restaurantIds: favRestaurant.restaurantIds }))
+      console.log('favRestaurant.restaurantIds ')
+      console.log(favRestaurant.restaurantIds)
     }
   }, [isSuccess, favIsSuccess])
 
@@ -79,17 +79,17 @@ const AllRestaurants = ({ page }: allRestaurantsPropsType) => {
   // * console logs
   useEffect(() => {
     if (isSuccess) {
-      console.log('get all resturants success')
-      console.log(typeof allRestaruants);
+      console.log('get all restaurants success')
+      console.log(typeof allRestaurants);
     }
     if (isError) {
-      console.log('get all resturants failed')
+      console.log('get all restaurants failed')
       console.log(error);
     }
     if (isLoading) {
-      console.log('get all resturants loading ...')
+      console.log('get all restaurants loading ...')
     }
-    console.log('get all resturants query res')
+    console.log('get all restaurants query res')
     console.log(isSuccess, isError, isLoading)
   }, [isSuccess, isError, isLoading, error])
 
@@ -101,7 +101,7 @@ const AllRestaurants = ({ page }: allRestaurantsPropsType) => {
         closeModel={setModelOpen}
       />
 
-      <ListHeading title='All restaruants' />
+      <ListHeading title='All restaurants' />
 
       <ScrollView
         horizontal
@@ -148,11 +148,11 @@ const AllRestaurants = ({ page }: allRestaurantsPropsType) => {
             data={restaurants}
             keyExtractor={item => item.id}
             renderItem={({ item }) => (
-              <RestaruantCard
+              <RestaurantCard
                 restaurant={item}
                 dispatch={dispatch}
                 navigation={navigation}
-                isFav={Boolean(favoriteResturantIds?.includes(item.id))}
+                isFav={Boolean(favoriteRestaurantIds?.includes(item.id))}
               />
             )}
             ListFooterComponent={<EndComponent isFetching={isFetching} />}

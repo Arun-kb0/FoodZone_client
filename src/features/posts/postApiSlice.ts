@@ -27,10 +27,10 @@ export const postApiSlice = apiSlice.injectEndpoints({
 
     getRecommendedRestaurant: builder.query<getAllRestaurantsQueryResType, void>({
       query: () => ({ url: "/restaurant/all" }),
-      providesTags: ['RecomentedRestaruantPost']
+      providesTags: ['RecommendedRestaurantPost']
     }),
 
-    getAllResturants: builder.query<getAllRestaurantsQueryResType, getAllRestaurantsQueryParamsType>({
+    getAllRestaurants: builder.query<getAllRestaurantsQueryResType, getAllRestaurantsQueryParamsType>({
       query: ({ page }) => ({
         url: `/restaurant/all`,
         params: { page }
@@ -56,7 +56,7 @@ export const postApiSlice = apiSlice.injectEndpoints({
       providesTags: ['FavoriteRestaurants']
     }),
 
-    addFavoriteResturant: builder.mutation<addFavoriteRestaurantResType, addFavoriteRestaurantQueryParamType>({
+    addFavoriteRestaurant: builder.mutation<addFavoriteRestaurantResType, addFavoriteRestaurantQueryParamType>({
       query: ({ id }) => ({
         url: '/restaurant/favorites',
         method: 'POST',
@@ -66,7 +66,7 @@ export const postApiSlice = apiSlice.injectEndpoints({
       }),
     }),
 
-    searchDishInResturants: builder.query<searchDishInRestaurantsResType, searchDishInRestaurantsQueryParamType>({
+    searchDishInRestaurants: builder.query<searchDishInRestaurantsResType, searchDishInRestaurantsQueryParamType>({
       query: ({ searchInput, page }) => ({
         url: '/restaurant/searchdish',
         params: { dishName: searchInput, page }
@@ -86,12 +86,12 @@ export const postApiSlice = apiSlice.injectEndpoints({
 
 export const {
   useGetRecommendedRestaurantQuery,
-  useLazyGetAllResturantsQuery,
+  useLazyGetAllRestaurantsQuery,
   useGetMenuQuery,
   useLazyGetRestaurantDishesQuery,
   useGetRestaurantDishesQuery,
-  useAddFavoriteResturantMutation,
+  useAddFavoriteRestaurantMutation,
   useGetFavoriteRestaurantsQuery,
-  useLazySearchDishInResturantsQuery,
+  useLazySearchDishInRestaurantsQuery,
   useLazyGetRestaurantByIdQuery
 } = postApiSlice
