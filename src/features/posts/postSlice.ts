@@ -7,7 +7,7 @@ type postState = {
   selectedRestaurant: restaurantType | null,
   selectedDish: Record<string, dishType[]> | null,
   favorite: restaurantType[] | null,
-  favoriteResturantIds: string[] | null,
+  favoriteRestaurantIds: string[] | null,
   menu: menuType[]|null
 }
 
@@ -35,7 +35,7 @@ const initialState: postState = {
   selectedRestaurant: null,
   selectedDish: null,
   favorite: null,
-  favoriteResturantIds: [],
+  favoriteRestaurantIds: [],
   menu:[]
 }
 
@@ -71,24 +71,24 @@ const postSlice = createSlice({
     setFavoriteRestaurant(state, action: PayloadAction<setFavoriteRestaurantPayloadType>) {
       const { restaurantId } = action.payload
 
-      if (state.favoriteResturantIds === null) {
-        state.favoriteResturantIds = [restaurantId]
+      if (state.favoriteRestaurantIds === null) {
+        state.favoriteRestaurantIds = [restaurantId]
       } else {
-        const index = state.favoriteResturantIds.findIndex((id) => id === restaurantId)
+        const index = state.favoriteRestaurantIds.findIndex((id) => id === restaurantId)
         if (index !== -1) {
-          state.favoriteResturantIds.splice(index, 1)
+          state.favoriteRestaurantIds.splice(index, 1)
         } else {
-          state.favoriteResturantIds.unshift(restaurantId)
+          state.favoriteRestaurantIds.unshift(restaurantId)
         }
       }
-      console.log('favoriteResturantIds length ', state.favoriteResturantIds?.length)
-      console.log('favoriteResturantIds ', state.favoriteResturantIds)
+      console.log('favoriteRestaurantIds length ', state.favoriteRestaurantIds?.length)
+      console.log('favoriteRestaurantIds ', state.favoriteRestaurantIds)
     },
 
     setFavoriteRestaurants(state, action: PayloadAction<setFavoriteRestaurantsPayloadType>) {
       const { restaurantIds } = action.payload
-      state.favoriteResturantIds = restaurantIds
-      console.log('favoriteResturantIds length ', state.favoriteResturantIds?.length)
+      state.favoriteRestaurantIds = restaurantIds
+      console.log('favoriteRestaurantIds length ', state.favoriteRestaurantIds?.length)
     },
 
     setAllMenuItems(state, action: PayloadAction<menuType[]>) {

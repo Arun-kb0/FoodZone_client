@@ -7,7 +7,7 @@ const DeliveryInstructions = () => {
     <View className='bg-white shadow-lg space-x-2 space-y-3 mt-3 rounded-xl px-3 py-4 ' >
       <View>
         <Text className='text-gray-900 text-lg font-semibold '>Add delivery instructions</Text>
-        <Text className='text-gray-500'>Help your delivery parnter to reach you faster</Text>
+        <Text className='text-gray-500'>Help your delivery partner to reach you faster</Text>
       </View>
       <ScrollView horizontal showsHorizontalScrollIndicator={false}  className='bg-white shadow-lg '>
 

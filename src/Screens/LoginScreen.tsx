@@ -45,7 +45,7 @@ const LoginScreen = () => {
         <SocialLogin />
 
         <TouchableOpacity className='flex-row space-x-2 items-center justify-center' onPress={navigateToSignUp}>
-          <Text className="text-gray-700 " >Dont have an account ?</Text>
+          <Text className="text-gray-700 " >Don't have an account ?</Text>
           <Text className='text-lg text-red-600 font-semibold'>Sign up</Text>
         </TouchableOpacity>
       </View>

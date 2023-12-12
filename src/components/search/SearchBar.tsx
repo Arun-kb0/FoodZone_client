@@ -8,14 +8,14 @@ import { Realm } from '@realm/react'
 import { autocompleteType } from '../../constants/constantTypes'
 import { REALM_API_KEY, REALM_APP_ID } from '@env'
 
-type serachBarType = {
+type searchBarType = {
   placeholder: string | undefined
   setAutocomplete: React.Dispatch<React.SetStateAction<[] | autocompleteType[]>>
   setSearchTextInScreen: React.Dispatch<React.SetStateAction<string>>
 }
 
 
-const SearchBar = ({ placeholder, setAutocomplete, setSearchTextInScreen }: serachBarType) => {
+const SearchBar = ({ placeholder, setAutocomplete, setSearchTextInScreen }: searchBarType) => {
   const navigation = useNavigation<DeliveryScreenNavigationProps>()
   const [searchInput, setSearchInput] = useState('')
 
@@ -41,7 +41,7 @@ const SearchBar = ({ placeholder, setAutocomplete, setSearchTextInScreen }: sera
         console.log(error)
       }
     }
-    // ! relam function call 
+    // * realm function call 
     if (searchInput.length > 0) {
       connectRealm()
     }

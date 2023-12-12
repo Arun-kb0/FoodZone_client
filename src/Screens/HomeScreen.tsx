@@ -5,8 +5,8 @@ import {
 import React, { useEffect, useLayoutEffect, useState } from 'react'
 import Avatar from '../components/basic/Avatar'
 import { SearchHeader } from '../components/home/SearchHeader'
-import Recomented from '../components/home/Recomented'
-import AllRestaruants from '../components/home/AllRestaurants'
+import Recommended from '../components/home/Recommended'
+import AllRestaurants from '../components/home/AllRestaurants'
 import DishMenu from '../components/home/DishMenu'
 import { useNavigation } from '@react-navigation/native'
 import { DeliveryScreenNavigationProps } from '../navigation/TabNavigator'
@@ -16,17 +16,17 @@ import Address from '../components/home/Address'
 
 const HomeScreen = () => {
   const navigation = useNavigation<DeliveryScreenNavigationProps>()
-  const [isTrasparent, setisTrasparent] = useState(false)
+  const [isTransparent, setIsTransparent] = useState(false)
   const [page, setPage] = useState(1)
 
   useLayoutEffect(() => {
     navigation.setOptions({
       header: () => <SearchHeader
-        placeholder='Search Resturant and Dishes'
-        isTrasparent={isTrasparent}
+        placeholder='Search Restaurant and Dishes'
+        isTransparent={isTransparent}
       />
     })
-  }, [isTrasparent])
+  }, [isTransparent])
 
   const handleScroll = (e: NativeSyntheticEvent<NativeScrollEvent>) => {
     const { contentOffset, contentSize, layoutMeasurement } = e.nativeEvent
@@ -35,8 +35,8 @@ const HomeScreen = () => {
     const screenHeight = layoutMeasurement.height
 
     scrollY > 100
-      ? setisTrasparent(true)
-      : setisTrasparent(false)
+      ? setIsTransparent(true)
+      : setIsTransparent(false)
 
     if (scrollY + screenHeight >= height - 20) {
       setPage(prev => prev + 1)
@@ -51,9 +51,9 @@ const HomeScreen = () => {
       >
 
         <Address />
-        <Recomented />
+        <Recommended />
         <DishMenu />
-        <AllRestaruants page={page} />
+        <AllRestaurants page={page} />
 
       </ScrollView>
     </SafeAreaView>

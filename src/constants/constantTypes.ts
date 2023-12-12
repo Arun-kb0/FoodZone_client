@@ -105,7 +105,7 @@ export type searchDishInRestaurantsResType = {
   message: string,
   currentPage: number,
   numberOfPages: number,
-  restuarnts: restaurantType[]
+  restaurants: restaurantType[]
 }
 
 

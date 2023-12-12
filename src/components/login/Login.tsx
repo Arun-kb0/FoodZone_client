@@ -43,7 +43,7 @@ const Login = () => {
     email: '',
     password: ''
   }
-  const initErorrState = {
+  const initErrorState = {
     error: false,
     email: false,
     password: false
@@ -54,15 +54,15 @@ const Login = () => {
     password: /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)[A-Za-z\d@#$%^&+=*!]*$/
   })
   const [loginState, setLoginState] = useState<loginStateType>(initLoginState)
-  const [isError, setIsError] = useState<isErrorType>(initErorrState)
+  const [isError, setIsError] = useState<isErrorType>(initErrorState)
 
 
 
-  type handleChanngeType = {
+  type handleChangeType = {
     name: 'email' | 'password',
     value: string
   }
-  const handleChange = ({ name, value }: handleChanngeType) => {
+  const handleChange = ({ name, value }: handleChangeType) => {
     setLoginState(prev => ({
       ...prev,
       [name]: value

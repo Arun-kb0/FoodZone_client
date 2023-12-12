@@ -4,7 +4,7 @@ import { useNavigation } from '@react-navigation/native'
 import { useSelector } from 'react-redux'
 import { RootState } from '../app/store'
 import CheckoutHeader from '../components/checkout/CheckoutHeader'
-import { IconEntypo, IconFontawsm, IconFontawsm5, IconMat, IconMatCom } from '../constants/icons'
+import { IconEntypo, IconMatCom } from '../constants/icons'
 import ListHeading from '../components/basic/ListHeading'
 import AddedItems from '../components/checkout/AddedItems'
 import MoreSettings from '../components/checkout/MoreSettings'
@@ -91,7 +91,7 @@ const CheckoutScreen = ({ route }: checkoutScreenType) => {
             <View className='flex-row justify-between items-center bg-white px-3 py-4 rounded-xl my-3 '>
               <View>
                 <Text className='font-semibold text-lg '>Order for someone else</Text>
-                <Text className='text-gray-500'>Add reciver details for hasile free delivery</Text>
+                <Text className='text-gray-500'>Add reviver details for hassle free delivery</Text>
               </View>
               <TouchableOpacity>
                 <IconEntypo name='chevron-right' size={30} color={'#334155'} />
@@ -101,7 +101,7 @@ const CheckoutScreen = ({ route }: checkoutScreenType) => {
         }
       </ScrollView>
 
-      {/* paymment and delivery address */}
+      {/* payment and delivery address */}
       <View className='absolute bottom-0 px-4 py-4 bg-res-500 bg-white shadow-2xl w-full rounded-t-2xl space-y-2'>
         <View className='flex-row  justify-between items-center w-full border-b '>
           <View>
@@ -115,7 +115,7 @@ const CheckoutScreen = ({ route }: checkoutScreenType) => {
 
         <View className='flex-row items-center justify-between'>
           <View>
-            <Text>select paymet method</Text>
+            <Text>select payment method</Text>
           </View>
           <TouchableOpacity className='bg-red-400 px-5 py-3 rounded-xl '>
             <Text className='text-white text-lg font-semibold'>Place Order</Text>

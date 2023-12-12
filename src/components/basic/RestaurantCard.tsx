@@ -3,7 +3,7 @@ import {
   View, Text, TouchableOpacity, Image,
 } from 'react-native'
 import React, { useState, useMemo, useEffect, useCallback, useLayoutEffect } from 'react'
-import { useAddFavoriteResturantMutation,  } from '../../features/posts/postApiSlice'
+import { useAddFavoriteRestaurantMutation,  } from '../../features/posts/postApiSlice'
 import { restaurantType } from '../../constants/constantTypes'
 import { setFavoriteRestaurant, setFavoriteRestaurants, setRestaurants, setSelectedRestaurant } from '../../features/posts/postSlice'
 import { AnyAction, Dispatch } from 'redux'
@@ -12,27 +12,27 @@ import { DeliveryScreenNavigationProps } from '../../navigation/TabNavigator'
 
 
 
-type restaruantCardType = {
+type restaurantCardType = {
   restaurant: restaurantType
   navigation: DeliveryScreenNavigationProps,
   dispatch: Dispatch<AnyAction>,
   isFav: boolean,
 }
 
-export const RestaruantCard = ({ navigation, dispatch, restaurant, isFav }: restaruantCardType) => {
-  const [isFavorite, setisFavorite] = useState(false)
+export const RestaurantCard = ({ navigation, dispatch, restaurant, isFav }: restaurantCardType) => {
+  const [isFavorite, setIsFavorite] = useState(false)
   const { Restaurant_Name, Category, imageUrl, id } = restaurant
 
   useEffect(() => {
-    setisFavorite(isFav)
+    setIsFavorite(isFav)
   }, [isFav])
 
-  const [addFavoriteResturant, {
+  const [addFavoriteRestaurant, {
     data: favRestaurants,
     isError,
     error,
     isSuccess,
-  }] = useAddFavoriteResturantMutation()
+  }] = useAddFavoriteRestaurantMutation()
 
   const handleNavigate = useCallback(() => {
     dispatch(setSelectedRestaurant(restaurant))
@@ -40,8 +40,8 @@ export const RestaruantCard = ({ navigation, dispatch, restaurant, isFav }: rest
   }, [id])
 
   const handleFavorite = useCallback(() => {
-    setisFavorite((prev) => !prev)
-    addFavoriteResturant({ id: restaurant.id })
+    setIsFavorite((prev) => !prev)
+    addFavoriteRestaurant({ id: restaurant.id })
   }, [restaurant.id])
 
   useEffect(() => {

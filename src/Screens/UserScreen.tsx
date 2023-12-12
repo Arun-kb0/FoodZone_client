@@ -55,7 +55,7 @@ const UserScreen = () => {
     ]
   }
 
-  const resturantAwards = {
+  const restaurantAwards = {
     title: 'ResturantAwards',
     btns: [
       {
@@ -121,7 +121,7 @@ const UserScreen = () => {
           <View className='flex-row justify-evenly items-center w-full'>
             <TouchableOpacity className='flex justify-center items-center bg-white px-2 py-4 my-2 rounded-xl h-24 w-[100px]'>
               <IconIon name='heart-outline' size={32} className='text-gray-600' />
-              <Text className='text-lg text-gray-600'>Favourites</Text>
+              <Text className='text-lg text-gray-600'>Favorites</Text>
             </TouchableOpacity>
 
             <TouchableOpacity className='flex justify-center items-center bg-white px-2 py-4 my-2 rounded-xl h-24 w-[100px]'>
@@ -156,7 +156,7 @@ const UserScreen = () => {
           {/* userCards */}
           <UserCard title={foodOrders.title} data={foodOrders.btns} />
           <UserCard title={coupons.title} data={coupons.btns} />
-          <UserCard title={resturantAwards.title} data={resturantAwards.btns} />
+          <UserCard title={restaurantAwards.title} data={restaurantAwards.btns} />
           <UserCard title={more.title} data={more.btns} />
 
         </View>

@@ -58,7 +58,7 @@ const RestaurantDishes = ({ page }: RestaurantDishesPropsType) => {
             data={dishes}
             keyExtractor={item => item.id}
             renderItem={({ item }) => (
-              <RestaruantDishItem
+              <RestaurantDishItem
                 id={item.id}
                 name={item.dishName}
                 imageUrl={item.imageUrl}
@@ -85,7 +85,7 @@ export default RestaurantDishes
 
 
 
-type RestaruantDishItemType = {
+type RestaurantDishItemType = {
   id: string,
   name: string,
   imageUrl: string,
@@ -97,9 +97,9 @@ type RestaruantDishItemType = {
   dispatch: Dispatch<AnyAction>
 }
 
-const RestaruantDishItem = ({
+const RestaurantDishItem = ({
   id, name, imageUrl, description, price,
-  rating, dispatch, itemCount = 0, restaurantId }: RestaruantDishItemType) => {
+  rating, dispatch, itemCount = 0, restaurantId }: RestaurantDishItemType) => {
 
   const handleAddToCart = useCallback(() => {
     dispatch(addToCart({ id, price, restaurantId }))

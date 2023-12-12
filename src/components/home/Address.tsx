@@ -19,7 +19,7 @@ const Address = () => {
             <IconEntypo name='chevron-down' size={30} color={'#334155'} />
           </TouchableOpacity>
         </View>
-        <Text className='text-sm '>address (h) puliyanmp o karakkattuparambil ,anga,aly</Text>
+        <Text className='text-sm '>address (h) post PO, Housename ,city</Text>
       </View>
       <TouchableOpacity onPress={() => navigation.navigate('UserScreen')}>
         <Avatar />

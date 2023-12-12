@@ -13,19 +13,19 @@ import { RootStackNavigationProp } from '../navigation/RootNavigator'
 
 const SignUpScreen = () => {
 
-  const naviagtion = useNavigation<RootStackNavigationProp>()
+  const navigation = useNavigation<RootStackNavigationProp>()
   const dispatch = useDispatch()
   const [
     signUp,
     { data: signUpResponse,
-      isLoading: signUpisLoading,
-      isSuccess: signUpisSuccess,
-      isError: signUpisError,
+      isLoading: signUpIsLoading,
+      isSuccess: signUpIsSuccess,
+      isError: signUpIsError,
       error: signUpError
     }] = useSignUpMutation()
 
   useLayoutEffect(() => {
-    naviagtion.setOptions({
+    navigation.setOptions({
       header: () => <SignUpHeader />
     })
   }, [])
@@ -60,7 +60,7 @@ const SignUpScreen = () => {
     confirmPassword: '',
     phone: ''
   }
-  const initErorrState = {
+  const initErrorState = {
     error: false,
     name: false,
     email: false,
@@ -77,15 +77,15 @@ const SignUpScreen = () => {
     phone: /^\d{10}$/
   })
   const [signUpState, setSignUpState] = useState<signUpStateType>(initSignUpState)
-  const [isError, setIsError] = useState<isErrorType>(initErorrState)
+  const [isError, setIsError] = useState<isErrorType>(initErrorState)
 
 
 
-  type handleChanngeType = {
+  type handleChangeType = {
     name: 'name' | 'email' | 'password' | 'confirmPassword' | 'phone',
     value: string
   }
-  const handleChange = ({ name, value }: handleChanngeType) => {
+  const handleChange = ({ name, value }: handleChangeType) => {
     setSignUpState(prev => ({
       ...prev,
       [name]: value
@@ -142,7 +142,7 @@ const SignUpScreen = () => {
 
 
   useEffect(() => {
-    if (signUpisSuccess) {
+    if (signUpIsSuccess) {
       console.log(signUpResponse)
       dispatch(setAuthData({
         provider: 'custom',
@@ -150,7 +150,7 @@ const SignUpScreen = () => {
         accessToken: signUpResponse.accessToken
       }))
       setSignUpState(initSignUpState)
-      naviagtion.navigate('Main')
+      navigation.navigate('Main')
     }
     if (signUpError && 'data' in signUpError) {
       Alert.alert(
@@ -162,7 +162,7 @@ const SignUpScreen = () => {
         }]
       )
     }
-  }, [signUpisSuccess, signUpisError])
+  }, [signUpIsSuccess, signUpIsError])
 
 
 

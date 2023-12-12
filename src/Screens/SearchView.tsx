@@ -1,16 +1,13 @@
 import { View, Text, SafeAreaView, FlatList, Dimensions, ActivityIndicator } from 'react-native'
 import React, { useEffect, useLayoutEffect, useState } from 'react'
-import { useLazySearchDishInResturantsQuery } from '../features/posts/postApiSlice'
-import { RestaruantCard } from '../components/basic/RestaurantCard'
+import { useLazySearchDishInRestaurantsQuery } from '../features/posts/postApiSlice'
+import { RestaurantCard } from '../components/basic/RestaurantCard'
 import { useDispatch } from 'react-redux'
 import { useNavigation } from '@react-navigation/native'
 import { DeliveryScreenNavigationProps } from '../navigation/TabNavigator'
 import DishMenu from '../components/home/DishMenu'
 import { restaurantType } from '../constants/constantTypes'
 
-
-import { Realm } from '@realm/react'
-import { REALM_API_KEY, REALM_APP_ID } from '@env'
 
 
 type searchViewPropsType = {
@@ -21,7 +18,6 @@ type searchViewPropsType = {
   }
 }
 
-//  ! add cards and top stackbar
 const SearchView = ({ route }: searchViewPropsType) => {
   const { searchKey } = route.params
 
@@ -31,7 +27,7 @@ const SearchView = ({ route }: searchViewPropsType) => {
   const [width, setWidth] = useState(Dimensions.get("window").width)
   const [page, setPage] = useState(1)
   const [numOfPages, setNumOfPages] = useState(1)
-  const [resturantsState, setResturantsState] = useState<restaurantType[] | []>([])
+  const [restaurantsState, setRestaurantsState] = useState<restaurantType[] | []>([])
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -42,21 +38,20 @@ const SearchView = ({ route }: searchViewPropsType) => {
 
 
   useEffect(() => {
-    console.log('\n\n relam res - ', resturantsState)
-  }, [resturantsState])
+    console.log('\n\n realm res - ', restaurantsState)
+  }, [restaurantsState])
 
-  const [searchDishInResturantsQuery,
+  const [searchDishInRestaurantsQuery,
     { data: restaurantData,
       isFetching,
       isLoading,
       isSuccess,
       isError,
     }
-  ] = useLazySearchDishInResturantsQuery()
+  ] = useLazySearchDishInRestaurantsQuery()
 
-  // ! dont remove 
   useEffect(() => {
-    searchDishInResturantsQuery({ searchInput: searchKey, page }, true)
+    searchDishInRestaurantsQuery({ searchInput: searchKey, page }, true)
   }, [page])
 
   const handlePage = () => {
@@ -68,7 +63,7 @@ const SearchView = ({ route }: searchViewPropsType) => {
 
   useEffect(() => {
     if (restaurantData) {
-      setResturantsState(prev => [...prev, ...restaurantData.restuarnts])
+      setRestaurantsState(prev => [...prev, ...restaurantData.restaurants])
       setNumOfPages(restaurantData.numberOfPages)
     }
   }, [isSuccess, restaurantData])
@@ -77,7 +72,7 @@ const SearchView = ({ route }: searchViewPropsType) => {
   return (
     <SafeAreaView>
 
-      {resturantsState &&
+      {restaurantsState &&
         < FlatList
           className=' h-auto pt-2 pb-10'
           contentContainerStyle={{
@@ -85,10 +80,10 @@ const SearchView = ({ route }: searchViewPropsType) => {
           }}
           initialNumToRender={4}
           onEndReached={handlePage}
-          data={resturantsState}
+          data={restaurantsState}
           keyExtractor={item => item.id}
           renderItem={({ item }) => (
-            <RestaruantCard
+            <RestaurantCard
               restaurant={item}
               dispatch={dispatch}
               navigation={navigation}

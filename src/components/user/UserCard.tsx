@@ -18,7 +18,6 @@ type UserCardType = {
 
 
 const UserCard = ({ title, data, }: UserCardType) => {
-  // console.log(`${title} usercard component`)
 
   return (
     <View className='space-x-4 space-y-3 bg-white px-4 py-6 w-full rounded-xl shadow-xl my-2'>

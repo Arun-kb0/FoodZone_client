@@ -1,7 +1,7 @@
 import { View, Text, SafeAreaView, ScrollView, TouchableOpacity, Dimensions, NativeSyntheticEvent, NativeScrollEvent, GestureResponderEvent } from 'react-native'
 import React, { useState, useEffect, useLayoutEffect } from 'react'
 import { restaurantType } from '../constants/constantTypes'
-import RestaruantDetails from '../components/restaurant/RestaurantDetails'
+import RestaurantDetails from '../components/restaurant/RestaurantDetails'
 import RestaurantDishes from '../components/restaurant/RestaurantDishes'
 import ListHeading from '../components/basic/ListHeading'
 import RestaurantMenu from '../components/restaurant/RestaurantMenu'
@@ -11,7 +11,6 @@ import { useSelector } from 'react-redux'
 import { RootState } from '../app/store'
 import CartBottomButton from '../components/restaurant/CartBottomButton'
 import { useNavigation } from '@react-navigation/native'
-import Search from '../components/home/SearchHeader'
 import DishSearch from '../components/restaurant/DishSearch'
 
 
@@ -105,7 +104,7 @@ const RestaurantScreen = ({ route }: RestaurantScreenPropsType) => {
         nestedScrollEnabled={true}
       >
 
-        <RestaruantDetails
+        <RestaurantDetails
           id={id}
           name={Restaurant_Name}
           cuisine={Category[0]}
